@@ -1,5 +1,12 @@
 # Application Project - Group 1 - Fanshawe College
 
+### Table of content
+
+- [Technologies Used](#technologies-used)
+- [Project Description](#project-description)
+- [Deployment](#deployment)
+- [Project Developed By](#project-developed-by)
+
 ## Technologies Used
 
 <!-- TODO: Add each tech used here -->

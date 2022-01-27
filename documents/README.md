@@ -1,4 +1,17 @@
-# Database Design File
+# Info about documents folder
+
+### Table of content
+
+- [Posted-FOL](#posted-fol)
+- [Database Design File](#database-design-file)
+
+## Posted-FOL
+
+Files submitted to FOL
+
+## Database Design File
+
+File to draw the database schema
 
 #### Open database file on link bellow:
 
