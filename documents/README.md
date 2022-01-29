@@ -23,3 +23,7 @@ _obs: you can link to your github account._
 
 - https://www.techighness.com/post/how-to-draw-no-sql-data-model-diagram/
 - https://github.com/moneymanagerex/database
+
+## Other Resources
+
+- [Google Drive API docs](https://developers.google.com/drive/api/v3/quickstart/nodejs)
