@@ -25,8 +25,8 @@
 
 ### Project Developed By
 
+- Ahmad Al-Sarraf
+- Bechera Chapman-Tremblay
+- Gerald Prowse
+- Hunter McNeil 
 - Viktor Avelino
--
--
--
--
