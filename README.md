@@ -11,8 +11,10 @@
 
 <!-- TODO: Add each tech used here -->
 
+- [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [React Router](https://reactrouter.com/)
 
 ## Project Description
 
@@ -28,5 +30,5 @@
 - Ahmad Al-Sarraf
 - Bechera Chapman-Tremblay
 - Gerald Prowse
-- Hunter McNeil 
+- Hunter McNeil
 - Viktor Avelino

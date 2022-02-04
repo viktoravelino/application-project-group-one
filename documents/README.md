@@ -27,3 +27,5 @@ _obs: you can link to your github account._
 ## Other Resources
 
 - [Google Drive API docs](https://developers.google.com/drive/api/v3/quickstart/nodejs)
+- [React Router Docs](https://reactrouter.com/docs/en/v6/getting-started/overview)
+- [Vite Docs](https://vitejs.dev/guide/)
