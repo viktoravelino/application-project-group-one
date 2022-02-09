@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import './LoginPage.css';
 //importing logo
 import Logo from '../components/Logo';
+//importing icons
+import { BiUser } from 'react-icons/bi'
+import {AiOutlineUnlock} from 'react-icons/ai';
 
 export function LoginPage() {
   const [name, setName] = useState("");
@@ -23,27 +26,33 @@ export function LoginPage() {
 
       {/* top level container */}
       <div id="top-form-container">
+
         <div className="top-block">
+
           <div id="logo">
-            <Logo width={50} height={50}/>
+            <Logo width={60} height={60}/>
           </div>
         </div>
-        <div className="top-block">
-          <h1 id="title-font">Login</h1>
+
+          <div className="top-block">
+            <h1 id="title-font">Login</h1>
+          </div>
         </div>
-      </div>
 
-          <label className="inputs">
-            <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder='email address'/>
+        <div id="middle-container">
+          <label>
+          <BiUser id="profile"/>
+           <input  className="inputs" type="text" value={name} onChange={e => setName(e.target.value)} placeholder='email address'/>
           </label>   
           <br/>
 
-          <label className="inputs">
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='password'/>
-            <p id="forgot-pwd">Forgot password? <a href="#">Click Here</a></p>
+          <label >
+          <AiOutlineUnlock id="password"/><input className="inputs" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='password'/>
+            <div id="pwd-container">
+              <p id="forgot-pwd"><a href="#">Forgot password?</a></p>
+            </div>
           </label>   
-          <br/>
-
+        </div>
         {/*submit btn*/}
         <input className="btn" type="submit" value="Sign in"/>
         <br/>

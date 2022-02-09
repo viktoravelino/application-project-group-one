@@ -2,7 +2,7 @@
 
 /* body of page */
 body{
-
+background: #181D27;
 }
 
 /*container for page*/
@@ -21,18 +21,14 @@ body{
     font-weight: bold;
     font-size: 2rem;
     line-height: 72px;
-}
-#top-form-container {
 
 }
 
-.top-block{
-    padding: 0px;
-}
+
 
 /*Logo*/
 #logo {
-    
+    padding: 10px;
     background-repeat: no-repeat;
 }
 
@@ -48,36 +44,65 @@ body{
     position: relative;
     letter-spacing: -1px;
     color: #181D27;
-    top: -10px;
+    top: -20px;
 }
 
 /* form */
 #form {
     width: 70vw;
     height: auto;
-    border-radius: 20px;
-    border: 1px solid green;
 }
+
 
 /*inputs*/
 .inputs {
     text-align: center;
-    border-top-style: hidden;
-    border-right-style: hidden;
-    border-left-style: hidden;
+    border: none;
+    box-sizing: border-box;
+    border-bottom: 1px solid #254D32;
+    width: 80%;
+    padding: 5px;
+    outline: none;
+}
+
+/*username icon */
+#profile {
+    position: absolute;
+    top: 200px;
+    color: #254D32;
+}
+/* password icon */
+#password {
+    position: absolute;
+    top: 270px;
+    color: #254D32;
+}
+
+/*forgot pwd container*/
+#pwd-container {
+    position: absolute;
+    right: -500px;
+    border: 1px solid red;
+    width: inherit;
+    width: 20%;
+}
+
+#forgot-pwd a{
+    color: #34A853;
 }
 
 /*button*/
 .btn{
     position: relative;
-    width: 150px;
-    height: 40px;
+    width: 80%;
+    height: 30px;
     background: #254D32;
     border: 1px solid #254D32;
     box-sizing: border-box;
     border-radius: 23px;
     color: white;
     font-family: var(--Font);
+    font-weight: 700;
 }
 
 /*forgot password*/
