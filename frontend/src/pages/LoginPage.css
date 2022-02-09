@@ -21,21 +21,42 @@ body{
     font-weight: bold;
     font-size: 2rem;
     line-height: 72px;
+}
+#top-form-container {
 
+}
 
+.top-block{
+    padding: 0px;
 }
 
 /*Logo*/
 #logo {
+    
+    background-repeat: no-repeat;
+}
 
+#imgLogo {
+    border: 1px solid red;
+    height: 20px;
+    width: 20px;
+}
+
+#title-font {
+    font-size: 40px;
+    font-weight: 800;
+    position: relative;
+    letter-spacing: -1px;
+    color: #181D27;
+    top: -10px;
 }
 
 /* form */
 #form {
-    border: 1px solid red;
-    width: 50vw;
+    width: 70vw;
     height: auto;
-
+    border-radius: 20px;
+    border: 1px solid green;
 }
 
 /*inputs*/
@@ -59,6 +80,29 @@ body{
     font-family: var(--Font);
 }
 
+/*forgot password*/
 #forgot-pwd {
     font-size: 13px;
 }
+/*login-container*/
+#login-container{
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    background-color: white;
+    border-radius: 5px;
+}
+
+
+
+#svg-container {
+    width: 100vw;
+    height: 250px;
+    background: url(.././Images/waves.svg);
+    background-size: cover;
+    position: absolute;
+    bottom: 0;
+}
+
+
+
