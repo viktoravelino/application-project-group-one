@@ -1,0 +1,64 @@
+@import url(../index.css);
+
+/* body of page */
+body{
+
+}
+
+/*container for page*/
+#loginPage {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+/*container for login page*/
+#login-container {
+    font-family: var(--Font);
+    font-style: var(--fontStyle);
+    font-weight: bold;
+    font-size: 2rem;
+    line-height: 72px;
+
+
+}
+
+/*Logo*/
+#logo {
+
+}
+
+/* form */
+#form {
+    border: 1px solid red;
+    width: 50vw;
+    height: auto;
+
+}
+
+/*inputs*/
+.inputs {
+    text-align: center;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+}
+
+/*button*/
+.btn{
+    position: relative;
+    width: 150px;
+    height: 40px;
+    background: #254D32;
+    border: 1px solid #254D32;
+    box-sizing: border-box;
+    border-radius: 23px;
+    color: white;
+    font-family: var(--Font);
+}
+
+#forgot-pwd {
+    font-size: 13px;
+}
