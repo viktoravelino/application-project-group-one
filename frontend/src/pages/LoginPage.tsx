@@ -41,21 +41,31 @@ export function LoginPage() {
 
         <div id="middle-container">
           <label>
-          <BiUser id="profile"/>
-           <input  className="inputs" type="text" value={name} onChange={e => setName(e.target.value)} placeholder='email address'/>
+          <div id="prof-container-1">
+            <BiUser id="profile"/>
+              <input  className="inputs" type="text" value={name} onChange={e => setName(e.target.value)} placeholder='email address'/>
+          </div>
           </label>   
-          <br/>
 
-          <label >
-          <AiOutlineUnlock id="password"/><input className="inputs" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='password'/>
-            <div id="pwd-container">
-              <p id="forgot-pwd"><a href="#">Forgot password?</a></p>
+          <label>
+          <div id="pwd-container-1">
+            <AiOutlineUnlock id="password"/><input className="inputs" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='password'/>
+              <div id="pwd-container-2">
+                <p id="forgot-pwd"><a href="#">Forgot password?</a></p>
             </div>
-          </label>   
+          </div>
+        </label>  
+           
         </div>
+
         {/*submit btn*/}
         <input className="btn" type="submit" value="Sign in"/>
-        <br/>
+
+        <div id="continue-container">
+          <p id="continue">Or continue with</p>
+          <hr id="line"/>
+        </div>
+
         {/*link to main page*/}
         <Link to="/">
           <button>Main Page</button>
