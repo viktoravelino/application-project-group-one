@@ -83,25 +83,21 @@ background: #181D27;
 /*forgot pwd container*/
 #pwd-container-1 {
     position: relative;
-    border: 1px solid rgb(241, 4, 4);
 }
 
-#pwd-container-2 {
-    position: relative;
-    height: 90px;
-    top: -15px;
+/* #pwd-container-2 {
     border: 1px solid rgb(2, 255, 35);
-}
+} */
 
 #forgot-pwd {
     position: absolute;
-    right: 40px;
-    top: -20px;
+    width: 100%;
+    top: 35px;
+    left: 49px;
 }
 
 #forgot-pwd a{
     color: #34A853;
-   
 }
 /*end of fix*/
 
@@ -110,7 +106,7 @@ background: #181D27;
     display: block;
 
 }
-
+/*Or continue with text*/
 #continue {
     font-family: Inter;
     font-style: normal;
@@ -121,13 +117,14 @@ background: #181D27;
     padding: 5px;
 }
 
+/*line for social media logins*/
 #line {
     margin-left:auto;
     margin-right:auto;
     text-align: left;
     width: 50%;
     height: 1px;
-    background: #181D27;
+    background: #254D32;
 }
 
 /*button*/
@@ -147,6 +144,18 @@ background: #181D27;
 /*forgot password*/
 #forgot-pwd {
     font-size: 13px;
+}
+
+/* social-icons */
+#social-container{
+border: 1px solid red;
+display: grid;
+grid-template-columns: auto auto auto;
+}
+.social-icons {
+    border: 1px solid blue;
+    margin: 0;
+    padding: 0;
 }
 /*login-container*/
 #login-container{

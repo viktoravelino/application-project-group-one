@@ -1,8 +1,11 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import './LoginPage.css';
-//importing logo
+//importing svg
 import Logo from '../components/Logo';
+import Google from '../components/Google';
+import Twitter from '../components/Twitter';
+import Facebook from '../components/Facebook';
 //importing icons
 import { BiUser } from 'react-icons/bi'
 import {AiOutlineUnlock} from 'react-icons/ai';
@@ -39,31 +42,43 @@ export function LoginPage() {
           </div>
         </div>
 
-        <div id="middle-container">
+      <div id="middle-container">
+            {/*username btn*/}
           <label>
           <div id="prof-container-1">
             <BiUser id="profile"/>
               <input  className="inputs" type="text" value={name} onChange={e => setName(e.target.value)} placeholder='email address'/>
           </div>
           </label>   
-
+            {/*password input*/}
           <label>
           <div id="pwd-container-1">
             <AiOutlineUnlock id="password"/><input className="inputs" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='password'/>
-              <div id="pwd-container-2">
-                <p id="forgot-pwd"><a href="#">Forgot password?</a></p>
-            </div>
+            <p id="forgot-pwd"><a href="#">Forgot password?</a></p>
+
           </div>
-        </label>  
-           
-        </div>
+        </label>   
+      </div>
 
         {/*submit btn*/}
         <input className="btn" type="submit" value="Sign in"/>
-
+        {/* continue text*/}
         <div id="continue-container">
           <p id="continue">Or continue with</p>
+          {/*Line*/}
           <hr id="line"/>
+
+        <div id="social-container">
+          <div className="social-icons">
+            <Facebook/>
+          </div>
+          <div className="social-icons">
+            <Google/>
+          </div>
+          <div className="social-icons">
+            <Twitter/>
+          </div>
+        </div>
         </div>
 
         {/*link to main page*/}
