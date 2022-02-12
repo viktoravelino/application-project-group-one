@@ -20,7 +20,14 @@ export const Header = () => {
         </a>
       </div>
       {/* brand name */}
-      <div className="brand-name-container border-black border-2">brand</div>
+      <div
+        className="
+      brand-name-container border-black border-0
+      text-2xl
+      "
+      >
+        Walletal
+      </div>
 
       {/* user icon */}
       <div className="user-icon-container border-black border-0">
