@@ -1,18 +1,16 @@
-@import url(../index.css);
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* body of page */
-body{
-background: #181D27;
-}
 
 /*container for page*/
-#loginPage {
+/* #loginPage {
     display: grid;
     width: 100vw;
     height: 100vh;
     justify-content: center;
     align-items: center;
-}
+} */
 
 /*container for login page*/
 #login-container {
