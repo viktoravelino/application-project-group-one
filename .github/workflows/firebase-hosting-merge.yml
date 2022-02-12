@@ -16,6 +16,7 @@ jobs:
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_APPLICATION_PROJECT_GROUP_1 }}"
-          channelId: live
+          channelId: preview-beta
+          # channelId: live
           projectId: application-project-group-1
           entryPoint: "./frontend"
