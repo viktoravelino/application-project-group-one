@@ -9,13 +9,16 @@ export const SideMenu = ({ children }: SideMenuProps) => {
   return (
     <aside
       className="
-    side-menu-container border-2 border-black
-    bg-gray-800 shadow-xl h-20 fixed bottom-0 w-full
-    md:relative md:h-screen md:w-48
-    text-white
+      side-menu-container
+      shrink-0
+      px-2 md:px-0
+      bg-gray-800 shadow-black shadow-lg
+      h-20 fixed bottom-0 w-full
+      md:relative md:h-screen md:w-48
+      text-white
     "
     >
-      <nav className="h-full">
+      <nav className="h-full md:fixed md:mt-4 md:w-48">
         <ul
           className="
         flex flex-row justify-around h-full items-center
@@ -37,7 +40,7 @@ interface SideMenuItemProps {
 
 export const SideMenuItem = ({ text, to, Icon }: SideMenuItemProps) => {
   return (
-    <li className="flex-0 md:flex-none text-xs md:text-base">
+    <li className="flex-0 md:flex-none text-xs md:text-base w-full">
       <a
         href={to}
         className="
