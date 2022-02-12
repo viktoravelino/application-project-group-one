@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { LogoSvg } from "../Icons";
-import { BiUserCircle } from "react-icons/all";
+import { BiUserCircle } from "react-icons/bi";
 
 export const Header = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
