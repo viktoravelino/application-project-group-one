@@ -16,7 +16,7 @@ export const MainLayoutContainer = (): JSX.Element => {
           <SideMenuItem text="Categories" to="#" Icon={BsListNested} />
           <SideMenuItem text="Transactions" to="#" Icon={GiReceiveMoney} />
         </SideMenu>
-        <section className="main-content-container bg-gray-700 w-full h-screen">
+        <section className="main-content-container bg-gray-700 w-full h-screen mt-12 md:mt-0">
           Main Content container
         </section>
       </main>
