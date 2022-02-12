@@ -7,7 +7,7 @@ import MainPage from "./pages/MainPage";
 function App() {
   return (
     <div className="app">
-      <h1>Testing Routes</h1>
+      <h1>Testing Routes 2</h1>
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
