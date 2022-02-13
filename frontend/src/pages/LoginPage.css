@@ -4,13 +4,13 @@
 
 
 /*container for page*/
-/* #loginPage {
+#loginPage {
     display: grid;
     width: 100vw;
     height: 100vh;
     justify-content: center;
     align-items: center;
-} */
+}
 
 /*container for login page*/
 #login-container {

@@ -6,8 +6,8 @@ interface LogoSvgProps {
 
 export default function LogoSvg({
   invert,
-  height = 134,
-  width = 134,
+  height = 40,
+  width = 40,
 }: LogoSvgProps) {
   const outerColor = invert ? "#ffffff" : "#181D27";
   const letterWColor = invert ? "#181D27" : "#ffffff";
