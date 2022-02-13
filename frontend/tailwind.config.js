@@ -22,7 +22,7 @@ module.exports = {
         primaryColor: '#254D32',
         bgColor: '#181D27',
         link : '#34A853',
-        inputFont : "#00000"
+        inputFont : "#00000",
       }
     },
   },

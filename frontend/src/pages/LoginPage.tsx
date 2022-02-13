@@ -20,53 +20,72 @@ export function LoginPage() {
 }
 
   return (
-    <div id="loginPage" className="bg-bgColor">
+    <div id="loginPage" className="bg-bgColor ">
     
 
-  <div id="formContainer" className="flex justify-center items-center h-screen ">
+  <div id="formContainer" className="flex justify-center items-center h-screen  w-screen">
   
-  <form action="" className="mx-auto mb-0 space-y-4 bg-white  rounded-form w-screen h-4/5" >
-    <div className="flex justify-center">
+  <form action="" className="mx-auto mb-0 space-y-4 bg-white  rounded-form w-80 h-4/5" >
+    
+    
+    <div className="flex justify-center p-5">
     <Logo/>
     </div>
-    <div className="flex justify-center ">
+    <div className="flex justify-center p-5">
       <label className="font-black font-title text-black-600 text-xl">Login</label>
     </div>
 
-    <div className="relative mt-2">
-    <span className="absolute inset-y-0 inline-flex items-center left-0 top-1">
+    <div className="relative mt-2 p-3">
+      
+    <span className="absolute inset-y-0 inline-flex items-center left-12 bottom-0">
     <BiUser className="text-primaryColor "/>
     </span>
+
       <input
-        className="w-11/12 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
+        className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
         placeholder="email address"
       />
     </div>
  
 
-  <div>
     {/* <div className="flex justify-between">
       <label htmlFor="password" className="font-medium text-gray-600">Password</label>
     </div> */}
 
-    <div className="relative mt-2">
-      <span className="absolute inset-y-0 inline-flex items-center left-0 top-1">
+    <div className="relative mt-2 p-3">
+
+      <span className="absolute inset-y-0 inline-flex items-center left-12 bottom-0">
         <AiOutlineUnlock className="text-primaryColor "/>
       </span>
+
       <input
-        className="w-11/12 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
+        className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
         placeholder="password"
       />
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end relative right-3">
       <a className="text-xs text-link underline" href="">Forgotten password?</a>
-      </div>
-
+      </div> */}
     </div>
-  </div>
 
-  <button type="submit" className="block w-full px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-btn">
+  <div className="flex justify-center">
+  <button type="submit" className="block px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-btn w-5/6 ">
     Sign in
   </button>
+  </div>
+
+  <div className="grid justify-center p-10">
+      <p className="w-f">Or continue</p>
+      <hr className="border-primaryColor w-40  mx-auto p-20"/>
+    <div> 
+      <Google/>
+      <Facebook/>
+      <Twitter/>
+    </div>
+    <div>
+        
+        
+    </div>
+  </div>
 </form>
 
 
