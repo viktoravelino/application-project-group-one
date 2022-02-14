@@ -11,7 +11,8 @@ module.exports = {
       xl: ['24px', '32px'],
     },
     fontFamily:{
-      'title' : ['Poppins']
+      'title' : ['Poppins'],
+      'social' : ['Inter']
     },
     borderRadius: {
       'btn': '23px',

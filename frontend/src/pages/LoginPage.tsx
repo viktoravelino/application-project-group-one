@@ -23,7 +23,7 @@ export function LoginPage() {
     <div id="loginPage" className="bg-bgColor ">
     
 
-  <div id="formContainer" className="flex justify-center items-center h-screen  w-screen">
+  <div id="formContainer" className="flex justify-center items-center h-5/6  w-screen">
   
   <form action="" className="mx-auto mb-0 space-y-4 bg-white  rounded-form w-80 h-4/5" >
     
@@ -73,14 +73,20 @@ export function LoginPage() {
   </button>
   </div>
 
-  <div className="grid justify-center p-10">
-      <p className="w-f">Or continue</p>
-      <hr className="border-primaryColor w-40  mx-auto p-20"/>
-    <div> 
-      <Google/>
-      <Facebook/>
-      <Twitter/>
-    </div>
+  <div className="flex flex-col  p-10 mx-auto my-auto">
+      <p className="w-f font- text-[10px] text-stone-400">Or continue with</p>
+    <hr className="border-primaryColor w-40 mx-auto p-20 my-auto"/>
+        <div className="flex mx-auto relative bottom-36">
+          <div className="p-2">
+          <Facebook/>
+          </div>
+          <div className="p-2">
+          <Google/>
+          </div>
+          <div className="p-2">
+          <Twitter/>
+          </div>
+        </div>
     <div>
         
         
