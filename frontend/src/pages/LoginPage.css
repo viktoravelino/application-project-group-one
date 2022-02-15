@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/*container for page*/
+#loginPage {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+/*container for login page*/
+#login-container {
+    font-family: var(--Font);
+    font-style: var(--fontStyle);
+    font-weight: bold;
+    font-size: 2rem;
+    line-height: 72px;
+
+}
+
+/*Logo*/
+#logo {
+    padding: 10px;
+    background-repeat: no-repeat;
+}
+
+#imgLogo {
+    border: 1px solid red;
+    height: 20px;
+    width: 20px;
+}
+
+#title-font {
+    font-size: 40px;
+    font-weight: 800;
+    position: relative;
+    letter-spacing: -1px;
+    color: #181D27;
+    top: -20px;
+}
+
+/* form */
+#form {
+    width: 70vw;
+    height: auto;
+}
+
+
+/*inputs*/
+.inputs {
+    text-align: center;
+    border: none;
+    box-sizing: border-box;
+    border-bottom: 1px solid #254D32;
+    width: 80%;
+    padding: 5px;
+    outline: none;
+}
+/*profile container*/
+#prof-container-1{
+    position: relative;
+}
+/*username icon */
+#profile {
+    position: absolute;
+    top: 20px;
+    color: #254D32;
+}
+/* password icon */
+#password {
+    position: absolute;
+    top: 20px;
+    color: #254D32;
+}
+
+/* fix for later */
+/*forgot pwd container*/
+#pwd-container-1 {
+    position: relative;
+}
+
+/* #pwd-container-2 {
+    border: 1px solid rgb(2, 255, 35);
+} */
+
+#forgot-pwd {
+    position: absolute;
+    width: 100%;
+    top: 35px;
+    left: 49px;
+}
+
+#forgot-pwd a{
+    color: #34A853;
+}
+/*end of fix*/
+
+/*or continue page*/
+#continue-container{
+    display: block;
+
+}
+/*Or continue with text*/
+#continue {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+}
+
+/*line for social media logins*/
+#line {
+    margin-left:auto;
+    margin-right:auto;
+    text-align: left;
+    width: 50%;
+    height: 1px;
+    background: #254D32;
+}
+
+/*button*/
+.btn{
+    position: relative;
+    width: 80%;
+    height: 30px;
+    background: #254D32;
+    border: 1px solid #254D32;
+    box-sizing: border-box;
+    border-radius: 23px;
+    color: white;
+    font-family: var(--Font);
+    font-weight: 700;
+}
+
+/*forgot password*/
+#forgot-pwd {
+    font-size: 13px;
+}
+
+/* social-icons */
+#social-container{
+border: 1px solid red;
+display: grid;
+grid-template-columns: auto auto auto;
+}
+.social-icons {
+    border: 1px solid blue;
+    margin: 0;
+    padding: 0;
+}
+/*login-container*/
+#login-container{
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    background-color: white;
+    border-radius: 20px;
+}
+
+
+
+#svg-container {
+    width: 100vw;
+    height: 250px;
+    background: url(.././Images/waves.svg);
+    background-size: cover;
+    position: absolute;
+    bottom: 0;
+}
+
+
+

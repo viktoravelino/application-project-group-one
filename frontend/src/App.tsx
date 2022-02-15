@@ -4,13 +4,14 @@ import { RegisterPage } from "./pages/RegisterPage";
 
 // Main Application
 import { MainLayoutContainer } from "./pages/MainLayoutContainer";
+import MainPage from "./pages/MainPage";
 
 function App() {
   return (
     <div className="app">
-      {/* <h1>Testing Routes</h1> */}
       <Routes>
-        <Route path="/" element={<MainLayoutContainer />} />
+        <Route path="/" element={<MainPage />} />
+        <Route path="/dashboard" element={<MainLayoutContainer />} />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
