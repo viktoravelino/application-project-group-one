@@ -1,6 +1,40 @@
+import { updateEmail, updateProfile } from "firebase/auth";
+import { useState } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
+import { auth } from "../../config/firebase";
+
 export const UserProfilePage = () => {
+  const currentName = auth.currentUser?.displayName;
+  const currentEmail = auth.currentUser?.email;
+
+  const [name, setName] = useState(currentName || "no user logged");
+  const [email, setEmail] = useState(currentEmail || "no user logged");
+
+  const handleSaveBasicInfo = async () => {
+    let functions = [];
+    if (name !== "no user logged") {
+      functions.push(
+        updateProfile(auth.currentUser!, {
+          displayName: name,
+        })
+      );
+    }
+
+    if (email !== "no user logged") {
+      functions.push(updateEmail(auth.currentUser!, email));
+    }
+
+    try {
+      await Promise.all(functions);
+    } catch (error: any) {
+      console.log(error.message);
+      alert(error.message);
+    }
+  };
+
+  const handleChangePassword = () => {};
+
   return (
     <div
       className="
@@ -21,11 +55,23 @@ export const UserProfilePage = () => {
         <div className="profile-picture border-2 w-36 h-36 rounded-full mb-10"></div>
 
         <BlockContainer title="Basic Info">
-          <InputGroup label="Name" type="text" value="John Doe" />
-          <InputGroup label="Email" type="email" value="johndoe@mail.com" />
+          <InputGroup
+            onChange={setName}
+            label="Name"
+            type="text"
+            value={name}
+          />
+          <InputGroup
+            onChange={setEmail}
+            label="Email"
+            type="email"
+            value={email}
+          />
 
           <ButtonsContainer>
-            <Button className="ml-5">Save</Button>
+            <Button onClick={handleSaveBasicInfo} className="ml-5">
+              Save
+            </Button>
           </ButtonsContainer>
         </BlockContainer>
 
@@ -59,6 +105,7 @@ const InputGroup = (props: any) => {
         className="bg-transparent outline-none border-0 border-b-2  md:flex-1 md:pl-10"
         type={props.type}
         value={props.value}
+        onChange={(e) => props.onChange(e.target.value)}
       />
     </div>
   );
