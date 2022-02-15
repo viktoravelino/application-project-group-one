@@ -42,21 +42,21 @@ export const ForgotPassword = () => {
               Forgot Password
             </label>
           </div>
-
           <Input
             Icon={AiOutlineMail}
             placeholder="email address"
             value={email}
             onChange={setEmail}
           />
-
           <div className="flex justify-center">
             <Button type="submit">Reset Password</Button>
           </div>
-
-          <Link to="/login" className="text-sm underline text-link">
-            Remember you password? Login
-          </Link>
+          <span className="text-sm ">
+            Remember you password?{" "}
+            <Link to="/login" className="underline text-link">
+              Login
+            </Link>
+          </span>
         </form>
       </div>
     </div>
