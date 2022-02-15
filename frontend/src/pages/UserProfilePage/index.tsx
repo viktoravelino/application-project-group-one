@@ -1,4 +1,12 @@
-import { updateEmail, updateProfile } from "firebase/auth";
+import {
+  AuthCredential,
+  EmailAuthCredential,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+} from "firebase/auth";
 import { useState } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
@@ -10,6 +18,9 @@ export const UserProfilePage = () => {
 
   const [name, setName] = useState(currentName || "no user logged");
   const [email, setEmail] = useState(currentEmail || "no user logged");
+
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const handleSaveBasicInfo = async () => {
     let functions = [];
@@ -33,7 +44,17 @@ export const UserProfilePage = () => {
     }
   };
 
-  const handleChangePassword = () => {};
+  const handleChangePassword = async () => {
+    if (!newPassword || !oldPassword) return;
+    const credential = EmailAuthProvider.credential(currentEmail!, oldPassword);
+    try {
+      await reauthenticateWithCredential(auth.currentUser!, credential);
+      await updatePassword(auth.currentUser!, newPassword);
+      alert("Password Updated");
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
 
   return (
     <div
@@ -78,11 +99,23 @@ export const UserProfilePage = () => {
         <hr className="w-4/6 my-10 border-gray-500" />
 
         <BlockContainer title="Change Password">
-          <InputGroup label="New Password" type="password" value="123456" />
-          <InputGroup label="Old Password" type="password" value="123456" />
+          <InputGroup
+            onChange={setNewPassword}
+            label="New Password"
+            type="password"
+            value={newPassword}
+          />
+          <InputGroup
+            onChange={setOldPassword}
+            value={oldPassword}
+            label="Old Password"
+            type="password"
+          />
 
           <ButtonsContainer>
-            <Button className="ml-5">Change Password</Button>
+            <Button onClick={handleChangePassword} className="ml-5">
+              Change Password
+            </Button>
           </ButtonsContainer>
         </BlockContainer>
       </main>
