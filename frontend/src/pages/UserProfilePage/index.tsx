@@ -1,6 +1,4 @@
 import {
-  AuthCredential,
-  EmailAuthCredential,
   EmailAuthProvider,
   reauthenticateWithCredential,
   updateEmail,
@@ -136,7 +134,9 @@ const InputGroup = (props: any) => {
     >
       <label className="pr-2 font-bold md:text-xl">{props.label}:</label>
       <input
-        className="bg-transparent outline-none border-0 border-b-2  md:flex-1 md:pl-10"
+        className="bg-transparent outline-none border-0 border-b-2  md:flex-1 md:pl-10 rounded
+        focus:ring-2 focus:ring-green-500 focus:border-0
+        "
         type={props.type}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
