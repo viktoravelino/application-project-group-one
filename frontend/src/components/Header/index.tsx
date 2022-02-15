@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { LogoSvg } from "../Icons";
 import { BiUserCircle } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -15,7 +16,7 @@ export const Header = () => {
     >
       {/* logo */}
       <div className="logo-container border-black border-1 h-full">
-        <a href="#">
+        <a href="/">
           <LogoSvg invert height={"100%"} />
         </a>
       </div>
@@ -49,12 +50,12 @@ export const Header = () => {
             </button>
             <div
               id="myDropdown"
-              className={`rounded-xl absolute bg-gray-800 text-white right-0 mt-4 p-3 overflow-auto z-30 ${
+              className={`min-h-fit rounded-xl absolute bg-gray-800 text-white right-0 mt-5 p-3 overflow-auto z-30 ${
                 showUserMenu ? "" : "invisible"
               }`}
             >
-              <UserDropdownItem path="#" text="Profile" />
-              <UserDropdownItem path="#" text="Settings" />
+              <UserDropdownItem path="/user-profile" text="Profile" />
+              {/* <UserDropdownItem path="#" text="Settings" /> */}
               <UserDropdownItem path="#" text="Log Out" />
             </div>
           </div>
@@ -72,11 +73,14 @@ interface UserDropdownItemProps {
 const UserDropdownItem = ({ path, text }: UserDropdownItemProps) => {
   return (
     //   TODO: Change to react router link
-    <a
-      href={path}
-      className="p-2  text-white text-sm no-underline hover:no-underline block border-b-2 border-gray-700 hover:border-brand-green"
+    <Link
+      to={path}
+      className="p-2  text-white text-sm 
+      no-underline hover:no-underline block border-b-2 
+      border-gray-700 hover:text-green-500 whitespace-nowrap
+      "
     >
       {text}
-    </a>
+    </Link>
   );
 };
