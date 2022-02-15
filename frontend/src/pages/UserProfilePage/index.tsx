@@ -38,6 +38,7 @@ export const UserProfilePage = () => {
 
     try {
       await Promise.all(functions);
+      alert("Information Updated");
     } catch (error: any) {
       console.log(error.message);
       alert(error.message);
