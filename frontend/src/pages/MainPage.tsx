@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import './../App.css';
+import "./../App.css";
 export default function MainPage() {
   return (
     <>
@@ -13,6 +13,11 @@ export default function MainPage() {
       <div>
         <Link to="/register">
           <button>Register Page</button>
+        </Link>
+      </div>
+      <div>
+        <Link to="/dashboard">
+          <button>Dashboard</button>
         </Link>
       </div>
     </>
