@@ -1,30 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./../App.css";
 export default function MainPage() {
   return (
-    <>
+    <div className="text-center">
       <h1>Main Page</h1>
       <div>
         <Link to="/login">
-          <button>Login Page</button>
+          <button className="underline">Login Page</button>
         </Link>
       </div>
       <div>
         <Link to="/register">
-          <button>Register Page</button>
+          <button className="underline">Register Page</button>
         </Link>
       </div>
       <div>
         <Link to="/dashboard">
-          <button>Dashboard</button>
+          <button className="underline">Dashboard</button>
         </Link>
       </div>
       <div>
         <Link to="/forgot-password">
-          <button>Forgot Password</button>
+          <button className="underline">Forgot Password</button>
         </Link>
       </div>
-    </>
+      <div>
+        <Link to="/user-profile">
+          <button className="underline">User Profile</button>
+        </Link>
+      </div>
+    </div>
   );
 }

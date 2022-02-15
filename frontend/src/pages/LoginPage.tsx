@@ -20,20 +20,20 @@ export function LoginPage() {
   };
 
   return (
-    <div id="loginPage" className="bg-bgColor ">
+    <div id="loginPage" className="bg-bgColor text-center">
       <div
         id="formContainer"
         className="flex justify-center items-center h-5/6  w-screen"
       >
         <form
           action=""
-          className="mx-auto mb-0 space-y-4 bg-white  rounded-form w-80 h-4/5"
+          className="mx-auto mb-0 space-y-4 bg-white  rounded-form w-80 h-4/5 rounded-2xl"
         >
           <div className="flex justify-center p-5">
             <Logo />
           </div>
           <div className="flex justify-center p-5">
-            <label className="font-black font-title text-black-600 text-xl">
+            <label className="font-black font-title text-black-600 text-2xl">
               Login
             </label>
           </div>
@@ -70,7 +70,7 @@ export function LoginPage() {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="block px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-btn w-5/6 "
+              className="block px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-3xl w-5/6 "
             >
               Sign in
             </button>
