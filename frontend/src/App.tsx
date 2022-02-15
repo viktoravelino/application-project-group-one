@@ -5,6 +5,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 // Main Application
 import { MainLayoutContainer } from "./pages/MainLayoutContainer";
 import MainPage from "./pages/MainPage";
+import { ForgotPassword } from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </div>
   );

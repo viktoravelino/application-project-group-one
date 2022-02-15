@@ -20,6 +20,11 @@ export default function MainPage() {
           <button>Dashboard</button>
         </Link>
       </div>
+      <div>
+        <Link to="/forgot-password">
+          <button>Forgot Password</button>
+        </Link>
+      </div>
     </>
   );
 }
