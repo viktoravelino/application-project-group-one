@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "importsNotUsedAsValues": "error",
+    // "importsNotUsedAsValues": "error",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "allowUnusedLabels": false
