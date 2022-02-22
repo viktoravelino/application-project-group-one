@@ -4,7 +4,11 @@ interface LogoSvgProps {
   width?: string;
 }
 
-export default function LogoSvg({ invert, height, width }: LogoSvgProps) {
+export default function LogoSvg({
+  invert,
+  height = "40",
+  width = "40",
+}: LogoSvgProps) {
   const outerColor = invert ? "#ffffff" : "#181D27";
   const letterWColor = invert ? "#181D27" : "#ffffff";
   const letterTColor = "#457F54";
@@ -24,9 +28,9 @@ export default function LogoSvg({ invert, height, width }: LogoSvgProps) {
       <path
         d="M67 132C102.899 132 132 102.899 132 67C132 31.1015 102.899 2 67 2C31.1015 2 2 31.1015 2 67C2 102.899 31.1015 132 67 132Z"
         stroke={outerColor}
-        stroke-width="3"
-        stroke-linecap="square"
-        stroke-dasharray="6 6"
+        strokeWidth="3"
+        strokeLinecap="square"
+        strokeDasharray="6 6"
       />
       <path
         d="M90.1357 43.986L78.4238 88.914H65.1758L58.0078 59.346L50.5837 88.914H37.3357L25.9437 43.986H37.6557L44.1197 76.69L52.1197 43.986H64.1518L71.8318 76.69L78.3598 43.986H90.1357Z"

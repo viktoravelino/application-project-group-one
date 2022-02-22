@@ -1,9 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
-export default function MainPage() {
+export function LandingPage() {
   return (
     <div className="text-center">
-      <h1>Main Page</h1>
+      <h1 className="text-xl font-bold my-10">LandingPage</h1>
       <div>
         <Link to="/login">
           <button className="underline">Login Page</button>

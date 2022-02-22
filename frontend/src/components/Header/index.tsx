@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { LogoSvg } from "../Icons";
 import { BiUserCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 export const Header = () => {
+  const { logoutUser } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
@@ -56,7 +58,7 @@ export const Header = () => {
             >
               <UserDropdownItem path="/user-profile" text="Profile" />
               {/* <UserDropdownItem path="#" text="Settings" /> */}
-              <UserDropdownItem path="#" text="Log Out" />
+              <UserDropdownItem onClick={logoutUser} path="#" text="Log Out" />
             </div>
           </div>
         </div>
@@ -68,12 +70,14 @@ export const Header = () => {
 interface UserDropdownItemProps {
   text: string;
   path: string;
+  onClick?: () => void;
 }
 
-const UserDropdownItem = ({ path, text }: UserDropdownItemProps) => {
+const UserDropdownItem = ({ path, text, onClick }: UserDropdownItemProps) => {
   return (
     //   TODO: Change to react router link
     <Link
+      onClick={onClick}
       to={path}
       className="p-2  text-white text-sm 
       no-underline hover:no-underline block border-b-2 

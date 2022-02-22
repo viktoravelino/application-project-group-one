@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { AiOutlineMail } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../components/AuthFormComponents/Button";
-import { Input } from "../components/AuthFormComponents/Input";
-import LogoSvg from "../components/Logo";
+// import { Button } from "../../../components/AuthFormComponents/Button";
+import LogoSvg from "../../../components/Icons/Logo";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { auth } from "../../../config/firebase";
 
 export const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -42,14 +40,13 @@ export const ForgotPassword = () => {
               Forgot Password
             </label>
           </div>
-          <Input
-            Icon={AiOutlineMail}
+          <input
             placeholder="email address"
             value={email}
-            onChange={setEmail}
+            onChange={(e) => setEmail(e.currentTarget.value)}
           />
           <div className="flex justify-center">
-            <Button type="submit">Reset Password</Button>
+            <button type="submit">Reset Password</button>
           </div>
           <span className="text-sm ">
             Remember you password?{" "}
