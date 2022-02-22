@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./LoginPage.css";
+import "../LoginPage/styles.css";
 //importing svg
 import Logo from "../../../components/Logo";
 import Google from "../../../components/Google";
