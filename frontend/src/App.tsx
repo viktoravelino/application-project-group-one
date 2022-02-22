@@ -7,7 +7,7 @@ import { MainLayoutContainer } from "./pages/MainLayoutContainer";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { UserProfilePage } from "./pages/UserProfilePage";
 import { LandingPage } from "./pages/LandingPage";
-import { AuthContextProvider, useAuth } from "./context/AuthContext";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
   return (
@@ -48,8 +48,10 @@ function App() {
 export default App;
 
 function RequireAuth({ children }: { children: JSX.Element }) {
-  let { currentUser } = useAuth();
+  let { currentUser, isAuthLoading } = useAuth();
   let location = useLocation();
+
+  if (isAuthLoading) return <h1>Loading...</h1>;
 
   if (!currentUser) {
     // Redirect them to the /login page, but save the current location they were

@@ -25,7 +25,7 @@ interface AuthContextInterface {
 }
 
 const initialContext: AuthContextInterface = {
-  currentUser: auth.currentUser,
+  currentUser: null,
   isAuthLoading: false,
   registerUserWithEmailAndPassword: () => {},
   signInUserWithEmailAndPassword: () => {},
@@ -39,14 +39,14 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthContextProvider: FC = ({ children }: any) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isAuthLoading, setIsAuthLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+  // const [error, setError] = useState("");
 
   useEffect(() => {
     setIsAuthLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (res) => {
       res ? setCurrentUser(res) : setCurrentUser(null);
-      setError("");
+      // setError("");
       setIsAuthLoading(false);
     });
     return unsubscribe;
@@ -68,7 +68,7 @@ export const AuthContextProvider: FC = ({ children }: any) => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        setError(err.message);
+        // setError(err.message);
         alert(err.message);
         console.error(err.message);
       })
@@ -82,7 +82,7 @@ export const AuthContextProvider: FC = ({ children }: any) => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        setError(err.message);
+        // setError(err.message);
         alert(err.message);
         console.error(err.message);
       })
