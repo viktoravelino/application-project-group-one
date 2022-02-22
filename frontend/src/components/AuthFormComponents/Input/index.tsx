@@ -1,27 +1,32 @@
-import React from "react";
+import React, { HTMLAttributes, InputHTMLAttributes } from "react";
 import { IconType } from "react-icons";
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   Icon: IconType;
   placeholder: string;
-  value: string;
-  onChange: React.Dispatch<React.SetStateAction<string>>;
+  value?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export const Input = ({ Icon, placeholder, value, onChange }: InputProps) => {
+export const Input = ({
+  Icon,
+  placeholder,
+  value,
+  onChange,
+  ...props
+}: InputProps & HTMLAttributes<HTMLInputElement>) => {
   return (
-    <div className="relative mt-2 p-3">
-      <span className="absolute inset-y-0 inline-flex items-center left-12 bottom-0">
+    <div className="relative mt-2">
+      <span className="absolute inset-y-0 inline-flex items-center">
         <Icon className="text-primaryColor " />
       </span>
 
       <input
-        className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
+        {...props}
+        className="w-full p-0 pl-6 text-sm outline-0 border-b border-primaryColor text-left pb-1"
         placeholder={placeholder}
+        onChange={onChange}
         value={value}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          onChange(e.target.value);
-        }}
       />
     </div>
   );

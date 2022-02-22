@@ -3,9 +3,12 @@ import { useNavigate } from "react-router-dom";
 import {
   auth,
   createUserWithEmailAndPassword,
+  GithubAuthProvider,
+  GoogleAuthProvider,
   onAuthStateChanged,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
   User,
@@ -22,6 +25,8 @@ interface AuthContextInterface {
   signInUserWithEmailAndPassword: (email: string, password: string) => void;
   logoutUser: () => void;
   forgotPassword: (email: string) => Promise<void>;
+  signInUserWithGoogleProvider: () => void;
+  signInUserWithGithubProvider: () => void;
 }
 
 const initialContext: AuthContextInterface = {
@@ -30,6 +35,8 @@ const initialContext: AuthContextInterface = {
   registerUserWithEmailAndPassword: () => {},
   signInUserWithEmailAndPassword: () => {},
   logoutUser: () => {},
+  signInUserWithGoogleProvider: () => {},
+  signInUserWithGithubProvider: () => {},
   forgotPassword: async () => {},
 };
 
@@ -89,6 +96,35 @@ export const AuthContextProvider: FC = ({ children }: any) => {
       .finally(() => setIsAuthLoading(false));
   };
 
+  const signInUserWithGoogleProvider = () => {
+    setIsAuthLoading(true);
+    const googleProvider = new GoogleAuthProvider();
+    signInWithPopup(auth, googleProvider)
+      .then(() => {
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        // setError(err.message);
+        alert(err.message);
+        console.error(err.message);
+      })
+      .finally(() => setIsAuthLoading(false));
+  };
+  const signInUserWithGithubProvider = () => {
+    setIsAuthLoading(true);
+    const githubProvider = new GithubAuthProvider();
+    signInWithPopup(auth, githubProvider)
+      .then(() => {
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        // setError(err.message);
+        alert(err.message);
+        console.error(err.message);
+      })
+      .finally(() => setIsAuthLoading(false));
+  };
+
   const logoutUser = () => {
     signOut(auth);
   };
@@ -104,6 +140,8 @@ export const AuthContextProvider: FC = ({ children }: any) => {
     signInUserWithEmailAndPassword,
     logoutUser,
     forgotPassword,
+    signInUserWithGoogleProvider,
+    signInUserWithGithubProvider,
   };
 
   return (

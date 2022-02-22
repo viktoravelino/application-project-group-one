@@ -9,6 +9,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
 } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -35,6 +38,9 @@ export {
   signInWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
 };
 
 export type User = UserFirebase;

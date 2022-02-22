@@ -1,120 +1,109 @@
-import { FC, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "./styles.css";
-//importing svg
-import Logo from "../../../components/Icons/Logo";
-import Google from "../../../components/Icons/Google";
-import Github from "../../../components/Icons/Github";
-
-//importing icons
-import { BiUser } from "react-icons/bi";
+import { useState } from "react";
 import { AiOutlineUnlock } from "react-icons/ai";
+import { BiUser } from "react-icons/bi";
+import { AuthForm } from "../../../components/AuthFormComponents/AuthForm";
+import { CenteredContainerAuthForm } from "../../../components/AuthFormComponents/CenteredContainerAuthForm";
+import { Input } from "../../../components/AuthFormComponents/Input";
+import GithubSvg from "../../../components/Icons/Github";
+import GoogleSvg from "../../../components/Icons/Google";
 import { useAuth } from "../../../context/AuthContext";
 
-export const LoginPage: FC = () => {
-  const { signInUserWithEmailAndPassword, isAuthLoading, currentUser } =
-    useAuth();
-  const navigate = useNavigate();
+export const LoginPage = () => {
+  const {
+    signInUserWithGoogleProvider,
+    signInUserWithGithubProvider,
+    signInUserWithEmailAndPassword,
+    isAuthLoading,
+  } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    if (currentUser) {
-      navigate("/dashboard");
-    }
-  }, [currentUser]);
-
-  const handleSubmit = async (e: any) => {
+  const handleLoginWithEmailAndPassword: React.FormEventHandler<
+    HTMLFormElement
+  > = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      alert("Fill out all fields!!!");
-      return;
-    }
+    if (!email || !password) return;
     signInUserWithEmailAndPassword(email, password);
   };
 
-  if (isAuthLoading) return <h1>Loading...</h1>;
+  const handleLoginWithGoogleProvider: React.MouseEventHandler<
+    HTMLButtonElement
+  > = (e) => {
+    e.preventDefault();
+    signInUserWithGoogleProvider();
+  };
+
+  const handleLoginWithGithubProvider: React.MouseEventHandler<
+    HTMLButtonElement
+  > = (e) => {
+    e.preventDefault();
+    signInUserWithGithubProvider();
+  };
 
   return (
-    <div id="loginPage" className="bg-bgColor text-center">
-      <div
-        id="formContainer"
-        className="flex justify-center items-center h-5/6  w-screen"
-      >
-        <form className="mx-auto mb-0 space-y-4 bg-white  rounded-form w-80 h-4/5 rounded-2xl">
-          <div className="flex justify-center p-5">
-            <Logo />
+    <CenteredContainerAuthForm>
+      <AuthForm onSubmit={handleLoginWithEmailAndPassword}>
+        <AuthForm.Header title="Login" />
+
+        <AuthForm.Body
+          showSpanLink
+          spanLinkText="Forgot Password?"
+          spanLinkPath="/forgot-password"
+        >
+          <Input
+            Icon={BiUser}
+            type="text"
+            placeholder="email address"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.currentTarget.value);
+            }}
+          />
+          <Input
+            Icon={AiOutlineUnlock}
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+          />
+        </AuthForm.Body>
+
+        <AuthForm.Buttons>
+          <button
+            disabled={isAuthLoading}
+            type="submit"
+            className="px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-3xl w-5/6 disabled:opacity-75"
+          >
+            Sing In
+          </button>
+          <div className="w-full flex flex-col items-center">
+            <span className="text-xs text-gray-400">Or continue with</span>
+            <hr className="border-gray-400 mt-1 w-3/5" />
           </div>
-          <div className="flex justify-center p-5">
-            <label className="font-black font-title text-black-600 text-2xl">
-              Login
-            </label>
-          </div>
-
-          <div className="relative mt-2 p-3">
-            <span className="absolute inset-y-0 inline-flex items-center left-12 bottom-0">
-              <BiUser className="text-primaryColor " />
-            </span>
-
-            <input
-              className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
-              placeholder="email address"
-              onChange={(e) => setEmail(e.currentTarget.value)}
-              value={email}
-            />
-          </div>
-
-          <div className="relative mt-2 p-3">
-            <span className="absolute inset-y-0 inline-flex items-center left-12 bottom-3">
-              <AiOutlineUnlock className="text-primaryColor " />
-            </span>
-
-            <input
-              className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
-              placeholder="password"
-              onChange={(e) => setPassword(e.currentTarget.value)}
-              value={password}
-            />
-            <div className="flex justify-end relative right-7">
-              <a
-                className="text-xs text-link underline"
-                href="/forgot-password"
-              >
-                Forgotten password?
-              </a>
-            </div>
-          </div>
-
-          <div className="flex justify-center">
+          <div className="social-buttons flex flex-row gap-7 justify-center mt-2">
             <button
               disabled={isAuthLoading}
-              onClick={handleSubmit}
-              type="submit"
-              className="block px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-3xl w-5/6 disabled:opacity-75"
+              onClick={handleLoginWithGoogleProvider}
+              type="button"
             >
-              {isAuthLoading ? "Loading..." : "Sign in"}
+              <GoogleSvg width="30" height="30" />
+            </button>
+            <button
+              disabled={isAuthLoading}
+              onClick={handleLoginWithGithubProvider}
+              type="button"
+            >
+              <GithubSvg width="30" height="30" />
             </button>
           </div>
+        </AuthForm.Buttons>
 
-          <div className="flex flex-col  p-10 mx-auto my-auto">
-            <p className="w-f font- text-[10px] text-stone-400">
-              Or continue with
-            </p>
-            <hr className="border-primaryColor w-40 mx-auto p-20 my-auto" />
-            <div className="flex mx-auto relative bottom-36">
-              <div className="p-2">
-                <Google />
-              </div>
-              <div className="p-2">
-                <Github />
-              </div>
-            </div>
-            <div></div>
-          </div>
-        </form>
-      </div>
-      {/*link to main page*/}
-      <Link to="/"></Link>
-    </div>
+        <AuthForm.Footer
+          text="Don't have an account? "
+          textLink="Register"
+          to="/register"
+        />
+      </AuthForm>
+    </CenteredContainerAuthForm>
   );
 };
