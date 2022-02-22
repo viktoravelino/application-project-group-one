@@ -4,20 +4,46 @@ import "./LoginPage.css";
 //importing svg
 import Logo from "../components/Logo";
 import Google from "../components/Google";
-import Twitter from "../components/Twitter";
-import Facebook from "../components/Facebook";
+import Github from "../components/Github";
+
 //importing icons
 import { BiUser } from "react-icons/bi";
 import { AiOutlineUnlock } from "react-icons/ai";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export function LoginPage() {
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    alert(`Your account was created Username:  ${name} password: ${password}`);
+    const auth = getAuth();
+    await signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    alert(`You are now logged in ${user.email}`)
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(`${errorCode} ${errorMessage}`);
+
+  });
+  setEmail("");
+  setPassword("");
   };
+  //email handler
+  const handleEmail = (e : any) => {
+    console.log(e.target.value);
+    setEmail(e.target.value);
+  }
+
+   //passowrd handler
+   const handlePwd = (e : any) => {
+    console.log(e.target.value)
+    setPassword(e.target.value);
+  }
 
   return (
     <div id="loginPage" className="bg-bgColor text-center">
@@ -26,7 +52,6 @@ export function LoginPage() {
         className="flex justify-center items-center h-5/6  w-screen"
       >
         <form
-          action=""
           className="mx-auto mb-0 space-y-4 bg-white  rounded-form w-80 h-4/5 rounded-2xl"
         >
           <div className="flex justify-center p-5">
@@ -45,7 +70,7 @@ export function LoginPage() {
 
             <input
               className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
-              placeholder="email address"
+              placeholder="email address" onChange={handleEmail} value={email} 
             />
           </div>
 
@@ -54,21 +79,21 @@ export function LoginPage() {
     </div> */}
 
           <div className="relative mt-2 p-3">
-            <span className="absolute inset-y-0 inline-flex items-center left-12 bottom-0">
+            <span className="absolute inset-y-0 inline-flex items-center left-12 bottom-3">
               <AiOutlineUnlock className="text-primaryColor " />
             </span>
 
             <input
               className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
-              placeholder="password"
+              placeholder="password" onChange={handlePwd} value={password}
             />
-            {/* <div className="flex justify-end relative right-3">
-      <a className="text-xs text-link underline" href="">Forgotten password?</a>
-      </div> */}
+            <div className="flex justify-end relative right-7">
+              <a className="text-xs text-link underline" href="">Forgotten password?</a>
+            </div>
           </div>
 
           <div className="flex justify-center">
-            <button
+            <button onClick={handleSubmit}
               type="submit"
               className="block px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-3xl w-5/6 "
             >
@@ -82,14 +107,11 @@ export function LoginPage() {
             </p>
             <hr className="border-primaryColor w-40 mx-auto p-20 my-auto" />
             <div className="flex mx-auto relative bottom-36">
-              <div className="p-2">
-                <Facebook />
-              </div>
-              <div className="p-2">
+              <div className="p-2" >
                 <Google />
               </div>
-              <div className="p-2">
-                <Twitter />
+              <div className="p-2" >
+                <Github />
               </div>
             </div>
             <div></div>
