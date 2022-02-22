@@ -7,12 +7,13 @@ import { MainLayoutContainer } from "./pages/MainLayoutContainer";
 import MainPage from "./pages/MainPage";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { UserProfilePage } from "./pages/UserProfilePage";
+import { LandingPage } from "./pages/LandingPage";
 
 function App() {
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<MainLayoutContainer />} />
 
         <Route path="/login" element={<LoginPage />} />
