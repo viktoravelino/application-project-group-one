@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { LoginPage } from "./pages/LoginPage";
-import { RegisterPage } from "./pages/RegisterPage";
+import { LoginPage } from "./pages/Auth/LoginPage";
+import { RegisterPage } from "./pages/Auth/RegisterPage";
 
 // Main Application
 import { MainLayoutContainer } from "./pages/MainLayoutContainer";
-import { ForgotPassword } from "./pages/ForgotPassword";
+import { ForgotPassword } from "./pages/Auth/ForgotPassword";
 import { UserProfilePage } from "./pages/UserProfilePage";
 import { LandingPage } from "./pages/LandingPage";
 import { useAuth } from "./context/AuthContext";

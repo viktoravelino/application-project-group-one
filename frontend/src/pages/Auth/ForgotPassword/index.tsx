@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../components/AuthFormComponents/Button";
-import { Input } from "../components/AuthFormComponents/Input";
-import LogoSvg from "../components/Logo";
+import { Button } from "../../../components/AuthFormComponents/Button";
+import { Input } from "../../../components/AuthFormComponents/Input";
+import LogoSvg from "../../../components/Logo";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { auth } from "../../../config/firebase";
 
 export const ForgotPassword = () => {
   const [email, setEmail] = useState("");
