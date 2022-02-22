@@ -1,4 +1,5 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   auth,
   createUserWithEmailAndPassword,
@@ -36,6 +37,7 @@ const AuthContext = createContext<AuthContextInterface>(initialContext);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthContextProvider: FC = ({ children }: any) => {
+  const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(false);
   const [error, setError] = useState("");
@@ -62,9 +64,12 @@ export const AuthContextProvider: FC = ({ children }: any) => {
           displayName: name,
         });
       })
-      .then((res) => console.log(res))
+      .then(() => {
+        navigate("/dashboard");
+      })
       .catch((err) => {
         setError(err.message);
+        alert(err.message);
         console.error(err.message);
       })
       .finally(() => setIsAuthLoading(false));
@@ -73,9 +78,12 @@ export const AuthContextProvider: FC = ({ children }: any) => {
   const signInUserWithEmailAndPassword = (email: string, password: string) => {
     setIsAuthLoading(true);
     signInWithEmailAndPassword(auth, email, password)
-      .then((res) => console.log(res))
+      .then(() => {
+        navigate("/dashboard");
+      })
       .catch((err) => {
         setError(err.message);
+        alert(err.message);
         console.error(err.message);
       })
       .finally(() => setIsAuthLoading(false));
