@@ -1,5 +1,5 @@
-import { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 //importing svg
 import Logo from "../components/Logo";
@@ -12,9 +12,17 @@ import { AiOutlineUnlock } from "react-icons/ai";
 import { useAuth } from "../context/AuthContext";
 
 export const LoginPage: FC = () => {
-  const { signInUserWithEmailAndPassword, isAuthLoading } = useAuth();
+  const { signInUserWithEmailAndPassword, isAuthLoading, currentUser } =
+    useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/dashboard");
+    }
+  }, [currentUser]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -24,6 +32,8 @@ export const LoginPage: FC = () => {
     }
     signInUserWithEmailAndPassword(email, password);
   };
+
+  if (isAuthLoading) return <h1>Loading...</h1>;
 
   return (
     <div id="loginPage" className="bg-bgColor text-center">

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 //importing svg
 import Logo from "../components/Logo";
@@ -11,31 +11,34 @@ import { BiUser } from "react-icons/bi";
 import { AiOutlineUnlock } from "react-icons/ai";
 import { useAuth } from "../context/AuthContext";
 
-export function RegisterPage() {
+export const RegisterPage: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
-  const { registerUserWithEmailAndPassword } = useAuth();
+  const { registerUserWithEmailAndPassword, currentUser, isAuthLoading } =
+    useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/dashboard");
+    }
+  }, [currentUser]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!email || !password || !name) {
       return;
     }
-    registerUserWithEmailAndPassword(email, "test", password);
-  };
-  //email handler
-  const handleEmail = (e: any) => {
-    setEmail(e.target.value);
+    registerUserWithEmailAndPassword(email, name, password);
   };
 
-  //passowrd handler
-  const handlePwd = (e: any) => {
-    setPassword(e.target.value);
-  };
+  if (isAuthLoading) return <h1>Loading...</h1>;
 
   return (
     <div id="loginPage" className="bg-bgColor text-center">
+      <button onClick={() => console.log(currentUser)}>test</button>
       <div
         id="formContainer"
         className="flex justify-center items-center h-5/6  w-screen"
@@ -57,8 +60,21 @@ export function RegisterPage() {
 
             <input
               className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
+              placeholder="Name"
+              onChange={(e) => setName(e.currentTarget.value)}
+              value={email}
+            />
+          </div>
+
+          <div className="relative mt-2 p-3">
+            <span className="absolute inset-y-0 inline-flex items-center left-12 bottom-0">
+              <BiUser className="text-primaryColor " />
+            </span>
+
+            <input
+              className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
               placeholder="email address"
-              onChange={handleEmail}
+              onChange={(e) => setEmail(e.currentTarget.value)}
               value={email}
             />
           </div>
@@ -75,7 +91,7 @@ export function RegisterPage() {
             <input
               className="w-4/5 p-0 pl-30 text-sm outline-0 border-b border-primaryColor text-center"
               placeholder="password"
-              onChange={handlePwd}
+              onChange={(e) => setPassword(e.currentTarget.value)}
               value={password}
             />
           </div>
@@ -111,4 +127,4 @@ export function RegisterPage() {
       <Link to="/"></Link>
     </div>
   );
-}
+};
