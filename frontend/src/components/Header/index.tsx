@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { LogoSvg } from "../Icons";
 import { BiUserCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";

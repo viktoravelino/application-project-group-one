@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import "../LoginPage/styles.css";
 //importing svg
@@ -12,12 +12,11 @@ import { AuthForm } from "../../../components/AuthFormComponents/AuthForm";
 import { Input } from "../../../components/AuthFormComponents/Input";
 
 export const RegisterPage: FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [name, setName] = useState("");
 
-  const { registerUserWithEmailAndPassword, currentUser, isAuthLoading } =
-    useAuth();
+  const { currentUser, isAuthLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,13 +25,13 @@ export const RegisterPage: FC = () => {
     }
   }, [currentUser]);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    if (!email || !password || !name) {
-      return;
-    }
-    registerUserWithEmailAndPassword(email, name, password);
-  };
+  // const handleSubmit = async (e: any) => {
+  //   e.preventDefault();
+  //   if (!email || !password || !name) {
+  //     return;
+  //   }
+  //   registerUserWithEmailAndPassword(email, name, password);
+  // };
 
   if (isAuthLoading) return <h1>Loading...</h1>;
 
