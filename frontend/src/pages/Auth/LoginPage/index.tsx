@@ -2,9 +2,9 @@ import { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./styles.css";
 //importing svg
-import Logo from "../../../components/Logo";
-import Google from "../../../components/Google";
-import Github from "../../../components/Github";
+import Logo from "../../../components/Icons/Logo";
+import Google from "../../../components/Icons/Google";
+import Github from "../../../components/Icons/Github";
 
 //importing icons
 import { BiUser } from "react-icons/bi";

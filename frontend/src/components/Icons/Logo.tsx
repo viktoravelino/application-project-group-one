@@ -4,7 +4,11 @@ interface LogoSvgProps {
   width?: string;
 }
 
-export default function LogoSvg({ invert, height, width }: LogoSvgProps) {
+export default function LogoSvg({
+  invert,
+  height = "40",
+  width = "40",
+}: LogoSvgProps) {
   const outerColor = invert ? "#ffffff" : "#181D27";
   const letterWColor = invert ? "#181D27" : "#ffffff";
   const letterTColor = "#457F54";
