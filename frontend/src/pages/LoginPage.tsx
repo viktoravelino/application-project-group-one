@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import "./LoginPage.css";
 //importing svg
@@ -11,7 +11,7 @@ import { BiUser } from "react-icons/bi";
 import { AiOutlineUnlock } from "react-icons/ai";
 import { useAuth } from "../context/AuthContext";
 
-export function LoginPage() {
+export const LoginPage: FC = () => {
   const { signInUserWithEmailAndPassword, isAuthLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -107,4 +107,4 @@ export function LoginPage() {
       <Link to="/"></Link>
     </div>
   );
-}
+};
