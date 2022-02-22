@@ -1,6 +1,5 @@
 import React from "react";
 import { IconType } from "react-icons";
-import { BiUser } from "react-icons/bi";
 
 interface InputProps {
   Icon: IconType;
