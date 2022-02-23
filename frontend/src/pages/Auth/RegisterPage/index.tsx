@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 //importing icons
 import { BiUser } from "react-icons/bi";
 import { AiOutlineUnlock } from "react-icons/ai";
-import { AiOutlineMail } from "react-icons/ai"
+import { AiOutlineMail } from "react-icons/ai";
 import { useAuth } from "../../../context/AuthContext";
 import { CenteredContainerAuthForm } from "../../../components/AuthFormComponents/CenteredContainerAuthForm";
 import { AuthForm } from "../../../components/AuthFormComponents/AuthForm";
@@ -19,26 +19,28 @@ export const RegisterPage: FC = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { currentUser, 
-    isAuthLoading, registerUserWithEmailAndPassword,
+  const {
+    currentUser,
+    isAuthLoading,
+    registerUserWithEmailAndPassword,
     signInUserWithGoogleProvider,
     signInUserWithGithubProvider,
   } = useAuth();
   const navigate = useNavigate();
 
   const handleLoginWithGoogleProvider: React.MouseEventHandler<
-  HTMLButtonElement
-> = (e) => {
-  e.preventDefault();
-  signInUserWithGoogleProvider();
-};
+    HTMLButtonElement
+  > = (e) => {
+    e.preventDefault();
+    signInUserWithGoogleProvider();
+  };
 
-const handleLoginWithGithubProvider: React.MouseEventHandler<
-  HTMLButtonElement
-> = (e) => {
-  e.preventDefault();
-  signInUserWithGithubProvider();
-};
+  const handleLoginWithGithubProvider: React.MouseEventHandler<
+    HTMLButtonElement
+  > = (e) => {
+    e.preventDefault();
+    signInUserWithGithubProvider();
+  };
 
   useEffect(() => {
     if (currentUser) {
@@ -46,16 +48,16 @@ const handleLoginWithGithubProvider: React.MouseEventHandler<
     }
   }, [currentUser]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     if (!email || !password || !name) {
-      alert("Some fields are empty")
+      alert("Some fields are empty");
       return;
     }
-    if( password !== confirmPassword ) {
+    if (password !== confirmPassword) {
       alert("password don't match");
-      return; 
-    }
-    else{
+      return;
+    } else {
       registerUserWithEmailAndPassword(email, name, password);
     }
   };
@@ -67,18 +69,31 @@ const handleLoginWithGithubProvider: React.MouseEventHandler<
       <AuthForm onSubmit={handleSubmit}>
         <AuthForm.Header title="Register" />
         <AuthForm.Body>
-          <Input Icon={BiUser} type="text" placeholder="Full name" onChange={e => {
-            setName(e.currentTarget.value);
-          }}/>
+          <Input
+            Icon={BiUser}
+            type="text"
+            placeholder="Full name"
+            value={name}
+            onChange={(e) => {
+              setName(e.currentTarget.value);
+            }}
+          />
 
-          <Input Icon={AiOutlineMail} type="text" placeholder="email address" onChange={e => {
-            setEmail(e.currentTarget.value);
-          }} />
+          <Input
+            Icon={AiOutlineMail}
+            value={email}
+            type="text"
+            placeholder="email address"
+            onChange={(e) => {
+              setEmail(e.currentTarget.value);
+            }}
+          />
           <Input
             Icon={AiOutlineUnlock}
             type="password"
             placeholder="password"
-            onChange={e => {
+            value={password}
+            onChange={(e) => {
               setPassword(e.currentTarget.value);
             }}
           />
@@ -86,7 +101,8 @@ const handleLoginWithGithubProvider: React.MouseEventHandler<
             Icon={AiOutlineUnlock}
             type="password"
             placeholder="confirm password"
-            onChange={e => {
+            value={confirmPassword}
+            onChange={(e) => {
               setConfirmPassword(e.currentTarget.value);
             }}
           />
@@ -94,9 +110,9 @@ const handleLoginWithGithubProvider: React.MouseEventHandler<
 
         <AuthForm.Buttons>
           <button
-          type="submit"
-          className="px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-3xl w-5/6 disabled:opacity-75"
-          disabled={isAuthLoading}
+            type="submit"
+            className="px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-3xl w-5/6 disabled:opacity-75"
+            disabled={isAuthLoading}
           >
             Create Account
           </button>
@@ -121,7 +137,7 @@ const handleLoginWithGithubProvider: React.MouseEventHandler<
             </button>
           </div>
         </AuthForm.Buttons>
-        
+
         <AuthForm.Footer
           text="Already have an account? "
           textLink="Login"
