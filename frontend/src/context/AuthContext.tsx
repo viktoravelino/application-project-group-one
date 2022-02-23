@@ -15,6 +15,7 @@ import {
 } from "../config/firebase";
 import { capitalizeFirstLettersEachWord } from "../lib/helpers";
 
+// Define context types for TypeScript
 interface AuthContextInterface {
   currentUser: User | null;
   isAuthLoading: boolean;
@@ -30,6 +31,7 @@ interface AuthContextInterface {
   signInUserWithGithubProvider: () => void;
 }
 
+// Initialize the context values with empty values
 const initialContext: AuthContextInterface = {
   currentUser: null,
   isAuthLoading: false,
@@ -41,13 +43,16 @@ const initialContext: AuthContextInterface = {
   forgotPassword: async () => {},
 };
 
+// Create the context using empty values initialized before
 const AuthContext = createContext<AuthContextInterface>(initialContext);
-export const useAuth = () => useContext(AuthContext);
+
+// Create a custom hook to make it easier to use through the application
+export const useAuth = () => useContext<AuthContextInterface>(AuthContext);
 
 export const AuthContextProvider: FC = ({ children }: any) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
 
   useEffect(() => {
     setIsAuthLoading(true);
@@ -58,11 +63,23 @@ export const AuthContextProvider: FC = ({ children }: any) => {
     return unsubscribe;
   }, []);
 
+  /**
+   * This function register a new user into firebase
+   * using an email, name and password
+   * @param email String: Email to register the user
+   * @param name String: Profile name
+   * @param password String: User's password
+   * @returns void: The function does not returns anything
+   *
+   * The function throws error if the password does not satisfy minimal requirements
+   * and other things.
+   * Check firebase docs for other errors
+   */
   const registerUserWithEmailAndPassword = (
     email: string,
     name: string,
     password: string
-  ) => {
+  ): void => {
     setIsAuthLoading(true);
     name = capitalizeFirstLettersEachWord(name);
     createUserWithEmailAndPassword(auth, email, password)
@@ -85,7 +102,21 @@ export const AuthContextProvider: FC = ({ children }: any) => {
       .finally(() => setIsAuthLoading(false));
   };
 
-  const signInUserWithEmailAndPassword = (email: string, password: string) => {
+  /**
+   * This function login/sign in an user from firebase
+   * using user's email and password
+   * @param email String: Email to register the user
+   * @param password String: User's password
+   * @returns void: The function does not returns anything
+   *
+   * The function throws an error in case the password is wrong or
+   * the user does not exists, etc.
+   * Check firebase docs for other errors
+   */
+  const signInUserWithEmailAndPassword = (
+    email: string,
+    password: string
+  ): void => {
     setIsAuthLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
@@ -98,7 +129,14 @@ export const AuthContextProvider: FC = ({ children }: any) => {
       .finally(() => setIsAuthLoading(false));
   };
 
-  const signInUserWithGoogleProvider = () => {
+  /**
+   * This function login/sign in an user from firebase
+   * using user's Google Account - It shows a popup for the user to
+   * select its account and login
+   *
+   * Check firebase docs for other errors
+   */
+  const signInUserWithGoogleProvider = (): void => {
     setIsAuthLoading(true);
     const googleProvider = new GoogleAuthProvider();
     signInWithPopup(auth, googleProvider)
@@ -112,7 +150,14 @@ export const AuthContextProvider: FC = ({ children }: any) => {
       .finally(() => setIsAuthLoading(false));
   };
 
-  const signInUserWithGithubProvider = () => {
+  /**
+   * This function login/sign in an user from firebase
+   * using user's Github Account - It shows a popup for the user to
+   * select its account and login
+   *
+   * Check firebase docs for other errors
+   */
+  const signInUserWithGithubProvider = (): void => {
     setIsAuthLoading(true);
     const githubProvider = new GithubAuthProvider();
     signInWithPopup(auth, githubProvider)
@@ -126,11 +171,20 @@ export const AuthContextProvider: FC = ({ children }: any) => {
       .finally(() => setIsAuthLoading(false));
   };
 
-  const logoutUser = () => {
+  /**
+   * This function logout the user out
+   */
+  const logoutUser = (): void => {
     signOut(auth);
   };
 
-  const forgotPassword = (email: string) => {
+  /**
+   * This function send a reset password email to the user
+   * @param email String: Email for the reset password link be sent to
+   *
+   * Check firebase docs for errors
+   */
+  const forgotPassword = (email: string): Promise<void> => {
     return sendPasswordResetEmail(auth, email);
   };
 
