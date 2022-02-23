@@ -13,6 +13,7 @@ import {
   updateProfile,
   User,
 } from "../config/firebase";
+import { capitalizeFirstLettersEachWord } from "../lib/helpers";
 
 interface AuthContextInterface {
   currentUser: User | null;
@@ -47,13 +48,11 @@ export const AuthContextProvider: FC = ({ children }: any) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
-  // const [error, setError] = useState("");
 
   useEffect(() => {
     setIsAuthLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (res) => {
       res ? setCurrentUser(res) : setCurrentUser(null);
-      // setError("");
       setIsAuthLoading(false);
     });
     return unsubscribe;
@@ -65,17 +64,21 @@ export const AuthContextProvider: FC = ({ children }: any) => {
     password: string
   ) => {
     setIsAuthLoading(true);
+    name = capitalizeFirstLettersEachWord(name);
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
         return updateProfile(auth.currentUser!, {
           displayName: name,
+          photoURL: `https://avatars.dicebear.com/api/initials/${name.replace(
+            / /g,
+            "%20"
+          )}.svg`,
         });
       })
       .then(() => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        // setError(err.message);
         alert(err.message);
         console.error(err.message);
       })
@@ -89,7 +92,6 @@ export const AuthContextProvider: FC = ({ children }: any) => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        // setError(err.message);
         alert(err.message);
         console.error(err.message);
       })
