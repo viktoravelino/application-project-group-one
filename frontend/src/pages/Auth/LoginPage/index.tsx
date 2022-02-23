@@ -74,7 +74,7 @@ export const LoginPage = () => {
             type="submit"
             className="px-5 py-3 text-sm font-medium text-white bg-primaryColor rounded-3xl w-5/6 disabled:opacity-75"
           >
-            Sing In
+            Sign In
           </button>
           <div className="w-full flex flex-col items-center">
             <span className="text-xs text-gray-400">Or continue with</span>
