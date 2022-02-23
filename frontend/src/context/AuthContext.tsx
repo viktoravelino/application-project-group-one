@@ -106,12 +106,12 @@ export const AuthContextProvider: FC = ({ children }: any) => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        // setError(err.message);
         alert(err.message);
         console.error(err.message);
       })
       .finally(() => setIsAuthLoading(false));
   };
+
   const signInUserWithGithubProvider = () => {
     setIsAuthLoading(true);
     const githubProvider = new GithubAuthProvider();
@@ -120,7 +120,6 @@ export const AuthContextProvider: FC = ({ children }: any) => {
         navigate("/dashboard");
       })
       .catch((err) => {
-        // setError(err.message);
         alert(err.message);
         console.error(err.message);
       })
