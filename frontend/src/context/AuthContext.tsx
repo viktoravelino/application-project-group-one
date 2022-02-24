@@ -26,7 +26,7 @@ interface AuthContextInterface {
   ) => void;
   signInUserWithEmailAndPassword: (email: string, password: string) => void;
   logoutUser: () => void;
-  forgotPassword: (email: string) => Promise<void>;
+  forgotPassword: (email: string) => void;
   signInUserWithGoogleProvider: () => void;
   signInUserWithGithubProvider: () => void;
 }
@@ -40,7 +40,7 @@ const initialContext: AuthContextInterface = {
   logoutUser: () => {},
   signInUserWithGoogleProvider: () => {},
   signInUserWithGithubProvider: () => {},
-  forgotPassword: async () => {},
+  forgotPassword: () => {},
 };
 
 // Create the context using empty values initialized before
@@ -184,8 +184,18 @@ export const AuthContextProvider: FC = ({ children }: any) => {
    *
    * Check firebase docs for errors
    */
-  const forgotPassword = (email: string): Promise<void> => {
-    return sendPasswordResetEmail(auth, email);
+  const forgotPassword = (email: string): void => {
+    setIsAuthLoading(true);
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("Email sent!");
+        navigate("/login");
+      })
+      .catch((err) => {
+        alert(err.message);
+        console.error(err.message);
+      })
+      .finally(() => setIsAuthLoading(false));
   };
 
   const contextValue: AuthContextInterface = {
