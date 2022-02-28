@@ -1,6 +1,7 @@
 {
-  "name": "frontend",
-  "version": "0.0.0",
+  "name": "walletal",
+  "version": "0.1.0",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
