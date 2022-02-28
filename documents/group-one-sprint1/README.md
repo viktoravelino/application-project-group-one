@@ -1,12 +1,29 @@
-# Sprint - 01
+# Application Project - Group 1
 
-Inside the folder run `npm install`  to install all the dependecies.
+## Sprint 01
 
-To run the application in dev enviroments, run the command bellow:
+Navigate into the folder `group-one-app`
 
-`npm run dev`
+```shell
+cd group-one-app
+```
 
-Application should be available on: http://localhost:3000
+Inside the folder ` group-one-app` run the command to install all the dependencies:
 
-For access a live version of the application, follow the link :
-https://application-project-group-1.web.app/
+```shell
+npm install
+```
+
+To run the application in dev environments, run the command bellow:
+
+```shell
+npm run dev
+```
+
+Application should be available on:
+
+http://localhost:3000
+
+For access a live version of the application, follow the link: 
+
+https://application-project-group-1.web.app
