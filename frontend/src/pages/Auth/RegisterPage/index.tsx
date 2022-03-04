@@ -1,7 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import "../LoginPage/styles.css";
-//importing svg
 
 //importing icons
 import { BiUser } from "react-icons/bi";
@@ -14,12 +13,13 @@ import { Input } from "../../../components/AuthFormComponents/Input";
 import GithubSvg from "../../../components/Icons/Github";
 import GoogleSvg from "../../../components/Icons/Google";
 
+
 export const RegisterPage: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { currentUser, 
+  const {
     isAuthLoading, registerUserWithEmailAndPassword,
     signInUserWithGoogleProvider,
     signInUserWithGithubProvider,
@@ -40,11 +40,6 @@ const handleLoginWithGithubProvider: React.MouseEventHandler<
   signInUserWithGithubProvider();
 };
 
-  useEffect(() => {
-    if (currentUser) {
-      navigate("/dashboard");
-    }
-  }, [currentUser]);
 
   const handleSubmit = async (e: any) => {
     if (!email || !password || !name) {

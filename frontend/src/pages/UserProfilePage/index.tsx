@@ -5,21 +5,28 @@ import {
   updatePassword,
   updateProfile,
 } from "firebase/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { auth } from "../../config/firebase";
+import { getAuth } from "firebase/auth";
 
+import { ProfilePicture } from "./ProfilePicture/ProfilePicture"
 export const UserProfilePage = () => {
   const currentName = auth.currentUser?.displayName;
   const currentEmail = auth.currentUser?.email;
+  const currentImage = auth.currentUser?.photoURL;
 
   const [name, setName] = useState(currentName || "no user logged");
   const [email, setEmail] = useState(currentEmail || "no user logged");
+  const [picture, setPicture] = useState(currentImage || "no user logged");
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
+  
+  
+  
   const handleSaveBasicInfo = async () => {
     let functions = [];
     if (name !== "no user logged") {
@@ -55,6 +62,11 @@ export const UserProfilePage = () => {
     }
   };
 
+
+  const changeEmail = () => {
+    
+  }
+  
   return (
     <div
       className="
@@ -72,7 +84,14 @@ export const UserProfilePage = () => {
         bg-gray-700
         "
       >
-        <div className="profile-picture border-2 w-36 h-36 rounded-full mb-10"></div>
+
+    <BlockContainer title="Profile Picture">
+        <img className="profile-picture border-2 w-36 h-36 rounded-full mb-10"
+        src={picture}/> 
+          <ProfilePicture/>
+    </BlockContainer>
+        
+        <hr className="w-4/6 my-10 border-gray-500" />
 
         <BlockContainer title="Basic Info">
           <InputGroup
