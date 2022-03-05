@@ -1,4 +1,5 @@
 import {
+  getAuth,
   EmailAuthProvider,
   reauthenticateWithCredential,
   updateEmail,
@@ -9,7 +10,7 @@ import { useState, useEffect } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { auth } from "../../config/firebase";
-import { getAuth } from "firebase/auth";
+
 
 import { ProfilePicture } from "./ProfilePicture/ProfilePicture"
 export const UserProfilePage = () => {
@@ -24,8 +25,8 @@ export const UserProfilePage = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  
-  
+  const [newEmail, setNewEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState(oldPassword);
   
   const handleSaveBasicInfo = async () => {
     let functions = [];
@@ -53,6 +54,7 @@ export const UserProfilePage = () => {
   const handleChangePassword = async () => {
     if (!newPassword || !oldPassword) return;
     const credential = EmailAuthProvider.credential(currentEmail!, oldPassword);
+    console.log(credential);
     try {
       await reauthenticateWithCredential(auth.currentUser!, credential);
       await updatePassword(auth.currentUser!, newPassword);
@@ -62,9 +64,18 @@ export const UserProfilePage = () => {
     }
   };
 
-
-  const changeEmail = () => {
-    
+  const handleChangeEmail = async () => {
+  if(newEmail === currentEmail) return alert("Email already in use");
+  
+  const credential = EmailAuthProvider.credential(currentEmail!, currentPassword);
+  console.log(credential);
+  try {
+    await reauthenticateWithCredential(auth.currentUser!, credential);
+    await updateEmail(auth.currentUser!, newEmail);
+    alert("Email Updated");
+  } catch (error: any) {
+    alert(error.message);
+  }
   }
   
   return (
@@ -90,10 +101,9 @@ export const UserProfilePage = () => {
         src={picture}/> 
           <ProfilePicture/>
     </BlockContainer>
-        
-        <hr className="w-4/6 my-10 border-gray-500" />
 
-        <BlockContainer title="Basic Info">
+    <hr className="w-4/6 my-10 border-gray-500" />
+    <BlockContainer title="Basic Info">
           <InputGroup
             onChange={setName}
             label="Name"
@@ -110,6 +120,29 @@ export const UserProfilePage = () => {
           <ButtonsContainer>
             <Button onClick={handleSaveBasicInfo} className="ml-5">
               Save
+            </Button>
+          </ButtonsContainer>
+        </BlockContainer>
+        
+        <hr className="w-4/6 my-10 border-gray-500" />
+
+        <BlockContainer title="Change Email">
+        <InputGroup
+            onChange={setCurrentPassword}
+            value={currentPassword}
+            label="Current Password"
+            type="password"
+          />
+          <InputGroup
+            onChange={setNewEmail}
+            label="New Email"
+            type="email"
+            value={newEmail}
+          />
+
+          <ButtonsContainer>
+            <Button onClick={handleChangeEmail} className="ml-5">
+              Change Email
             </Button>
           </ButtonsContainer>
         </BlockContainer>

@@ -67,28 +67,7 @@ export const ProfilePicture = () => {
   );
 }
 
-const InputGroup = (props: any) => {
-    return (
-      <div
-        className="input-group
-        w-11/12
-        flex items-center mb-4
-        md:text-right
-        md:w-10/12
-        "
-      >
-        <label className="pr-2 font-bold md:text-xl">{props.label}:</label>
-        <input
-          className="bg-transparent outline-none border-0 border-b-2  md:flex-1 md:pl-10 rounded
-          focus:ring-2 focus:ring-green-500 focus:border-0
-          "
-          type={props.type}
-          value={props.value}
-          onChange={(e) => props.onChange(e.target.value)}
-        />
-      </div>
-    );
-  };
+
   
   const ButtonsContainer = (props: any) => {
     return (
@@ -104,20 +83,5 @@ const InputGroup = (props: any) => {
       </div>
     );
   };
-  
-  const BlockContainer = (props: any) => {
-    return (
-      <div
-        className="basic-info 
-            flex flex-col
-            items-center
-            w-11/12
-            md:w-6/12
-            "
-      >
-        <span className="self-start mb-2">{props.title}</span>
-        {props.children}
-      </div>
-    );
-  };
+
   
