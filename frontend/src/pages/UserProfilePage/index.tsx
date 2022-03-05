@@ -1,18 +1,16 @@
 import {
-  getAuth,
   EmailAuthProvider,
   reauthenticateWithCredential,
   updateEmail,
   updatePassword,
   updateProfile,
 } from "firebase/auth";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { auth } from "../../config/firebase";
 
 
-import { ProfilePicture } from "./ProfilePicture/ProfilePicture"
 export const UserProfilePage = () => {
   const currentName = auth.currentUser?.displayName;
   const currentEmail = auth.currentUser?.email;
@@ -28,6 +26,10 @@ export const UserProfilePage = () => {
   const [newEmail, setNewEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState(oldPassword);
   
+
+  const [image, setImage] = useState("");
+  const inputFile = useRef(null);
+
   const handleSaveBasicInfo = async () => {
     let functions = [];
     if (name !== "no user logged") {
@@ -78,6 +80,50 @@ export const UserProfilePage = () => {
   }
   }
   
+
+    const handleFileUpload =  async (e : any ) => {
+
+      const { files } = e.target;
+      if (files && files.length) {
+        const filename = files[0].name;
+ 
+        let parts = filename.split(".");
+        const fileType = parts[parts.length - 1];
+        console.log("fileType", fileType); 
+
+        setImage(files[0]);
+        
+        const reader = new FileReader();
+        reader.onload = () => {
+          setPicture(reader.result);
+          
+        }
+        reader.readAsDataURL(files[0]);
+
+        const credential = EmailAuthProvider.credential(currentEmail!, currentPassword);
+        console.log(credential);
+        try {
+        await reauthenticateWithCredential(auth.currentUser!, credential);
+        await updateProfile(auth.currentUser!, {
+          photoURL: image[0]
+        }).then(() => {
+          console.log("Profile updated")
+            setPicture(currentImage!);
+        }).catch((error) => {
+            console.log(error.message);
+        })
+        
+      } catch (error: any) {
+        alert(error.message);
+      }
+      
+
+      }
+    }
+    const onButtonClick = () => {
+      inputFile.current.click();
+    };
+
   return (
     <div
       className="
@@ -99,7 +145,20 @@ export const UserProfilePage = () => {
     <BlockContainer title="Profile Picture">
         <img className="profile-picture border-2 w-36 h-36 rounded-full mb-10"
         src={picture}/> 
-          <ProfilePicture/>
+        <ButtonsContainer>
+             <Button>
+                <input
+                style={{ display: "none" }}
+                accept=".png,.jpg"
+                ref={inputFile}
+                onChange={handleFileUpload}
+                type="file"
+              />
+            <div className="button" onClick={onButtonClick}>
+            Upload
+         </div>
+      </Button>
+      </ButtonsContainer>
     </BlockContainer>
 
     <hr className="w-4/6 my-10 border-gray-500" />
