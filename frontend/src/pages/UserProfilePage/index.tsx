@@ -9,7 +9,7 @@ import { useState, useRef } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { auth } from "../../config/firebase";
-
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const UserProfilePage = () => {
   const currentName = auth.currentUser?.displayName;
@@ -82,44 +82,68 @@ export const UserProfilePage = () => {
   
 
     const handleFileUpload =  async (e : any ) => {
-
       const { files } = e.target;
-      if (files && files.length) {
-        const filename = files[0].name;
- 
-        let parts = filename.split(".");
-        const fileType = parts[parts.length - 1];
-        console.log("fileType", fileType); 
+      const filename = files[0].name;
+      const storage = getStorage();
+      const storageRef = ref(storage, `ProfilePictures/${currentName}/${filename}`);
 
-        setImage(files[0]);
+      try{
+      // 'file' comes from the Blob or File API
+      await uploadBytes(storageRef, files[0]).then((snapshot) => {
         
-        const reader = new FileReader();
-        reader.onload = () => {
-          setPicture(reader.result);
-          
-        }
-        reader.readAsDataURL(files[0]);
-
-        const credential = EmailAuthProvider.credential(currentEmail!, currentPassword);
-        console.log(credential);
-        try {
-        await reauthenticateWithCredential(auth.currentUser!, credential);
-        await updateProfile(auth.currentUser!, {
-          photoURL: image[0]
+        console.log('Uploaded a blob or file!');
+        updateProfile(auth.currentUser!, {
+          photoURL: files[0]
         }).then(() => {
-          console.log("Profile updated")
-            setPicture(currentImage!);
+          // Profile updated!
+          console.log("Profile updated!");
+          setPicture(auth.currentUser?.photoURL!);
         }).catch((error) => {
-            console.log(error.message);
-        })
-        
-      } catch (error: any) {
-        alert(error.message);
-      }
-      
+          // An error occurred
+          alert(error.message);
+        });
+      });
 
-      }
+      
+      }catch(error : any) { return error.message}
+
+
+      /* THIS WORKS */
+      // const { files } = e.target;
+      // if (files && files.length) { 
+      //   console.log(files)
+      //   const filename = files[0].name;
+      //   const storage = getStorage();
+      //   const imagesRef = ref(storage, filename);
+      //   const profilePictureRef = ref(storage, `images/${filename}`);
+      //   const path = imagesRef.fullPath;
+      //   console.log(path);
+      //   imagesRef.name === profilePictureRef.name;           // true
+      //   imagesRef.fullPath === profilePictureRef.fullPath;   // false 
+        
+      //   const credential = EmailAuthProvider.credential(currentEmail!, currentPassword);
+      //   try{
+      //   await uploadBytes(profilePictureRef, files[0]).then((snapshot) => {
+      //   console.log('Uploaded a blob or file!');
+      // });
+      // }catch ( error : any) {
+      //   alert(error.message);
+      // }
+     /* THIS WORKS END */
+      
+      // updateProfile(auth.currentUser!, {
+      //    photoURL: "https://imgs.search.brave.com/U7ZoJkGl2LjJtoKxJuxY_6l3uGVwqlUArp3m5GJpFM8/rs:fit:424:303:1/g:ce/aHR0cHM6Ly85MWI2/YmUzYmQyMjk0YTI0/YjdiNS1kYTRjMTgy/MTIzZjU5NTZhM2Qy/MmFhNDNlYjgxNjIz/Mi5zc2wuY2YxLnJh/Y2tjZG4uY29tL2Nv/bnRlbnRJdGVtLTE5/MzQyMDctOTQyNzEy/MS12Y3Nta2U2cGg5/eXFjLW9yLmpwZw"
+      // }).then(() => {
+      //   setPicture(auth.currentUser?.photoURL!);
+
+      // }).catch((error) => {
+      //   alert(error.message);
+      // });
+
     }
+      
+    
+
     const onButtonClick = () => {
       inputFile.current.click();
     };
