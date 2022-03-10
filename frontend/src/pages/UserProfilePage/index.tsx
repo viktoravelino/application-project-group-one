@@ -9,7 +9,7 @@ import { useState, useRef } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { auth } from "../../config/firebase";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const UserProfilePage = () => {
   const currentName = auth.currentUser?.displayName;
@@ -84,27 +84,21 @@ export const UserProfilePage = () => {
     const handleFileUpload =  async (e : any ) => {
       const { files } = e.target;
       const filename = files[0].name;
+      console.log(files[0]);
       const storage = getStorage();
       const storageRef = ref(storage, `ProfilePictures/${currentName}/${filename}`);
-
       try{
       // 'file' comes from the Blob or File API
       await uploadBytes(storageRef, files[0]).then((snapshot) => {
-        
-        console.log('Uploaded a blob or file!');
-        updateProfile(auth.currentUser!, {
-          photoURL: files[0]
-        }).then(() => {
-          // Profile updated!
-          console.log("Profile updated!");
-          setPicture(auth.currentUser?.photoURL!);
-        }).catch((error) => {
-          // An error occurred
-          alert(error.message);
-        });
+  
+        console.log(snapshot);
+
+        //change profile picture
+        updateProfile(auth.currentUser, {
+          photoURL: snapshot
+        })
       });
 
-      
       }catch(error : any) { return error.message}
 
 
