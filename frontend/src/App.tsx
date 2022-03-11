@@ -1,13 +1,13 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { RegisterPage } from "./pages/Auth/RegisterPage";
-
-// Main Application
-import { MainLayoutContainer } from "./pages/MainLayoutContainer";
-import { ForgotPassword } from "./pages/Auth/ForgotPassword";
-import { UserProfilePage } from "./pages/UserProfilePage";
-import { LandingPage } from "./pages/LandingPage";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { MainLayoutContainer } from "./components/MainLayoutContainer";
 import { useAuth } from "./context/AuthContext";
+import { ForgotPassword } from "./pages/Auth/ForgotPassword";
 import { LoginPage } from "./pages/Auth/LoginPage";
+import { RegisterPage } from "./pages/Auth/RegisterPage";
+import { BudgetPage } from "./pages/BudgetPage";
+import { BudgetsPage } from "./pages/BudgetsPage";
+import { LandingPage } from "./pages/LandingPage";
+import { UserProfilePage } from "./pages/UserProfilePage";
 
 function App() {
   return (
@@ -21,25 +21,44 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* Restricted Access */}
+        {/* Authenticated Routes With Header and navigation */}
         <Route
-          path="/dashboard"
+          path="/"
           element={
             <RequireAuth>
               <MainLayoutContainer />
             </RequireAuth>
           }
-        />
+        >
+          {/* Routes go here */}
 
-        {/* Restricted Access */}
+          <Route path="/dashboard" element={<h1>Dash</h1>} />
+          {/* /budgets */}
+          <Route path="/budgets">
+            <Route index element={<BudgetsPage />} />
+            {/* /budgets/123 */}
+            <Route path=":budgetId">
+              <Route index element={<BudgetPage />} />
+              {/* /budgets/123/categories */}
+              <Route path="categories">
+                <Route index element={<h1>Categories of budget 123</h1>} />
+              </Route>
+            </Route>
+          </Route>
+        </Route>
+
+        {/* Authenticated Routes With only the header */}
         <Route
-          path="/user-profile"
+          path="/"
           element={
             <RequireAuth>
-              <UserProfilePage />
+              <Outlet />
             </RequireAuth>
           }
-        />
+        >
+          {/* Routes go here */}
+          <Route path="/user-profile" element={<UserProfilePage />} />
+        </Route>
       </Routes>
     </div>
   );
