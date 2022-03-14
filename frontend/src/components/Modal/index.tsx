@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 interface ModalProps {
   show: boolean;
   onClose?: () => void;
