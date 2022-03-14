@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 export function LandingPage() {
   return (
-    <div className="text-center">
-      <h1 className="text-xl font-bold my-10">LandingPage</h1>
+    <div className="text-center bg-white pt-10 min-h-screen">
+      <h1 className="text-xl font-bold">LandingPage</h1>
       <div>
         <Link to="/login">
           <button className="underline">Login Page</button>

@@ -19,7 +19,7 @@ export const Button = (
   return (
     <button
       {...props}
-      className={`${colorClasses} font-bold py-2 px-4 rounded ${props.className}`}
+      className={`${colorClasses} font-bold py-2 px-4 rounded disabled:bg-green-300 ${props.className}`}
     >
       {props.children}
     </button>

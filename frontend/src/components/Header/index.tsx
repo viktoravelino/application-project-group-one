@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { LogoSvg } from "../Icons";
 import { BiUserCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { LogoSvg } from "../Icons";
 
 export const Header = () => {
   const { logoutUser } = useAuth();
@@ -25,6 +25,9 @@ export const Header = () => {
       {/* brand name */}
       <div
         className="
+        mr-auto
+        ml-4
+        md:m-0
       brand-name-container border-black border-0
       text-2xl
       "
@@ -33,7 +36,7 @@ export const Header = () => {
       </div>
 
       {/* user icon */}
-      <div className="user-icon-container border-black border-0">
+      <div className="user-icon-container border-black border-0 hidden md:inline-block">
         <div className="user-container">
           <div className="relative inline-block">
             <button
