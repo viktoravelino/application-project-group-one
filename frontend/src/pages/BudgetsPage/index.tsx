@@ -162,6 +162,13 @@ const BudgetCard = ({ budget }: any) => {
           <div className="h-8 w-8 border-2 rounded-full"></div>
           <div className="h-8 w-8 border-2 rounded-full"></div>
           <div className="h-8 w-8 border-2 rounded-full"></div>
+          <button
+            onClick={() => alert(`Share using this ID: ${budget.id}`)}
+            className="h-8 w-8 border-0 rounded-full flex justify-center items-center 
+             hover:bg-white hover:bg-opacity-50"
+          >
+            +
+          </button>
         </div>
       </div>
       <div className="budget-card-progressive-bar flex flex-col items-center gap-2">
