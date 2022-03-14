@@ -1,19 +1,150 @@
+import {
+  addDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
+import { Modal } from "../../components/Modal";
+import { budgetsCollection } from "../../config/firebase";
+import { useAuth } from "../../context/AuthContext";
 
 export const BudgetsPage = () => {
+  const [showCreateBudgetModal, setShowCreateBudgetModal] = useState(false);
+  const { currentUser } = useAuth();
+  const [budgets, setBudgets] = useState([]);
+  const [newBudgetTitle, setNewBudgetTitle] = useState("");
+  const [insertBudgetID, setInsertBudgetID] = useState("");
+
+  useEffect(() => {
+    async function execute() {
+      const q = query(
+        budgetsCollection,
+        where("users", "array-contains", currentUser?.uid)
+      );
+      const querySnap = await getDocs(q);
+      const test: any = [];
+      querySnap.forEach((doc) => {
+        test.push({ id: doc.id, ...doc.data() });
+      });
+
+      setBudgets(test);
+    }
+    execute();
+  }, []);
+
+  const clearModalInputs = () => {
+    setNewBudgetTitle("");
+    setInsertBudgetID("");
+  };
+
+  const openModal = async () => {
+    clearModalInputs();
+    setShowCreateBudgetModal(true);
+  };
+
+  const createNewBudget = async () => {
+    if (!newBudgetTitle) return;
+    try {
+      await addDoc(budgetsCollection, {
+        title: newBudgetTitle,
+        users: [currentUser?.uid],
+      });
+      alert("Budget Created");
+      setNewBudgetTitle("");
+      setShowCreateBudgetModal(false);
+    } catch (error: any) {
+      alert(error.message);
+      console.log(error);
+    }
+  };
+
+  const insertExistingBudget = async () => {
+    if (!insertBudgetID) return;
+    const docRef = doc(budgetsCollection, insertBudgetID);
+    try {
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        alert("This budget does not exist!");
+        return;
+      }
+
+      const docData = docSnap.data();
+      if (docData.users.includes(currentUser!.uid)) {
+        alert("You already have this budget");
+        return;
+      }
+      await updateDoc(docRef, {
+        users: [...docData.users, currentUser!.uid],
+      });
+      alert("Budgets inserted into your account");
+      setInsertBudgetID("");
+      setShowCreateBudgetModal(false);
+    } catch (error: any) {
+      alert(error.message);
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-3">
-      <Button className="mb-4 md:w-2/12 md:ml-auto">New Budget</Button>
-      <BudgetCard />
-      <BudgetCard />
-      <BudgetCard />
-      <BudgetCard />
+      <Button onClick={openModal} className="mb-4 md:w-2/12 md:ml-auto">
+        New Budget
+      </Button>
+      {budgets.map((budget: any) => (
+        <BudgetCard key={budget.id} budget={budget} />
+      ))}
+
+      <Modal show={showCreateBudgetModal}>
+        <div className="text-right mb-2">
+          <button
+            className="mr-2 p-1"
+            onClick={() => setShowCreateBudgetModal(false)}
+          >
+            X
+          </button>
+        </div>
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-2">
+            <p>Invited to a Budget? Insert its ID bellow:</p>
+            <input
+              className="p-2 text-black rounded-md"
+              type="text"
+              placeholder="Existing budget ID"
+              value={insertBudgetID}
+              onChange={(e) => setInsertBudgetID(e.target.value)}
+            />
+            <Button className="ml-auto" onClick={insertExistingBudget}>
+              Insert Budget
+            </Button>
+          </div>
+          <div className="flex flex-col gap-2">
+            <p>Create new Budget</p>
+            <input
+              className="p-2 text-black rounded-md"
+              type="text"
+              placeholder="Budget Title"
+              value={newBudgetTitle}
+              onChange={(e) => setNewBudgetTitle(e.target.value)}
+            />
+            <Button className="ml-auto" onClick={createNewBudget}>
+              Create Budget
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
 
-const BudgetCard = () => {
+// interface BudgetCardProps {}
+
+const BudgetCard = ({ budget }: any) => {
   const navigate = useNavigate();
   return (
     <div
@@ -26,7 +157,7 @@ const BudgetCard = () => {
     "
     >
       <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">Budget Title</h3>
+        <h3 className="text-lg font-bold">{budget.title}</h3>
         <div className="people-shared flex flex-row gap-1">
           <div className="h-8 w-8 border-2 rounded-full"></div>
           <div className="h-8 w-8 border-2 rounded-full"></div>
@@ -43,10 +174,12 @@ const BudgetCard = () => {
         <span>$123.00 / $123.00</span>
       </div>
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
-        <Button onClick={() => navigate("/budgets/123/categories")}>
+        <Button onClick={() => navigate(`/budgets/${budget.id}/categories`)}>
           View Categories
         </Button>
-        <Button onClick={() => navigate("/budgets/123")}>Edit Budget</Button>
+        <Button onClick={() => navigate(`/budgets/${budget.id}`)}>
+          Edit Budget
+        </Button>
       </div>
     </div>
   );
