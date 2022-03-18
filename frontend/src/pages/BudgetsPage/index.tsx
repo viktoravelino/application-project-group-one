@@ -184,7 +184,7 @@ const BudgetCard = ({ budget }: any) => {
         <Button onClick={() => navigate(`/budgets/${budget.id}/categories`)}>
           View Categories
         </Button>
-        <Button onClick={() => navigate(`/budgets/${budget.id}`)}>
+        <Button onClick={() => navigate(`/budgets/${budget.id}`, {state: budget})}>
           Edit Budget
         </Button>
       </div>
