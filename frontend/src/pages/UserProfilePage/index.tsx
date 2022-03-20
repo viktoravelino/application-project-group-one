@@ -9,7 +9,7 @@ import { useState, useRef } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { auth } from "../../config/firebase";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 
 export const UserProfilePage = () => {
   const currentName = auth.currentUser?.displayName;
@@ -27,7 +27,7 @@ export const UserProfilePage = () => {
   const [currentPassword, setCurrentPassword] = useState(oldPassword);
   
 
-  const [image, setImage] = useState("");
+
   const inputFile = useRef(null);
 
   const handleSaveBasicInfo = async () => {
@@ -90,50 +90,25 @@ export const UserProfilePage = () => {
       try{
       // 'file' comes from the Blob or File API
       await uploadBytes(storageRef, files[0]).then((snapshot) => {
-  
-        console.log(snapshot);
 
-        //change profile picture
-        updateProfile(auth.currentUser, {
-          photoURL: snapshot
-        })
+
+        //download file
+         getDownloadURL(ref(storage, `ProfilePictures/${currentName}/${filename}`))
+        .then((url)=>{
+          console.log(url)
+          updateProfile(auth.currentUser!, {
+            photoURL: url
+          })
+           //change profile picture to new one
+          setPicture(url);
+        });
+    
+
+        
       });
-
       }catch(error : any) { return error.message}
 
-
-      /* THIS WORKS */
-      // const { files } = e.target;
-      // if (files && files.length) { 
-      //   console.log(files)
-      //   const filename = files[0].name;
-      //   const storage = getStorage();
-      //   const imagesRef = ref(storage, filename);
-      //   const profilePictureRef = ref(storage, `images/${filename}`);
-      //   const path = imagesRef.fullPath;
-      //   console.log(path);
-      //   imagesRef.name === profilePictureRef.name;           // true
-      //   imagesRef.fullPath === profilePictureRef.fullPath;   // false 
-        
-      //   const credential = EmailAuthProvider.credential(currentEmail!, currentPassword);
-      //   try{
-      //   await uploadBytes(profilePictureRef, files[0]).then((snapshot) => {
-      //   console.log('Uploaded a blob or file!');
-      // });
-      // }catch ( error : any) {
-      //   alert(error.message);
-      // }
-     /* THIS WORKS END */
-      
-      // updateProfile(auth.currentUser!, {
-      //    photoURL: "https://imgs.search.brave.com/U7ZoJkGl2LjJtoKxJuxY_6l3uGVwqlUArp3m5GJpFM8/rs:fit:424:303:1/g:ce/aHR0cHM6Ly85MWI2/YmUzYmQyMjk0YTI0/YjdiNS1kYTRjMTgy/MTIzZjU5NTZhM2Qy/MmFhNDNlYjgxNjIz/Mi5zc2wuY2YxLnJh/Y2tjZG4uY29tL2Nv/bnRlbnRJdGVtLTE5/MzQyMDctOTQyNzEy/MS12Y3Nta2U2cGg5/eXFjLW9yLmpwZw"
-      // }).then(() => {
-      //   setPicture(auth.currentUser?.photoURL!);
-
-      // }).catch((error) => {
-      //   alert(error.message);
-      // });
-
+  
     }
       
     
