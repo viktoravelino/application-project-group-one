@@ -9,7 +9,7 @@ import { useState, useRef } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { auth } from "../../config/firebase";
-import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const UserProfilePage = () => {
   const currentName = auth.currentUser?.displayName;
@@ -90,7 +90,6 @@ export const UserProfilePage = () => {
       try{
       // 'file' comes from the Blob or File API
       await uploadBytes(storageRef, files[0]).then((snapshot) => {
-
 
         //download file
          getDownloadURL(ref(storage, `ProfilePictures/${currentName}/${filename}`))
