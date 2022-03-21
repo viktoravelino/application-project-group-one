@@ -182,7 +182,7 @@ const BudgetCard = ({ budget }: any) => {
       </div>
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
         <Button onClick={() => navigate(`/budgets/${budget.id}/expenses`)}>
-          View Categories
+          View Expenses
         </Button>
         <Button onClick={() => navigate(`/budgets/${budget.id}`)}>
           Edit Budget
