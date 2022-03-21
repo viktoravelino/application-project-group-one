@@ -28,7 +28,7 @@ export const UserProfilePage = () => {
   
 
 
-  const inputFile = useRef(null);
+  const inputFile = useRef<HTMLInputElement>(null);
 
   const handleSaveBasicInfo = async () => {
     let functions = [];
@@ -89,7 +89,7 @@ export const UserProfilePage = () => {
       const storageRef = ref(storage, `ProfilePictures/${currentName}/${filename}`);
       try{
       // 'file' comes from the Blob or File API
-      await uploadBytes(storageRef, files[0]).then((snapshot) => {
+      await uploadBytes(storageRef, files[0]).then(() => {
 
         //download file
          getDownloadURL(ref(storage, `ProfilePictures/${currentName}/${filename}`))
@@ -109,11 +109,9 @@ export const UserProfilePage = () => {
 
   
     }
-      
-    
 
     const onButtonClick = () => {
-      inputFile.current.click();
+      inputFile?.current?.click();
     };
 
   return (

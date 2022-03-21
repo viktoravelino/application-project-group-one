@@ -1,6 +1,4 @@
 import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
-// import "../LoginPage/styles.css";
 
 //importing icons
 import { BiUser } from "react-icons/bi";
@@ -13,7 +11,6 @@ import { Input } from "../../../components/AuthFormComponents/Input";
 import GithubSvg from "../../../components/Icons/Github";
 import GoogleSvg from "../../../components/Icons/Google";
 
-
 export const RegisterPage: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +21,6 @@ export const RegisterPage: FC = () => {
     signInUserWithGoogleProvider,
     signInUserWithGithubProvider,
   } = useAuth();
-  const navigate = useNavigate();
 
   const handleLoginWithGoogleProvider: React.MouseEventHandler<
   HTMLButtonElement
@@ -40,8 +36,7 @@ const handleLoginWithGithubProvider: React.MouseEventHandler<
   signInUserWithGithubProvider();
 };
 
-
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async () => {
     if (!email || !password || !name) {
       alert("Some fields are empty")
       return;
