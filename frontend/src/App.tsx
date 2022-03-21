@@ -39,9 +39,9 @@ function App() {
             {/* /budgets/123 */}
             <Route path=":budgetId">
               <Route index element={<BudgetPage />} />
-              {/* /budgets/123/categories */}
-              <Route path="categories">
-                <Route index element={<h1>Categories of budget 123</h1>} />
+              {/* /budgets/123/expenses */}
+              <Route path="expenses">
+                <Route index element={<h1>Expenses of budget 123</h1>} />
               </Route>
             </Route>
           </Route>

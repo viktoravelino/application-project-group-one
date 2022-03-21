@@ -181,7 +181,7 @@ const BudgetCard = ({ budget }: any) => {
         <span>$123.00 / $123.00</span>
       </div>
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
-        <Button onClick={() => navigate(`/budgets/${budget.id}/categories`)}>
+        <Button onClick={() => navigate(`/budgets/${budget.id}/expenses`)}>
           View Categories
         </Button>
         <Button onClick={() => navigate(`/budgets/${budget.id}`)}>
