@@ -3,6 +3,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
   updateDoc,
   where,
@@ -24,17 +25,14 @@ export const ExpensesPage = () => {
   const [insertExpenseID, setInsertExpenseID] = useState("");
   console.log(expenses);
   useEffect(() => {
-    async function execute() {
-      const q = query(expensesCollection, where("budgetId", "==", budgetId));
-      const querySnap = await getDocs(q);
-      const test: any = [];
-      querySnap.forEach((doc) => {
-        test.push({ id: doc.id, ...doc.data() });
+    const q = query(expensesCollection, where("budgetId", "==", budgetId));
+    return onSnapshot(q, (querySnapshot) => {
+      const array = [] as any;
+      querySnapshot.forEach((doc) => {
+        array.push({ id: doc.id, ...doc.data() });
       });
-
-      setExpenses(test);
-    }
-    execute();
+      setExpenses(array);
+    });
   }, []);
 
   const clearModalInputs = () => {
