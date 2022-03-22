@@ -5,6 +5,7 @@ import {
   query,
   deleteDoc,
   where,
+  Timestamp,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,12 +15,12 @@ import { expensesCollection } from "../../config/firebase";
 
 export const ExpensesPage = () => {
   const { budgetId } = useParams();
-  console.log(budgetId);
   const [showCreateExpenseModal, setShowCreateExpenseModal] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [newExpenseTitle, setNewExpenseTitle] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState<string>("");
   const [isPaid, setIsPaid] = useState(false);
+  const [expenseDate, setExpenseDate] = useState();
 
   useEffect(() => {
     const q = query(expensesCollection, where("budgetId", "==", budgetId));
@@ -47,8 +48,7 @@ export const ExpensesPage = () => {
       await addDoc(expensesCollection, {
         budgetId: budgetId,
         title: newExpenseTitle,
-        // TODO: parse into float number before saving
-        amount: amount,
+        amount: parseFloat(amount),
         isPaid: isPaid,
         // TODO: LATER - change by the inputs value
         // date: Date.now(),
@@ -92,15 +92,28 @@ export const ExpensesPage = () => {
               value={newExpenseTitle}
               onChange={(e) => setNewExpenseTitle(e.target.value)}
             />
-            {/* TODO: input should be number formatted with .00 2 decimals */}
+
             <input
               className="p-2 text-black rounded-md"
-              type="text"
+              type="number"
               placeholder="Expense Amount"
+              step={0.01}
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => setAmount(e.target.value || "")}
             />
             {/* TODO: LATER - input for a date */}
+
+            <input
+              className="p-2 text-black rounded-md"
+              type="date"
+              name="date"
+              id="date"
+              value={expenseDate}
+              onChange={(e) => {
+                const date = new Timestamp(30);
+                console.log(date);
+              }}
+            />
 
             <label>Is Paid?</label>
             <input
@@ -144,13 +157,12 @@ const ExpenseCard = ({ expense }: any) => {
       </div>
 
       <div className="budget-card-header flex flex-row justify-between items-center">
-        {/* TODO: Format the number before showing on the screen ie. $ 123.00 */}
-        <h3 className="text-lg font-bold">{expense.amount}</h3>
+        <h3 className="text-lg font-bold">$ {expense.amount.toFixed(2)}</h3>
       </div>
       <div className="budget-card-header flex flex-row justify-between items-center">
-        {/* TODO: This is not being shown on the card - you can use a checkbox or an icon */}
-        {/* ie: {isPaid ? <PaidIcon /> : <NotPaidIcon />} */}
-        <h3 className="text-lg font-bold">{expense.isPaid}</h3>
+        <h3 className="text-lg font-bold">
+          Paid: {expense.isPaid ? "Paid" : "Not Paid"}
+        </h3>
       </div>
 
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
