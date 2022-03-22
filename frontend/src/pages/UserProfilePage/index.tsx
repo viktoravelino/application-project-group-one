@@ -15,24 +15,29 @@ export const UserProfilePage = () => {
   const currentName = auth.currentUser?.displayName;
   const currentEmail = auth.currentUser?.email;
   const currentImage = auth.currentUser?.photoURL;
+  const isSocialProvider =
+    auth.currentUser?.providerData[0].providerId !== "password";
 
-  const [name, setName] = useState(currentName || "no user logged");
-  const [email, setEmail] = useState(currentEmail || "no user logged");
-  const [picture, setPicture] = useState(currentImage || "no user logged");
+  const [name, setName] = useState(currentName!);
+  const [email, setEmail] = useState(currentEmail!);
+  const [picture, setPicture] = useState(currentImage);
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [loading, setLoading] = useState({
+    password: false,
+    nameEmail: false,
+    photo: false,
+  });
 
-  const [newEmail, setNewEmail] = useState("");
-  const [currentPassword, setCurrentPassword] = useState(oldPassword);
-  
-
+  // const [newEmail, setNewEmail] = useState("");
+  // const [currentPassword, setCurrentPassword] = useState(oldPassword);
 
   const inputFile = useRef<HTMLInputElement>(null);
 
   const handleSaveBasicInfo = async () => {
     let functions = [];
-    if (name !== "no user logged") {
+    if (name !== currentName) {
       functions.push(
         updateProfile(auth.currentUser!, {
           displayName: name,
@@ -40,79 +45,68 @@ export const UserProfilePage = () => {
       );
     }
 
-    if (email !== "no user logged") {
+    if (email !== currentEmail) {
       functions.push(updateEmail(auth.currentUser!, email));
     }
 
     try {
+      setLoading({ ...loading, nameEmail: true });
       await Promise.all(functions);
       alert("Information Updated");
     } catch (error: any) {
       console.log(error.message);
       alert(error.message);
+    } finally {
+      setLoading({ ...loading, nameEmail: false });
     }
   };
 
   const handleChangePassword = async () => {
     if (!newPassword || !oldPassword) return;
+    setLoading({ ...loading, password: true });
     const credential = EmailAuthProvider.credential(currentEmail!, oldPassword);
-    console.log(credential);
     try {
       await reauthenticateWithCredential(auth.currentUser!, credential);
       await updatePassword(auth.currentUser!, newPassword);
       alert("Password Updated");
     } catch (error: any) {
       alert(error.message);
+    } finally {
+      setLoading({ ...loading, password: false });
     }
   };
 
-  const handleChangeEmail = async () => {
-  if(newEmail === currentEmail) return alert("Email already in use");
-  
-  const credential = EmailAuthProvider.credential(currentEmail!, currentPassword);
-  console.log(credential);
-  try {
-    await reauthenticateWithCredential(auth.currentUser!, credential);
-    await updateEmail(auth.currentUser!, newEmail);
-    alert("Email Updated");
-  } catch (error: any) {
-    alert(error.message);
-  }
-  }
-  
-
-    const handleFileUpload =  async (e : any ) => {
-      const { files } = e.target;
-      const filename = files[0].name;
-      console.log(files[0]);
-      const storage = getStorage();
-      const storageRef = ref(storage, `ProfilePictures/${currentName}/${filename}`);
-      try{
+  const handleFileUpload = async (e: any) => {
+    const { files } = e.target;
+    const filename = files[0].name;
+    const storage = getStorage();
+    const storageRef = ref(
+      storage,
+      `ProfilePictures/${currentName}/${filename}`
+    );
+    try {
+      setLoading({ ...loading, photo: true });
       // 'file' comes from the Blob or File API
-      await uploadBytes(storageRef, files[0]).then(() => {
-
-        //download file
-         getDownloadURL(ref(storage, `ProfilePictures/${currentName}/${filename}`))
-        .then((url)=>{
-          console.log(url)
-          updateProfile(auth.currentUser!, {
-            photoURL: url
-          })
-           //change profile picture to new one
-          setPicture(url);
-        });
-    
-
-        
+      await uploadBytes(storageRef, files[0]);
+      //download file
+      const url = await getDownloadURL(
+        ref(storage, `ProfilePictures/${currentName}/${filename}`)
+      );
+      updateProfile(auth.currentUser!, {
+        photoURL: url,
       });
-      }catch(error : any) { return error.message}
-
-  
+      setPicture(url);
+    } catch (error: any) {
+      console.error(error.message);
+      alert("An error occurred");
+    } finally {
+      setLoading({ ...loading, photo: false });
     }
+  };
 
-    const onButtonClick = () => {
-      inputFile?.current?.click();
-    };
+  const onButtonClick = () => {
+    inputFile?.current?.click();
+  };
 
   return (
     <div
@@ -131,28 +125,29 @@ export const UserProfilePage = () => {
         bg-gray-700
         "
       >
-
-    <BlockContainer title="Profile Picture">
-        <img className="profile-picture border-2 w-36 h-36 rounded-full mb-10"
-        src={picture}/> 
-        <ButtonsContainer>
-             <Button>
-                <input
+        <BlockContainer title="Profile Picture">
+          <img
+            className="profile-picture border-2 w-36 h-36 rounded-full mb-10"
+            src={picture!}
+          />
+          <ButtonsContainer>
+            <Button disabled={loading.photo}>
+              <input
                 style={{ display: "none" }}
                 accept=".png,.jpg"
                 ref={inputFile}
                 onChange={handleFileUpload}
                 type="file"
               />
-            <div className="button" onClick={onButtonClick}>
-            Upload
-         </div>
-      </Button>
-      </ButtonsContainer>
-    </BlockContainer>
+              <div className="button" onClick={onButtonClick}>
+                Upload
+              </div>
+            </Button>
+          </ButtonsContainer>
+        </BlockContainer>
 
-    <hr className="w-4/6 my-10 border-gray-500" />
-    <BlockContainer title="Basic Info">
+        <hr className="w-4/6 my-10 border-gray-500" />
+        <BlockContainer title="Basic Info">
           <InputGroup
             onChange={setName}
             label="Name"
@@ -167,36 +162,40 @@ export const UserProfilePage = () => {
           />
 
           <ButtonsContainer>
-            <Button onClick={handleSaveBasicInfo} className="ml-5">
+            <Button
+              disabled={loading.nameEmail}
+              onClick={handleSaveBasicInfo}
+              className="ml-5"
+            >
               Save
             </Button>
           </ButtonsContainer>
         </BlockContainer>
-        
+
         <hr className="w-4/6 my-10 border-gray-500" />
 
-        <BlockContainer title="Change Email">
-        <InputGroup
-            onChange={setCurrentPassword}
-            value={currentPassword}
+        {/* <BlockContainer title="Change Email">
+          <InputGroup
+            // onChange={setCurrentPassword}
+            // value={currentPassword}
             label="Current Password"
             type="password"
           />
           <InputGroup
-            onChange={setNewEmail}
+            // onChange={setNewEmail}
             label="New Email"
             type="email"
-            value={newEmail}
+            // value={newEmail}
           />
 
           <ButtonsContainer>
-            <Button onClick={handleChangeEmail} className="ml-5">
+            <Button onClick={() => {}} className="ml-5">
               Change Email
             </Button>
           </ButtonsContainer>
-        </BlockContainer>
+        </BlockContainer> */}
 
-        <hr className="w-4/6 my-10 border-gray-500" />
+        {/* <hr className="w-4/6 my-10 border-gray-500" /> */}
 
         <BlockContainer title="Change Password">
           <InputGroup
@@ -213,7 +212,11 @@ export const UserProfilePage = () => {
           />
 
           <ButtonsContainer>
-            <Button onClick={handleChangePassword} className="ml-5">
+            <Button
+              disabled={loading.password}
+              onClick={handleChangePassword}
+              className="ml-5"
+            >
               Change Password
             </Button>
           </ButtonsContainer>
@@ -235,6 +238,7 @@ const InputGroup = (props: any) => {
     >
       <label className="pr-2 font-bold md:text-xl">{props.label}:</label>
       <input
+        disabled={props.disabled}
         className="bg-transparent outline-none border-0 border-b-2  md:flex-1 md:pl-10 rounded
         focus:ring-2 focus:ring-green-500 focus:border-0
         "
