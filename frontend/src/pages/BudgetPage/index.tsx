@@ -74,37 +74,55 @@ const BudgetCard = ({ budget }: any) => {
     <div
       className="budget-card px-3 py-3 
       border-[1px] border-gray-600
-    rounded-lg shadow-lg shadow-gray-800
+      rounded-lg shadow-lg shadow-gray-800
     text-white
-    flex flex-col gap-5
-    
-    "
+      flex flex-col gap-5"
     >
       <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold"> Current Title 
-        <input placeholder={budget.title}></input></h3>
-        <div className="people-shared flex flex-row gap-1">
-          <div className="h-8 w-8 border-2 rounded-full"></div>
-          <div className="h-8 w-8 border-2 rounded-full"></div>
-          <div className="h-8 w-8 border-2 rounded-full"></div>
-          <button
-            onClick={() => alert(`Share using this ID: ${budget.id}`)}
-            className="h-8 w-8 border-0 rounded-full flex justify-center items-center 
-             hover:bg-white hover:bg-opacity-50"
-          >
-            +
-          </button>
+        <h3 className="text-lg font-bold"> Edit {budget.name} </h3>
+      </div>
+
+      <div className="flex justify-center">
+        <div className="mb-3 xl:w-96">
+          <div className="py-3">
+            <label htmlFor="BudgetNameInput" className="form-label inline-block mb-2 text-lg font-bold">
+              Budget Name
+            </label>
+            <input type="text"
+              className="form-control block w-full px-3 py-1.5 text-base rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white
+              focus:border-green-500 focus:outline-none"
+              id="BudgetNameInput"
+              placeholder="Budget Name"
+            />
+          </div>
+          
+          <div className="py-3">
+            <label htmlFor="BudgetDescInput" className="form-label inline-block mb-2 text-lg font-bold">
+              Budget Description
+            </label>
+            <textarea
+              className=" form-control block w-full px-3 py-1.5 text-base rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white
+              focus:border-green-500 focus:outline-none"
+              id="BudgetDescInput"
+              rows={3}
+              placeholder="Budget Description"
+            ></textarea>
+          </div>
+  
+          <div className="py-3">
+            <label htmlFor="BudgetGoalInput" className="form-label inline-block mb-2 text-lg font-bold">
+              Budget Goal Amount ($)
+            </label>
+            <input type="number"
+              className="form-control block w-full px-3 py-1.5 text-base rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white
+              focus:border-green-500 focus:outline-none"
+              id="BudgetGoalInput"
+              placeholder="Budget Goal"
+            />
+          </div>
         </div>
       </div>
-      <div className="budget-card-progressive-bar flex flex-col items-center gap-2">
-        <div className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-800">
-          <div
-            className="bg-green-500 h-4 rounded-full"
-            style={{ width: "45%" }}
-          ></div>
-        </div>
-        <span>$123.00 / $123.00</span>
-      </div>
+     
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
       <Button onClick={() => navigate(`/budgets/${budget.id}`)}>
           Save Changes
