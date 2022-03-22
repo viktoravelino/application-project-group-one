@@ -20,7 +20,7 @@ export const ExpensesPage = () => {
   const [newExpenseTitle, setNewExpenseTitle] = useState("");
   const [amount, setAmount] = useState<string>("");
   const [isPaid, setIsPaid] = useState(false);
-  const [expenseDate, setExpenseDate] = useState();
+  const [expenseDate, setExpenseDate] = useState<Timestamp>();
 
   useEffect(() => {
     const q = query(expensesCollection, where("budgetId", "==", budgetId));
@@ -50,8 +50,7 @@ export const ExpensesPage = () => {
         title: newExpenseTitle,
         amount: parseFloat(amount),
         isPaid: isPaid,
-        // TODO: LATER - change by the inputs value
-        // date: Date.now(),
+        date: expenseDate,
       });
       alert("Expense Created");
       setNewExpenseTitle("");
@@ -101,17 +100,15 @@ export const ExpensesPage = () => {
               value={amount}
               onChange={(e) => setAmount(e.target.value || "")}
             />
-            {/* TODO: LATER - input for a date */}
-
             <input
               className="p-2 text-black rounded-md"
               type="date"
               name="date"
               id="date"
-              value={expenseDate}
               onChange={(e) => {
-                const date = new Timestamp(30);
-                console.log(date);
+                setExpenseDate(
+                  Timestamp.fromDate(new Date(`${e.target.value} 00:00`))
+                );
               }}
             />
 
