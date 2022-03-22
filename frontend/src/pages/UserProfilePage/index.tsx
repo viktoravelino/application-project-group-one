@@ -196,31 +196,32 @@ export const UserProfilePage = () => {
         </BlockContainer> */}
 
         {/* <hr className="w-4/6 my-10 border-gray-500" /> */}
+        {!isSocialProvider && (
+          <BlockContainer title="Change Password">
+            <InputGroup
+              onChange={setNewPassword}
+              label="New Password"
+              type="password"
+              value={newPassword}
+            />
+            <InputGroup
+              onChange={setOldPassword}
+              value={oldPassword}
+              label="Old Password"
+              type="password"
+            />
 
-        <BlockContainer title="Change Password">
-          <InputGroup
-            onChange={setNewPassword}
-            label="New Password"
-            type="password"
-            value={newPassword}
-          />
-          <InputGroup
-            onChange={setOldPassword}
-            value={oldPassword}
-            label="Old Password"
-            type="password"
-          />
-
-          <ButtonsContainer>
-            <Button
-              disabled={loading.password}
-              onClick={handleChangePassword}
-              className="ml-5"
-            >
-              Change Password
-            </Button>
-          </ButtonsContainer>
-        </BlockContainer>
+            <ButtonsContainer>
+              <Button
+                disabled={loading.password}
+                onClick={handleChangePassword}
+                className="ml-5"
+              >
+                Change Password
+              </Button>
+            </ButtonsContainer>
+          </BlockContainer>
+        )}
       </main>
     </div>
   );
