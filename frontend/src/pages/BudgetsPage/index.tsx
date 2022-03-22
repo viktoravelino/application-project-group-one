@@ -1,8 +1,10 @@
 import {
   addDoc,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
   updateDoc,
   where,
@@ -22,20 +24,19 @@ export const BudgetsPage = () => {
   const [insertBudgetID, setInsertBudgetID] = useState("");
 
   useEffect(() => {
-    async function execute() {
+   
       const q = query(
-        budgetsCollection,
-        where("users", "array-contains", currentUser?.uid)
+        budgetsCollection, where("users", "array-contains", currentUser?.uid)
       );
-      const querySnap = await getDocs(q);
+      return onSnapshot(q, (querySnapshot) => {
+     
       const test: any = [];
-      querySnap.forEach((doc) => {
+      querySnapshot.forEach((doc) => {
         test.push({ id: doc.id, ...doc.data() });
       });
-
       setBudgets(test);
-    }
-    execute();
+    });
+  
   }, []);
 
   const clearModalInputs = () => {
@@ -147,6 +148,11 @@ export const BudgetsPage = () => {
 
 const BudgetCard = ({ budget }: any) => {
   const navigate = useNavigate();
+
+  async function deleteBudget() {
+    await deleteDoc(doc(budgetsCollection, budget.id));
+    
+  }
   return (
     <div
       className="budget-card px-3 py-3 
@@ -189,6 +195,10 @@ const BudgetCard = ({ budget }: any) => {
           onClick={() => navigate(`/budgets/${budget.id}`, { state: budget })}
         >
           Edit Budget
+        </Button>
+
+        <Button onClick={() => deleteBudget()}>
+          Delete Budget
         </Button>
       </div>
     </div>

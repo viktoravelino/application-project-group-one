@@ -6,6 +6,7 @@ import { LoginPage } from "./pages/Auth/LoginPage";
 import { RegisterPage } from "./pages/Auth/RegisterPage";
 import { BudgetPage } from "./pages/BudgetPage";
 import { BudgetsPage } from "./pages/BudgetsPage";
+import { ExpensesPage } from "./pages/ExpensesPage";
 import { LandingPage } from "./pages/LandingPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
 
@@ -33,15 +34,19 @@ function App() {
           {/* Routes go here */}
 
           <Route path="/dashboard" element={<h1>Dash</h1>} />
+
           {/* /budgets */}
           <Route path="/budgets">
             <Route index element={<BudgetsPage />} />
+
             {/* /budgets/123 */}
             <Route path=":budgetId">
               <Route index element={<BudgetPage />} />
+
               {/* /budgets/123/expenses */}
               <Route path="expenses">
-                <Route index element={<h1>Expenses of budget 123</h1>} />
+                <Route index element={<ExpensesPage />} />
+                <Route path=":expenseId" element={<h1>Expense</h1>} />
               </Route>
             </Route>
           </Route>

@@ -10,3 +10,8 @@ export const capitalizeFirstLettersEachWord = (str: string): string => {
   });
   return capSrt.join(" ");
 };
+
+export const formatDateFromFirebase = (firebaseDate: any) => {
+  const date: Date = firebaseDate.toDate();
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+};
