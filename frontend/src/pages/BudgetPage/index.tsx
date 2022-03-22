@@ -3,8 +3,6 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 //collection of budgets
 import { budgetsCollection } from "../../config/firebase";
-//navigate
-import { useNavigate } from "react-router-dom";
 //react router
 import { useParams } from "react-router-dom";
 //button component
