@@ -33,11 +33,14 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 const budgetsCollection = collection(db, "budgets");
+const expensesCollection = collection(db, "expenses");
+
 
 export {
   auth,
   db,
   budgetsCollection,
+  expensesCollection,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   updateProfile,

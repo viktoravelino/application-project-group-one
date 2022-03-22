@@ -17,6 +17,7 @@ export const MainLayoutContainer = (): JSX.Element => {
             Icon={MdOutlineDashboard}
           />
           <SideMenuItem text="Budgets" to="budgets" Icon={FaRegClipboard} />
+          <SideMenuItem text="Expenses" to="expenses" Icon={FaRegClipboard} />
           <SideMenuItem
             className="md:hidden"
             text="Profile"

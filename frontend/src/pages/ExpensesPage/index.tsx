@@ -11,20 +11,20 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
-import { budgetsCollection } from "../../config/firebase";
+import { expensesCollection } from "../../config/firebase";
 import { useAuth } from "../../context/AuthContext";
 
-export const BudgetsPage = () => {
-  const [showCreateBudgetModal, setShowCreateBudgetModal] = useState(false);
+export const ExpensesPage = () => {
+  const [showCreateExpenseModal, setShowCreateExpenseModal] = useState(false);
   const { currentUser } = useAuth();
-  const [budgets, setBudgets] = useState([]);
-  const [newBudgetTitle, setNewBudgetTitle] = useState("");
-  const [insertBudgetID, setInsertBudgetID] = useState("");
+  const [expenses, setExpenses] = useState([]);
+  const [newExpenseTitle, setNewExpenseTitle] = useState("");
+  const [insertExpenseID, setInsertExpenseID] = useState("");
 
   useEffect(() => {
     async function execute() {
       const q = query(
-        budgetsCollection,
+        expensesCollection,
         where("users", "array-contains", currentUser?.uid)
       );
       const querySnap = await getDocs(q);
@@ -33,58 +33,58 @@ export const BudgetsPage = () => {
         test.push({ id: doc.id, ...doc.data() });
       });
 
-      setBudgets(test);
+      setExpenses(test);
     }
     execute();
   }, []);
 
   const clearModalInputs = () => {
-    setNewBudgetTitle("");
-    setInsertBudgetID("");
+    setNewExpenseTitle("");
+    setInsertExpenseID("");
   };
 
   const openModal = async () => {
     clearModalInputs();
-    setShowCreateBudgetModal(true);
+    setShowCreateExpenseModal(true);
   };
 
-  const createNewBudget = async () => {
-    if (!newBudgetTitle) return;
+  const createNewExpense = async () => {
+    if (!newExpenseTitle) return;
     try {
-      await addDoc(budgetsCollection, {
-        title: newBudgetTitle,
+      await addDoc(expensesCollection, {
+        title: newExpenseTitle,
         users: [currentUser?.uid],
       });
-      alert("Budget Created");
-      setNewBudgetTitle("");
-      setShowCreateBudgetModal(false);
+      alert("Expense Created");
+      setNewExpenseTitle("");
+      setShowCreateExpenseModal(false);
     } catch (error: any) {
       alert(error.message);
       console.log(error);
     }
   };
 
-  const insertExistingBudget = async () => {
-    if (!insertBudgetID) return;
-    const docRef = doc(budgetsCollection, insertBudgetID);
+  const insertExistingExpense = async () => {
+    if (!insertExpenseID) return;
+    const docRef = doc(expensesCollection, insertExpenseID);
     try {
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        alert("This budget does not exist!");
+        alert("This Expense does not exist!");
         return;
       }
 
       const docData = docSnap.data();
       if (docData.users.includes(currentUser!.uid)) {
-        alert("You already have this budget");
+        alert("You already have this Expense");
         return;
       }
       await updateDoc(docRef, {
         users: [...docData.users, currentUser!.uid],
       });
-      alert("Budgets inserted into your account");
-      setInsertBudgetID("");
-      setShowCreateBudgetModal(false);
+      alert("Expense inserted into your account");
+      setInsertExpenseID("");
+      setShowCreateExpenseModal(false);
     } catch (error: any) {
       alert(error.message);
       console.log(error);
@@ -94,17 +94,17 @@ export const BudgetsPage = () => {
   return (
     <div className="flex flex-col gap-3">
       <Button onClick={openModal} className="mb-4 md:w-2/12 md:ml-auto">
-        New Budget
+        New Expense
       </Button>
-      {budgets.map((budget: any) => (
+      {expenses.map((budget: any) => (
         <BudgetCard key={budget.id} budget={budget} />
       ))}
 
-      <Modal show={showCreateBudgetModal}>
+      <Modal show={showCreateExpenseModal}>
         <div className="text-right mb-2">
           <button
             className="mr-2 p-1"
-            onClick={() => setShowCreateBudgetModal(false)}
+            onClick={() => setShowCreateExpenseModal(false)}
           >
             X
           </button>
@@ -115,25 +115,25 @@ export const BudgetsPage = () => {
             <input
               className="p-2 text-black rounded-md"
               type="text"
-              placeholder="Existing budget ID"
-              value={insertBudgetID}
-              onChange={(e) => setInsertBudgetID(e.target.value)}
+              placeholder="Existing Expense ID"
+              value={insertExpenseID}
+              onChange={(e) => setInsertExpenseID(e.target.value)}
             />
-            <Button className="ml-auto" onClick={insertExistingBudget}>
-              Insert Budget
+            <Button className="ml-auto" onClick={insertExistingExpense}>
+              Insert Expense
             </Button>
           </div>
           <div className="flex flex-col gap-2">
-            <p>Create new Budget</p>
+            <p>Create new Expense</p>
             <input
               className="p-2 text-black rounded-md"
               type="text"
-              placeholder="Budget Title"
-              value={newBudgetTitle}
-              onChange={(e) => setNewBudgetTitle(e.target.value)}
+              placeholder="Expense Title"
+              value={newExpenseTitle}
+              onChange={(e) => setNewExpenseTitle(e.target.value)}
             />
-            <Button className="ml-auto" onClick={createNewBudget}>
-              Create Budget
+            <Button className="ml-auto" onClick={createNewExpense}>
+              Create Expense
             </Button>
           </div>
         </div>
@@ -144,7 +144,7 @@ export const BudgetsPage = () => {
 
 // interface BudgetCardProps {}
 
-const BudgetCard = ({ budget }: any) => {
+const ExpensCard = ({ expense }: any) => {
   const navigate = useNavigate();
   return (
     <div
@@ -157,13 +157,13 @@ const BudgetCard = ({ budget }: any) => {
     "
     >
       <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">{budget.title}</h3>
+        <h3 className="text-lg font-bold">{expense.title}</h3>
         <div className="people-shared flex flex-row gap-1">
           <div className="h-8 w-8 border-2 rounded-full"></div>
           <div className="h-8 w-8 border-2 rounded-full"></div>
           <div className="h-8 w-8 border-2 rounded-full"></div>
           <button
-            onClick={() => alert(`Share using this ID: ${budget.id}`)}
+            onClick={() => alert(`Share using this ID: ${expense.id}`)}
             className="h-8 w-8 border-0 rounded-full flex justify-center items-center 
              hover:bg-white hover:bg-opacity-50"
           >
@@ -181,15 +181,9 @@ const BudgetCard = ({ budget }: any) => {
         <span>$123.00 / $123.00</span>
       </div>
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
-        <Button onClick={() => navigate(`/budgets/${budget.id}/expenses`)}>
-          View Expenses
-        </Button>
-        <Button onClick={() => navigate(`/budgets/${budget.id}`)}>
-          Edit Budget
-        </Button>
-
-        <Button onClick={() => navigate(`/budgets/${budget.id}`)}>
-          Delete Budget
+        
+        <Button onClick={() => navigate(`/budgets/${expense.id}`)}>
+         Edit Expenses
         </Button>
       </div>
     </div>
