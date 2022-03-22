@@ -3,6 +3,7 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
   query,
   updateDoc,
@@ -12,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
-import { budgetsCollection } from "../../config/firebase";
+import { budgetsCollection, expensesCollection } from "../../config/firebase";
 import { useAuth } from "../../context/AuthContext";
 
 export const BudgetsPage = () => {
@@ -150,6 +151,11 @@ const BudgetCard = ({ budget }: any) => {
 
   async function deleteBudget() {
     await deleteDoc(doc(budgetsCollection, budget.id));
+    const q = query(expensesCollection, where("budgetId", "==", budget.id));
+    const snap = await getDocs(q);
+    snap.forEach(
+      async (docInfo) => await deleteDoc(doc(expensesCollection, docInfo.id))
+    );
   }
   return (
     <div

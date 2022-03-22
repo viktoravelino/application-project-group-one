@@ -15,3 +15,10 @@ export const formatDateFromFirebase = (firebaseDate: any) => {
   const date: Date = firebaseDate.toDate();
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 };
+
+export const formatDateFromFirebaseForInput = (firebaseDate: any) => {
+  const date: Date = firebaseDate.toDate();
+  return `${date.getFullYear()}-${
+    date.getMonth() + 1 < 10 ? `0` + (date.getMonth() + 1) : date.getMonth() + 1
+  }-${date.getDate()}`;
+};

@@ -6,6 +6,7 @@ import { LoginPage } from "./pages/Auth/LoginPage";
 import { RegisterPage } from "./pages/Auth/RegisterPage";
 import { BudgetPage } from "./pages/BudgetPage";
 import { BudgetsPage } from "./pages/BudgetsPage";
+import { ExpensePage } from "./pages/ExpensePage";
 import { ExpensesPage } from "./pages/ExpensesPage";
 import { LandingPage } from "./pages/LandingPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
@@ -46,7 +47,7 @@ function App() {
               {/* /budgets/123/expenses */}
               <Route path="expenses">
                 <Route index element={<ExpensesPage />} />
-                <Route path=":expenseId" element={<h1>Expense</h1>} />
+                <Route path=":expenseId" element={<ExpensePage />} />
               </Route>
             </Route>
           </Route>
