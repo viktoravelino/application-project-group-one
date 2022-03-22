@@ -12,6 +12,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { expensesCollection } from "../../config/firebase";
+import { formatDateFromFirebase } from "../../lib/helpers";
 
 export const ExpensesPage = () => {
   const { budgetId } = useParams();
@@ -130,8 +131,6 @@ export const ExpensesPage = () => {
   );
 };
 
-// interface BudgetCardProps {}
-
 const ExpenseCard = ({ expense }: any) => {
   const { budgetId } = useParams();
   const navigate = useNavigate();
@@ -152,14 +151,10 @@ const ExpenseCard = ({ expense }: any) => {
       <div className="budget-card-header flex flex-row justify-between items-center">
         <h3 className="text-lg font-bold">{expense.title}</h3>
       </div>
-
-      <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">$ {expense.amount.toFixed(2)}</h3>
-      </div>
-      <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">
-          Paid: {expense.isPaid ? "Paid" : "Not Paid"}
-        </h3>
+      <div className="body">
+        <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
+        <p>Date: {formatDateFromFirebase(expense.date)}</p>
+        <p className="text-lg">Paid: {expense.isPaid ? "Paid" : "Not Paid"}</p>
       </div>
 
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
