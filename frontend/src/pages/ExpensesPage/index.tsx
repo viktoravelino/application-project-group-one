@@ -6,6 +6,7 @@ import {
   onSnapshot,
   query,
   updateDoc,
+  deleteDoc,
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -22,8 +23,11 @@ export const ExpensesPage = () => {
   const { currentUser } = useAuth();
   const [expenses, setExpenses] = useState([]);
   const [newExpenseTitle, setNewExpenseTitle] = useState("");
+  const [amount, setAmount] = useState("");
+  const [isPaid, setIsPaid] = useState(false);
   const [insertExpenseID, setInsertExpenseID] = useState("");
   console.log(expenses);
+
   useEffect(() => {
     const q = query(expensesCollection, where("budgetId", "==", budgetId));
     return onSnapshot(q, (querySnapshot) => {
@@ -52,7 +56,7 @@ export const ExpensesPage = () => {
         budgetId: budgetId,
         title: newExpenseTitle,
         // TODO: change by the inputs value
-        amount: 123,
+        amount: amount,
         // TODO: change by the inputs value
         isPaid: false,
         // TODO: change by the inputs value
@@ -60,6 +64,8 @@ export const ExpensesPage = () => {
       });
       alert("Expense Created");
       setNewExpenseTitle("");
+      setAmount("");
+      setIsPaid(false);
       setShowCreateExpenseModal(false);
     } catch (error: any) {
       alert(error.message);
@@ -96,8 +102,25 @@ export const ExpensesPage = () => {
               onChange={(e) => setNewExpenseTitle(e.target.value)}
             />
             {/* TODO: input for the amount */}
+            <input
+              className="p-2 text-black rounded-md"
+              type="text"
+              placeholder="Expense Amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
             {/* TODO: input for a date */}
             {/* TODO: input for check if it is paid or not (checkbox or select) */}
+           
+           <label>Is Paid?</label>
+             <input
+             className="p-10 "
+              name="Is Paid?"
+              type="checkbox"
+            
+              onChange={() => setIsPaid(true)}
+            /> 
+
             <Button className="ml-auto" onClick={createNewExpense}>
               Create Expense
             </Button>
@@ -112,6 +135,11 @@ export const ExpensesPage = () => {
 
 const ExpenseCard = ({ expense }: any) => {
   const navigate = useNavigate();
+
+  async function deleteExpense() {
+    await deleteDoc(doc(expensesCollection, expense.id));
+    
+  }
   return (
     <div
       className="budget-card px-3 py-3 
@@ -126,6 +154,13 @@ const ExpenseCard = ({ expense }: any) => {
         <h3 className="text-lg font-bold">{expense.title || "not found"}</h3>
       </div>
       {/* TODO: Create a body showing the amount, date and isPaid */}
+      <div className="budget-card-header flex flex-row justify-between items-center">
+        <h3 className="text-lg font-bold">{expense.amount || "not found"}</h3>
+      </div>
+      <div className="budget-card-header flex flex-row justify-between items-center">
+        <h3 className="text-lg font-bold">{expense.isPaid || "not found"}</h3>
+      </div>
+
 
       {/* TODO: Delete progressive bar */}
       <div className="budget-card-progressive-bar flex flex-col items-center gap-2">
@@ -140,6 +175,9 @@ const ExpenseCard = ({ expense }: any) => {
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
         <Button onClick={() => navigate(`/budgets/${expense.id}`)}>
           Edit Expenses
+        </Button>
+        <Button onClick={() => deleteExpense()}>
+          Delete Expenses
         </Button>
       </div>
     </div>
