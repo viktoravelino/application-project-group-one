@@ -3,7 +3,6 @@ import {
   deleteDoc,
   doc,
   getDoc,
-  getDocs,
   onSnapshot,
   query,
   updateDoc,
@@ -24,19 +23,17 @@ export const BudgetsPage = () => {
   const [insertBudgetID, setInsertBudgetID] = useState("");
 
   useEffect(() => {
-   
-      const q = query(
-        budgetsCollection, where("users", "array-contains", currentUser?.uid)
-      );
-      return onSnapshot(q, (querySnapshot) => {
-     
+    const q = query(
+      budgetsCollection,
+      where("users", "array-contains", currentUser?.uid)
+    );
+    return onSnapshot(q, (querySnapshot) => {
       const test: any = [];
       querySnapshot.forEach((doc) => {
         test.push({ id: doc.id, ...doc.data() });
       });
       setBudgets(test);
     });
-  
   }, []);
 
   const clearModalInputs = () => {
@@ -55,6 +52,7 @@ export const BudgetsPage = () => {
       await addDoc(budgetsCollection, {
         title: newBudgetTitle,
         goalAmount: 0,
+        totalSpent: 0,
         users: [currentUser?.uid],
       });
       alert("Budget Created");
@@ -148,10 +146,10 @@ export const BudgetsPage = () => {
 
 const BudgetCard = ({ budget }: any) => {
   const navigate = useNavigate();
+  const PROGRESS = (budget.totalSpent / budget.goalAmount) * 100;
 
   async function deleteBudget() {
     await deleteDoc(doc(budgetsCollection, budget.id));
-    
   }
   return (
     <div
@@ -182,10 +180,13 @@ const BudgetCard = ({ budget }: any) => {
         <div className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-800">
           <div
             className="bg-green-500 h-4 rounded-full"
-            style={{ width: "45%" }}
+            style={{ width: `${PROGRESS}%` }}
           ></div>
         </div>
-        <span>$123.00 / $123.00</span>
+        <span>
+          $ {parseFloat(budget.totalSpent).toFixed(2)} / ${" "}
+          {parseFloat(budget.goalAmount).toFixed(2)}
+        </span>
       </div>
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
         <Button onClick={() => navigate(`/budgets/${budget.id}/expenses`)}>
@@ -197,9 +198,7 @@ const BudgetCard = ({ budget }: any) => {
           Edit Budget
         </Button>
 
-        <Button onClick={() => deleteBudget()}>
-          Delete Budget
-        </Button>
+        <Button onClick={() => deleteBudget()}>Delete Budget</Button>
       </div>
     </div>
   );

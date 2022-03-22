@@ -4,7 +4,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 //collection of budgets
 import { budgetsCollection } from "../../config/firebase";
 //react router
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 //button component
 import { Button } from "../../components/Button";
 //authentication firebase
@@ -38,6 +38,7 @@ export const BudgetPage = () => {
 const BudgetCard = ({ budget }: any) => {
   const [title, setTitle] = useState(budget.title);
   const [goalAmount, setGoalAmount] = useState(budget.goalAmount || 0);
+  const navigate = useNavigate();
 
   const handleSaveChanges = async () => {
     const docRef = doc(budgetsCollection, budget.id);
@@ -47,6 +48,7 @@ const BudgetCard = ({ budget }: any) => {
         goalAmount,
       });
       alert("Budget Updated");
+      navigate(-1);
     } catch (error: any) {
       console.error(error.message);
       alert(error.message);

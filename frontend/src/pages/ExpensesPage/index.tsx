@@ -6,12 +6,14 @@ import {
   deleteDoc,
   where,
   Timestamp,
+  updateDoc,
+  increment,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
-import { expensesCollection } from "../../config/firebase";
+import { budgetsCollection, expensesCollection } from "../../config/firebase";
 import { formatDateFromFirebase } from "../../lib/helpers";
 
 export const ExpensesPage = () => {
@@ -50,9 +52,14 @@ export const ExpensesPage = () => {
       await addDoc(expensesCollection, {
         budgetId: budgetId,
         title: newExpenseTitle,
+        description: expenseDescription,
         amount: parseFloat(amount),
         isPaid: isPaid,
         date: expenseDate,
+      });
+      const budgetRef = doc(budgetsCollection, budgetId);
+      await updateDoc(budgetRef, {
+        totalSpent: increment(parseFloat(amount)),
       });
       alert("Expense Created");
       setNewExpenseTitle("");
@@ -142,9 +149,31 @@ export const ExpensesPage = () => {
 const ExpenseCard = ({ expense }: any) => {
   const { budgetId } = useParams();
   const navigate = useNavigate();
+  // const [isPaidState, setIsPaidState] = useState(expense.isPaid);
+
+  const changePaidStatus = async () => {
+    const docRef = doc(expensesCollection, expense.id);
+    try {
+      await updateDoc(docRef, {
+        isPaid: !expense.isPaid,
+      });
+    } catch (error: any) {
+      alert(error.message);
+      console.error(error.message);
+    }
+  };
 
   async function deleteExpense() {
-    await deleteDoc(doc(expensesCollection, expense.id));
+    try {
+      const budgetRef = doc(budgetsCollection, budgetId);
+      await updateDoc(budgetRef, {
+        totalSpent: increment(-parseFloat(expense.amount)),
+      });
+      await deleteDoc(doc(expensesCollection, expense.id));
+    } catch (error: any) {
+      alert(error.message);
+      console.log(error.message);
+    }
   }
   return (
     <div
@@ -163,7 +192,15 @@ const ExpenseCard = ({ expense }: any) => {
         <p className="text-lg">Description: {expense.description}</p>
         <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
         <p>Date: {formatDateFromFirebase(expense.date)}</p>
-        <p className="text-lg">Paid: {expense.isPaid ? "Paid" : "Not Paid"}</p>
+
+        <p className="text-lg">
+          Paid:{" "}
+          <input
+            type="checkbox"
+            onChange={changePaidStatus}
+            checked={expense.isPaid}
+          />
+        </p>
       </div>
 
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
