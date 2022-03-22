@@ -22,6 +22,7 @@ export const ExpensesPage = () => {
   const [amount, setAmount] = useState<string>("");
   const [isPaid, setIsPaid] = useState(false);
   const [expenseDate, setExpenseDate] = useState<Timestamp>();
+  const [expenseDescription, setExpenseDescription] = useState<string>("");
 
   useEffect(() => {
     const q = query(expensesCollection, where("budgetId", "==", budgetId));
@@ -92,6 +93,13 @@ export const ExpensesPage = () => {
               value={newExpenseTitle}
               onChange={(e) => setNewExpenseTitle(e.target.value)}
             />
+            <input
+              className="p-2 text-black rounded-md"
+              type="text"
+              placeholder="Expense Description"
+              value={expenseDescription}
+              onChange={(e) => setExpenseDescription(e.target.value)}
+            />
 
             <input
               className="p-2 text-black rounded-md"
@@ -152,6 +160,7 @@ const ExpenseCard = ({ expense }: any) => {
         <h3 className="text-lg font-bold">{expense.title}</h3>
       </div>
       <div className="body">
+        <p className="text-lg">Description: {expense.description}</p>
         <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
         <p>Date: {formatDateFromFirebase(expense.date)}</p>
         <p className="text-lg">Paid: {expense.isPaid ? "Paid" : "Not Paid"}</p>
