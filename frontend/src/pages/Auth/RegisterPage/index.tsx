@@ -1,7 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-// import "../LoginPage/styles.css";
-//importing svg
 
 //importing icons
 import { BiUser } from "react-icons/bi";
@@ -13,8 +10,10 @@ import { AuthForm } from "../../../components/AuthFormComponents/AuthForm";
 import { Input } from "../../../components/AuthFormComponents/Input";
 import GithubSvg from "../../../components/Icons/Github";
 import GoogleSvg from "../../../components/Icons/Google";
+import { useNavigate } from "react-router-dom";
 
 export const RegisterPage: FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -26,7 +25,6 @@ export const RegisterPage: FC = () => {
     signInUserWithGoogleProvider,
     signInUserWithGithubProvider,
   } = useAuth();
-  const navigate = useNavigate();
 
   const handleLoginWithGoogleProvider: React.MouseEventHandler<
     HTMLButtonElement
