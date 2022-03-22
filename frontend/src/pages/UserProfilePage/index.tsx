@@ -5,20 +5,30 @@ import {
   updatePassword,
   updateProfile,
 } from "firebase/auth";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { auth } from "../../config/firebase";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 export const UserProfilePage = () => {
   const currentName = auth.currentUser?.displayName;
   const currentEmail = auth.currentUser?.email;
+  const currentImage = auth.currentUser?.photoURL;
 
   const [name, setName] = useState(currentName || "no user logged");
   const [email, setEmail] = useState(currentEmail || "no user logged");
+  const [picture, setPicture] = useState(currentImage || "no user logged");
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
+  const [newEmail, setNewEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState(oldPassword);
+  
+
+
+  const inputFile = useRef<HTMLInputElement>(null);
 
   const handleSaveBasicInfo = async () => {
     let functions = [];
@@ -46,6 +56,7 @@ export const UserProfilePage = () => {
   const handleChangePassword = async () => {
     if (!newPassword || !oldPassword) return;
     const credential = EmailAuthProvider.credential(currentEmail!, oldPassword);
+    console.log(credential);
     try {
       await reauthenticateWithCredential(auth.currentUser!, credential);
       await updatePassword(auth.currentUser!, newPassword);
@@ -54,6 +65,54 @@ export const UserProfilePage = () => {
       alert(error.message);
     }
   };
+
+  const handleChangeEmail = async () => {
+  if(newEmail === currentEmail) return alert("Email already in use");
+  
+  const credential = EmailAuthProvider.credential(currentEmail!, currentPassword);
+  console.log(credential);
+  try {
+    await reauthenticateWithCredential(auth.currentUser!, credential);
+    await updateEmail(auth.currentUser!, newEmail);
+    alert("Email Updated");
+  } catch (error: any) {
+    alert(error.message);
+  }
+  }
+  
+
+    const handleFileUpload =  async (e : any ) => {
+      const { files } = e.target;
+      const filename = files[0].name;
+      console.log(files[0]);
+      const storage = getStorage();
+      const storageRef = ref(storage, `ProfilePictures/${currentName}/${filename}`);
+      try{
+      // 'file' comes from the Blob or File API
+      await uploadBytes(storageRef, files[0]).then(() => {
+
+        //download file
+         getDownloadURL(ref(storage, `ProfilePictures/${currentName}/${filename}`))
+        .then((url)=>{
+          console.log(url)
+          updateProfile(auth.currentUser!, {
+            photoURL: url
+          })
+           //change profile picture to new one
+          setPicture(url);
+        });
+    
+
+        
+      });
+      }catch(error : any) { return error.message}
+
+  
+    }
+
+    const onButtonClick = () => {
+      inputFile?.current?.click();
+    };
 
   return (
     <div
@@ -72,9 +131,28 @@ export const UserProfilePage = () => {
         bg-gray-700
         "
       >
-        <div className="profile-picture border-2 w-36 h-36 rounded-full mb-10"></div>
 
-        <BlockContainer title="Basic Info">
+    <BlockContainer title="Profile Picture">
+        <img className="profile-picture border-2 w-36 h-36 rounded-full mb-10"
+        src={picture}/> 
+        <ButtonsContainer>
+             <Button>
+                <input
+                style={{ display: "none" }}
+                accept=".png,.jpg"
+                ref={inputFile}
+                onChange={handleFileUpload}
+                type="file"
+              />
+            <div className="button" onClick={onButtonClick}>
+            Upload
+         </div>
+      </Button>
+      </ButtonsContainer>
+    </BlockContainer>
+
+    <hr className="w-4/6 my-10 border-gray-500" />
+    <BlockContainer title="Basic Info">
           <InputGroup
             onChange={setName}
             label="Name"
@@ -91,6 +169,29 @@ export const UserProfilePage = () => {
           <ButtonsContainer>
             <Button onClick={handleSaveBasicInfo} className="ml-5">
               Save
+            </Button>
+          </ButtonsContainer>
+        </BlockContainer>
+        
+        <hr className="w-4/6 my-10 border-gray-500" />
+
+        <BlockContainer title="Change Email">
+        <InputGroup
+            onChange={setCurrentPassword}
+            value={currentPassword}
+            label="Current Password"
+            type="password"
+          />
+          <InputGroup
+            onChange={setNewEmail}
+            label="New Email"
+            type="email"
+            value={newEmail}
+          />
+
+          <ButtonsContainer>
+            <Button onClick={handleChangeEmail} className="ml-5">
+              Change Email
             </Button>
           </ButtonsContainer>
         </BlockContainer>
