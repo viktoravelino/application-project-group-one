@@ -53,6 +53,7 @@ export const BudgetsPage = () => {
     try {
       await addDoc(budgetsCollection, {
         title: newBudgetTitle,
+        goalAmount: 0,
         users: [currentUser?.uid],
       });
       alert("Budget Created");
@@ -184,7 +185,9 @@ const BudgetCard = ({ budget }: any) => {
         <Button onClick={() => navigate(`/budgets/${budget.id}/categories`)}>
           View Categories
         </Button>
-        <Button onClick={() => navigate(`/budgets/${budget.id}`, {state: budget})}>
+        <Button
+          onClick={() => navigate(`/budgets/${budget.id}`, { state: budget })}
+        >
           Edit Budget
         </Button>
       </div>
