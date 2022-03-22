@@ -35,19 +35,18 @@ function App() {
 
           <Route path="/dashboard" element={<h1>Dash</h1>} />
 
-
           {/* /budgets */}
           <Route path="/budgets">
             <Route index element={<BudgetsPage />} />
-
 
             {/* /budgets/123 */}
             <Route path=":budgetId">
               <Route index element={<BudgetPage />} />
 
-            {/* /budgets/123/expenses */}
+              {/* /budgets/123/expenses */}
               <Route path="expenses">
-                <Route index element={<ExpensesPage/>} />
+                <Route index element={<ExpensesPage />} />
+                <Route path=":expenseId" element={<h1>Expense</h1>} />
               </Route>
             </Route>
           </Route>

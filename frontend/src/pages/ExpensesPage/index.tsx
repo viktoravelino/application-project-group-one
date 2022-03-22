@@ -1,11 +1,8 @@
 import {
   addDoc,
   doc,
-  getDoc,
-  getDocs,
   onSnapshot,
   query,
-  updateDoc,
   deleteDoc,
   where,
 } from "firebase/firestore";
@@ -14,19 +11,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { expensesCollection } from "../../config/firebase";
-import { useAuth } from "../../context/AuthContext";
 
 export const ExpensesPage = () => {
   const { budgetId } = useParams();
   console.log(budgetId);
   const [showCreateExpenseModal, setShowCreateExpenseModal] = useState(false);
-  const { currentUser } = useAuth();
   const [expenses, setExpenses] = useState([]);
   const [newExpenseTitle, setNewExpenseTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [isPaid, setIsPaid] = useState(false);
-  const [insertExpenseID, setInsertExpenseID] = useState("");
-  console.log(expenses);
 
   useEffect(() => {
     const q = query(expensesCollection, where("budgetId", "==", budgetId));
@@ -41,7 +34,6 @@ export const ExpensesPage = () => {
 
   const clearModalInputs = () => {
     setNewExpenseTitle("");
-    setInsertExpenseID("");
   };
 
   const openModal = async () => {
@@ -55,11 +47,10 @@ export const ExpensesPage = () => {
       await addDoc(expensesCollection, {
         budgetId: budgetId,
         title: newExpenseTitle,
-        // TODO: change by the inputs value
+        // TODO: parse into float number before saving
         amount: amount,
-        // TODO: change by the inputs value
-        isPaid: false,
-        // TODO: change by the inputs value
+        isPaid: isPaid,
+        // TODO: LATER - change by the inputs value
         // date: Date.now(),
       });
       alert("Expense Created");
@@ -101,7 +92,7 @@ export const ExpensesPage = () => {
               value={newExpenseTitle}
               onChange={(e) => setNewExpenseTitle(e.target.value)}
             />
-            {/* TODO: input for the amount */}
+            {/* TODO: input should be number formatted with .00 2 decimals */}
             <input
               className="p-2 text-black rounded-md"
               type="text"
@@ -109,17 +100,15 @@ export const ExpensesPage = () => {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
-            {/* TODO: input for a date */}
-            {/* TODO: input for check if it is paid or not (checkbox or select) */}
-           
-           <label>Is Paid?</label>
-             <input
-             className="p-10 "
+            {/* TODO: LATER - input for a date */}
+
+            <label>Is Paid?</label>
+            <input
+              className="p-10 "
               name="Is Paid?"
               type="checkbox"
-            
               onChange={() => setIsPaid(true)}
-            /> 
+            />
 
             <Button className="ml-auto" onClick={createNewExpense}>
               Create Expense
@@ -134,11 +123,11 @@ export const ExpensesPage = () => {
 // interface BudgetCardProps {}
 
 const ExpenseCard = ({ expense }: any) => {
+  const { budgetId } = useParams();
   const navigate = useNavigate();
 
   async function deleteExpense() {
     await deleteDoc(doc(expensesCollection, expense.id));
-    
   }
   return (
     <div
@@ -151,34 +140,28 @@ const ExpenseCard = ({ expense }: any) => {
     "
     >
       <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">{expense.title || "not found"}</h3>
-      </div>
-      {/* TODO: Create a body showing the amount, date and isPaid */}
-      <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">{expense.amount || "not found"}</h3>
-      </div>
-      <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">{expense.isPaid || "not found"}</h3>
+        <h3 className="text-lg font-bold">{expense.title}</h3>
       </div>
 
-
-      {/* TODO: Delete progressive bar */}
-      <div className="budget-card-progressive-bar flex flex-col items-center gap-2">
-        <div className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-800">
-          <div
-            className="bg-green-500 h-4 rounded-full"
-            style={{ width: "45%" }}
-          ></div>
-        </div>
-        <span>$123.00 / $123.00</span>
+      <div className="budget-card-header flex flex-row justify-between items-center">
+        {/* TODO: Format the number before showing on the screen ie. $ 123.00 */}
+        <h3 className="text-lg font-bold">{expense.amount}</h3>
       </div>
+      <div className="budget-card-header flex flex-row justify-between items-center">
+        {/* TODO: This is not being shown on the card - you can use a checkbox or an icon */}
+        {/* ie: {isPaid ? <PaidIcon /> : <NotPaidIcon />} */}
+        <h3 className="text-lg font-bold">{expense.isPaid}</h3>
+      </div>
+
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
-        <Button onClick={() => navigate(`/budgets/${expense.id}`)}>
+        <Button
+          onClick={() =>
+            navigate(`/budgets/${budgetId}/expenses/${expense.id}`)
+          }
+        >
           Edit Expenses
         </Button>
-        <Button onClick={() => deleteExpense()}>
-          Delete Expenses
-        </Button>
+        <Button onClick={() => deleteExpense()}>Delete Expenses</Button>
       </div>
     </div>
   );
