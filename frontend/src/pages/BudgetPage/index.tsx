@@ -1,5 +1,5 @@
 //firebase database functions
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 //collection of budgets
 import { budgetsCollection } from "../../config/firebase";
@@ -24,7 +24,6 @@ export const BudgetPage = () => {
       const docRef = doc(budgetsCollection, budgetId);
       const docInfo = await getDoc(docRef);
       setBudget({ id: docInfo.id, ...docInfo.data() });
-      console.log(docInfo.data());
     }
     execute();
   }, []);
@@ -39,7 +38,23 @@ export const BudgetPage = () => {
 };
 
 const BudgetCard = ({ budget }: any) => {
-  const navigate = useNavigate();
+  const [title, setTitle] = useState(budget.title);
+  const [goalAmount, setGoalAmount] = useState(budget.goalAmount || 0);
+
+  const handleSaveChanges = async () => {
+    const docRef = doc(budgetsCollection, budget.id);
+    try {
+      await updateDoc(docRef, {
+        title,
+        goalAmount,
+      });
+      alert("Budget Updated");
+    } catch (error: any) {
+      console.error(error.message);
+      alert(error.message);
+    }
+  };
+
   return (
     <div
       className="budget-card px-3 py-3 
@@ -67,7 +82,8 @@ const BudgetCard = ({ budget }: any) => {
               focus:border-green-500 focus:outline-none"
               id="BudgetNameInput"
               placeholder="Budget Name"
-              value={budget.title}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
@@ -84,16 +100,15 @@ const BudgetCard = ({ budget }: any) => {
               focus:border-green-500 focus:outline-none"
               id="BudgetGoalInput"
               placeholder="Budget Goal"
-              value={budget.goalAmount || 0}
+              value={goalAmount}
+              onChange={(e) => setGoalAmount(e.target.value)}
             />
           </div>
         </div>
       </div>
 
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
-        <Button onClick={() => navigate(`/budgets/${budget.id}`)}>
-          Save Changes
-        </Button>
+        <Button onClick={handleSaveChanges}>Save Changes</Button>
       </div>
     </div>
   );
