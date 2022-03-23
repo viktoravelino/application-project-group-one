@@ -1,0 +1,24 @@
+/**
+ * This function capitalizes every first letter
+ * @param str String to convert each first letter into a capital letter
+ * @returns String with each first letter capitalized
+ */
+export const capitalizeFirstLettersEachWord = (str: string): string => {
+  const strArray = str.split(" ");
+  const capSrt = strArray.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  return capSrt.join(" ");
+};
+
+export const formatDateFromFirebase = (firebaseDate: any) => {
+  const date: Date = firebaseDate.toDate();
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+};
+
+export const formatDateFromFirebaseForInput = (firebaseDate: any) => {
+  const date: Date = firebaseDate.toDate();
+  return `${date.getFullYear()}-${
+    date.getMonth() + 1 < 10 ? `0` + (date.getMonth() + 1) : date.getMonth() + 1
+  }-${date.getDate()}`;
+};
