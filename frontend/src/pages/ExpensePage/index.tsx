@@ -46,6 +46,7 @@ const ExpenseCard = ({ expense }: any) => {
   const [title, setTitle] = useState(expense.title);
   const [amount, setAmount] = useState(expense.amount || 0);
   const [description, setDescription] = useState(expense.description);
+  const [category, setCategory] = useState(expense.category)
   const [isPaid, setIsPaid] = useState(expense.isPaid);
   const [date, setDate] = useState(expense.date);
 
@@ -58,6 +59,7 @@ const ExpenseCard = ({ expense }: any) => {
         title,
         amount: parseFloat(amount),
         date,
+        category,
         description,
         isPaid,
       });
@@ -126,6 +128,20 @@ const ExpenseCard = ({ expense }: any) => {
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+
+          <div className="py-3">
+            <label className="form-label inline-block mb-2 text-lg font-bold">
+              Expense Category
+            </label>
+            <input
+              type="text"
+              className=" text-black form-control block w-full px-3 py-1.5 text-base rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white
+              focus:border-green-500 focus:outline-none"
+              placeholder="Description"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
             />
           </div>
 

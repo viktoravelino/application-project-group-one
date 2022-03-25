@@ -25,6 +25,7 @@ export const ExpensesPage = () => {
   const [isPaid, setIsPaid] = useState(false);
   const [expenseDate, setExpenseDate] = useState<Timestamp>();
   const [expenseDescription, setExpenseDescription] = useState<string>("");
+  const [expenseCategory, setExpenseCategory] = useState<string>("");
 
   useEffect(() => {
     const q = query(expensesCollection, where("budgetId", "==", budgetId));
@@ -53,6 +54,7 @@ export const ExpensesPage = () => {
         budgetId: budgetId,
         title: newExpenseTitle,
         description: expenseDescription,
+        category: expenseCategory,
         amount: parseFloat(amount),
         isPaid: isPaid,
         date: expenseDate,
@@ -64,6 +66,7 @@ export const ExpensesPage = () => {
       alert("Expense Created");
       setNewExpenseTitle("");
       setAmount("");
+      setExpenseCategory("");
       setIsPaid(false);
       setShowCreateExpenseModal(false);
     } catch (error: any) {
@@ -107,6 +110,15 @@ export const ExpensesPage = () => {
               value={expenseDescription}
               onChange={(e) => setExpenseDescription(e.target.value)}
             />
+
+            <input
+              className="p-2 text-black rounded-md"
+              type="text"
+              placeholder="Expense Category"
+              value={expenseCategory}
+              onChange={(e) => setExpenseCategory(e.target.value)}
+            />
+
 
             <input
               className="p-2 text-black rounded-md"
@@ -190,6 +202,7 @@ const ExpenseCard = ({ expense }: any) => {
       </div>
       <div className="body">
         <p className="text-lg">Description: {expense.description}</p>
+        <p className="text-lg">Category: {expense.category}</p>
         <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
         <p>Date: {formatDateFromFirebase(expense.date)}</p>
 
