@@ -10,7 +10,7 @@ import { ExpensePage } from "./pages/ExpensePage";
 import { ExpensesPage } from "./pages/ExpensesPage";
 import { LandingPage } from "./pages/LandingPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
-
+import { AllExpenses } from "./pages/AllExpenses/index";
 function App() {
   return (
     <div className="app">
@@ -35,6 +35,8 @@ function App() {
           {/* Routes go here */}
 
           <Route path="/dashboard" element={<h1>Dash</h1>} />
+          {/*Expenses*/}
+          <Route path="/allExpenses" element={<AllExpenses/>} />
 
           {/* /budgets */}
           <Route path="/budgets">
