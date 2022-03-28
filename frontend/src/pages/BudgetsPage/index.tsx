@@ -15,7 +15,7 @@ import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { budgetsCollection, expensesCollection } from "../../config/firebase";
 import { useAuth } from "../../context/AuthContext";
-
+import { ExportBudget } from "./ExportBudget/ExportBudget";
 export const BudgetsPage = () => {
   const [showCreateBudgetModal, setShowCreateBudgetModal] = useState(false);
   const { currentUser } = useAuth();
@@ -97,9 +97,13 @@ export const BudgetsPage = () => {
       <Button onClick={openModal} className="mb-4 md:w-2/12 md:ml-auto">
         New Budget
       </Button>
+      <ExportBudget />
       {budgets.map((budget: any) => (
         <BudgetCard key={budget.id} budget={budget} />
       ))}
+
+       
+
 
       <Modal show={showCreateBudgetModal}>
         <div className="text-right mb-2">
@@ -140,6 +144,7 @@ export const BudgetsPage = () => {
         </div>
       </Modal>
     </div>
+    
   );
 };
 

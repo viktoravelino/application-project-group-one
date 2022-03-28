@@ -177,6 +177,7 @@ const ExpenseCard = ({ expense }: any) => {
 
   async function deleteExpense() {
     try {
+      console.log(budgetId)
       const budgetRef = doc(budgetsCollection, budgetId);
       await updateDoc(budgetRef, {
         totalSpent: increment(-parseFloat(expense.amount)),
@@ -187,6 +188,7 @@ const ExpenseCard = ({ expense }: any) => {
       console.log(error.message);
     }
   }
+
   return (
     <div
       className="budget-card px-3 py-3 
