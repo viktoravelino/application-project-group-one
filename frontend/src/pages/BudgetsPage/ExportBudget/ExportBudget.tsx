@@ -24,6 +24,7 @@ interface Budgets {
     users: any
 }
 
+
 export const ExportBudget = () => {
     //current user 
     const { currentUser } = useAuth();
@@ -40,28 +41,42 @@ export const ExportBudget = () => {
             onSnapshot(q, (querySnapshot) => {
             const test: any = [];
             querySnapshot.forEach((doc) => {
+              /**
+               * column: {
+               *  
+               * }
+               * 
+               */
+              /* [ id, title, amount ]
+                  [ { BudgetId: 'id', title: 'budgetTitle' }, { field: 'key2' }, 'key3', ... ]
+              */
+
               test.push({ id: doc.id, ...doc.data() });
             });
             setBudgets(test);
-            
+            let array : any = []
+            test.map((budget : any, i : number) => {
+              console.log(budget)
+              const obj =  {
+                  id: budget.id,
+                  title: budget.title,
+                  goalAmount : budget.goalAmount,
+                  totalSpent : budget.totalSpent,
+              }
+              array.push(obj);
+            })
+          json2csvAsync(array)
+            .then((csv) => {
+                const file = new Blob([csv],{type:"text/csv"})
+                const test = window.URL.createObjectURL(file)
+                console.log(file)
+                window.open(test);
+            })
+            .catch((err) => { err.message });
           });
           
-                json2csvAsync(budgets)
-                .then((csv) => {
-                    console.log(`${csv} \n `)
-                    let csvContent = "data:text/csv;charset=utf-8" + csv
-                    let encodedUri  : any = encodeURI(csvContent);
-                    window.open(encodedUri);
-                })
-                .catch((err) => { err.message });
 
 
-            
-   
-
-        
-  
-          
     }
     
   return (
