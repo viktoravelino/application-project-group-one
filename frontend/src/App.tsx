@@ -11,6 +11,7 @@ import { ExpensesPage } from "./pages/ExpensesPage";
 import { LandingPage } from "./pages/LandingPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
 import { AllExpenses } from "./pages/AllExpenses/index";
+import { WishList } from "./pages/WishList/index";
 function App() {
   return (
     <div className="app">
@@ -37,7 +38,8 @@ function App() {
           <Route path="/dashboard" element={<h1>Dash</h1>} />
           {/*Expenses*/}
           <Route path="/allExpenses" element={<AllExpenses/>} />
-
+          {/*WishList*/}
+          <Route path="/wishlist" element={<WishList/>} />
           {/* /budgets */}
           <Route path="/budgets">
             <Route index element={<BudgetsPage />} />
