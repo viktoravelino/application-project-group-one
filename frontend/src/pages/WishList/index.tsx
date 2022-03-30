@@ -7,19 +7,15 @@ import {
     deleteDoc,
     where,
     Timestamp,
-    updateDoc,
-    increment,
   } from "firebase/firestore";
 
 import {useState, useEffect } from 'react'
 import { Button } from "../../components/Button";
-import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "../../components/Modal";
-import { budgetsCollection, expensesCollection, wishlistCollection } from "../../config/firebase";
+import {  expensesCollection, wishlistCollection } from "../../config/firebase";
 import { useAuth } from "../../context/AuthContext";
 
 export const WishList = () => {
-  const { budgetId } = useParams();
   const { currentUser } = useAuth();
   const [showCreateWishModal, setShowCreateWishModal] = useState(false);
 
