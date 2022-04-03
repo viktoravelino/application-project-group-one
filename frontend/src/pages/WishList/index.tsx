@@ -50,9 +50,13 @@ export const WishList = () => {
   }
 
   useEffect(() => {
-    const q = query(wishlistCollection);
+    const q = query(
+      wishlistCollection,
+      where("userID", "array-contains", currentUser?.uid)
+      );
+
     return onSnapshot(q, (querySnapshot) => {
-        const array = [] as any;
+        const array: any = [];
         querySnapshot.forEach((doc) => {
           array.push({ id: doc.id, ...doc.data() });
         });
