@@ -4,17 +4,21 @@ import {
     where,
   } from "firebase/firestore";
 
-import {useState} from 'react'
 import { json2csvAsync } from 'json-2-csv';
 import { budgetsCollection } from "../../../config/firebase";
 import { Button } from "../../../components/Button/index";
 import { useAuth } from "../../../context/AuthContext";
 
+interface obj {
+  id: string,
+  title: string,
+  goalAmount : string,
+  totalSpent : string,
+}
 
 export const ExportBudget = () => {
     //current user 
     const { currentUser } = useAuth();
-    const [budgets, setBudgets] = useState<any[]>([]);
     //first step is to get budget data from firebase
     //convert data  
     //turn it in a csv file 
@@ -30,9 +34,8 @@ export const ExportBudget = () => {
 
               test.push({ id: doc.id, ...doc.data() });
             });
-            setBudgets(test);
             let array : any = []
-            test.map((budget : any, i : number) => {
+            test.map((budget : obj) => {
              
               const obj =  {
                   id: budget.id,
@@ -40,6 +43,7 @@ export const ExportBudget = () => {
                   goalAmount : budget.goalAmount,
                   totalSpent : budget.totalSpent,
               }
+              
               array.push(obj);
             })
           json2csvAsync(array)

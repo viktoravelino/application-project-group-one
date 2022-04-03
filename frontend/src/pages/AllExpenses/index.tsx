@@ -1,17 +1,11 @@
 import {
-    addDoc,
-    doc,
     onSnapshot,
     query,
-    deleteDoc,
-    where,
     Timestamp,
-    updateDoc,
-    increment,
   } from "firebase/firestore";
 import {useEffect, useState} from 'react'
 import { useNavigate, useParams } from "react-router-dom";
-import { budgetsCollection, expensesCollection } from "../../config/firebase";
+import { expensesCollection } from "../../config/firebase";
 import { formatDateFromFirebase } from "../../lib/helpers";
 import { Button } from "../../components/Button";
 
@@ -55,7 +49,7 @@ export const AllExpenses = () => {
     
     return (
     <div>
-        {expenses.map((expense : Expense , i : number) => {
+        {expenses.map((expense : Expense) => {
 
             console.log(expense.date);
             return (
