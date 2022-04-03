@@ -17,12 +17,11 @@ import { Button } from "../../components/Button";
 //import react
 import { useState, useEffect } from "react";
 import { formatDateFromFirebaseForInput } from "../../lib/helpers";
-import { useAuth } from "../../context/AuthContext";
+
 
 export const ExpensePage = () => {
   const { expenseId } = useParams();
-    //current user 
-    const { currentUser } = useAuth();
+
   //useState will hold users budgets
   const [expense, setExpense] = useState<any>(null);
 
