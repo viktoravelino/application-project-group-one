@@ -2,7 +2,7 @@
 import React from 'react';
 import { ThemeContext } from './ThemeContext';
 
-const Toggle = () => {
+export const Toggle = () => {
   const { theme, setTheme } = React.useContext(ThemeContext);
 
   return (
@@ -52,4 +52,3 @@ const Toggle = () => {
   );
 };
 
-export default Toggle;
