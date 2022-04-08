@@ -2,7 +2,7 @@
 import React from 'react';
 import { ThemeContext } from './ThemeContext';
 
-export const Toggle = () => {
+export const ToggleSwitch = () => {
   const { theme, setTheme } = React.useContext(ThemeContext);
 
   return (

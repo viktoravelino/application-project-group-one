@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { MainLayoutContainer } from "./components/MainLayoutContainer";
-import {Toggle} from "./components/toggle";
+import { ToggleSwitch } from "./components/toggleSwitch";
 import { useAuth } from "./context/AuthContext";
 import { ForgotPassword } from "./pages/Auth/ForgotPassword";
 import { LoginPage } from "./pages/Auth/LoginPage";
@@ -17,7 +17,7 @@ function App() {
     
     <div className="app">
 
-<Toggle/>
+<ToggleSwitch/>
       <Routes>
         {/* Landing Page */}
         <Route path="/" element={<LandingPage />} />
