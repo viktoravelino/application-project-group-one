@@ -104,6 +104,8 @@ export const LoginPage = () => {
           to="/register"
         />
       </AuthForm>
-    </CenteredContainerAuthForm>
+
+      
+      </CenteredContainerAuthForm>
   );
 };

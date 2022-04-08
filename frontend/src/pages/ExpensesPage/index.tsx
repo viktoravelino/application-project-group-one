@@ -9,12 +9,14 @@ import {
   updateDoc,
   increment,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { budgetsCollection, expensesCollection } from "../../config/firebase";
 import { formatDateFromFirebase } from "../../lib/helpers";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+
 
 export const ExpensesPage = () => {
   const { budgetId } = useParams();
@@ -25,6 +27,8 @@ export const ExpensesPage = () => {
   const [isPaid, setIsPaid] = useState(false);
   const [expenseDate, setExpenseDate] = useState<Timestamp>();
   const [expenseDescription, setExpenseDescription] = useState<string>("");
+  const [fileUrl, setFileUrl] = useState('');
+  const [picture, setPicture] = useState('');
 
   useEffect(() => {
     const q = query(expensesCollection, where("budgetId", "==", budgetId));
@@ -36,7 +40,7 @@ export const ExpensesPage = () => {
       setExpenses(array);
     });
   }, []);
-
+  const inputFile = useRef<HTMLInputElement>(null);
   const clearModalInputs = () => {
     setNewExpenseTitle("");
   };
@@ -56,6 +60,8 @@ export const ExpensesPage = () => {
         amount: parseFloat(amount),
         isPaid: isPaid,
         date: expenseDate,
+        fileUrl: fileUrl,
+
       });
       const budgetRef = doc(budgetsCollection, budgetId);
       await updateDoc(budgetRef, {
@@ -66,11 +72,42 @@ export const ExpensesPage = () => {
       setAmount("");
       setIsPaid(false);
       setShowCreateExpenseModal(false);
+      setFileUrl('');
     } catch (error: any) {
       alert(error.message);
       console.log(error);
     }
   };
+
+  const handleFileUpload = async (e: any) => {
+    const { files } = e.target;
+    const filename = files[0].name;
+    const storage = getStorage();
+    const storageRef = ref(
+      storage,
+      `ExpensePicture/${filename}`
+    );
+    try {
+     
+      // 'file' comes from the Blob or File API
+      await uploadBytes(storageRef, files[0]);
+      //download file
+      const url = await getDownloadURL(
+        ref(storage, `ExpensePicture/${filename}`)
+      );
+      setFileUrl(url);
+      setPicture(url);
+    } catch (error: any) {
+      console.error(error.message);
+      alert("An error occurred");
+    }
+  };
+
+  const onButtonClick = () => {
+    inputFile?.current?.click();
+  };
+
+
 
   return (
     <div className="flex flex-col gap-3">
@@ -127,6 +164,24 @@ export const ExpensesPage = () => {
                 );
               }}
             />
+            <img
+            className="profile-picture border-2 w-36 h-36 mb-10"
+            src={picture!}
+          />
+            <Button >
+              <input
+                style={{ display: "none" }}
+                accept=".png,.jpg"
+                ref={inputFile}
+                onChange={handleFileUpload}
+                type="file"
+              />
+              <div className="button" onClick={onButtonClick}>
+                Upload
+              </div>
+            </Button>
+
+            {/*<input type="file" onChange={onFileChange} />*/}
 
             <label>Is Paid?</label>
             <input
@@ -191,6 +246,10 @@ const ExpenseCard = ({ expense }: any) => {
       <div className="body">
         <p className="text-lg">Description: {expense.description}</p>
         <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
+        
+        <img className="profile-picture border-2 w-40 h-40 mb-10"
+          src= {expense.fileUrl}/>
+          
         <p>Date: {formatDateFromFirebase(expense.date)}</p>
 
         <p className="text-lg">
