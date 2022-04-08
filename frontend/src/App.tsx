@@ -17,7 +17,7 @@ function App() {
     
     <div className="app">
 
-<ToggleSwitch/>
+
       <Routes>
         {/* Landing Page */}
         <Route path="/" element={<LandingPage />} />
