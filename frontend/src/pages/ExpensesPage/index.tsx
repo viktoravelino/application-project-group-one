@@ -15,6 +15,7 @@ import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { budgetsCollection, expensesCollection } from "../../config/firebase";
 import { formatDateFromFirebase } from "../../lib/helpers";
+import { useAuth } from "../../context/AuthContext";
 
 export const ExpensesPage = () => {
   const { budgetId } = useParams();
@@ -26,6 +27,7 @@ export const ExpensesPage = () => {
   const [expenseDate, setExpenseDate] = useState<Timestamp>();
   const [expenseDescription, setExpenseDescription] = useState<string>("");
   const [expenseCategory, setExpenseCategory] = useState<string>("");
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const q = query(expensesCollection, where("budgetId", "==", budgetId));
@@ -58,6 +60,7 @@ export const ExpensesPage = () => {
         amount: parseFloat(amount),
         isPaid: isPaid,
         date: expenseDate,
+        userID : [currentUser?.uid],
       });
       const budgetRef = doc(budgetsCollection, budgetId);
       await updateDoc(budgetRef, {

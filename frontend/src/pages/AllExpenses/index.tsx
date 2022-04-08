@@ -2,12 +2,14 @@ import {
     onSnapshot,
     query,
     Timestamp,
+    where,
   } from "firebase/firestore";
 import {useEffect, useState} from 'react'
 import { useNavigate, useParams } from "react-router-dom";
 import { expensesCollection } from "../../config/firebase";
 import { formatDateFromFirebase } from "../../lib/helpers";
 import { Button } from "../../components/Button";
+import { useAuth } from "../../context/AuthContext";
 
 interface Expense {
     id: string;
@@ -20,24 +22,24 @@ interface Expense {
 }
 
 export const AllExpenses = () => {
+    const { currentUser } = useAuth();
     //will store all the expenses in an array
     const [expenses, setExpenses] = useState<Expense[]>([]);
     //retrieve all expenses from that user account
     useEffect(() => {
-        console.log("mounting")
-        const q = query(expensesCollection);
+        console.log(currentUser?.uid)
+        const q = query(expensesCollection, where("userID", "array-contains", currentUser?.uid));
         return onSnapshot(q, (querySnapshot) => {
-            const array = [] as any;
+            const array: any = [];
             querySnapshot.forEach((doc) => {
               array.push({ id: doc.id, ...doc.data() });
             });
             setExpenses(array);
-            
+            console.log(expenses);
           });
-
       }, []);
 
-
+      
       
  
     //display it to user 
@@ -85,7 +87,7 @@ export const AllExpenses = () => {
                     navigate(`/budgets/${budgetId}/expenses/${expense.id}`)
                   }
                 >
-                  Edit Expenses
+                  Edit Expense
                 </Button>
               </div>
             </div>
