@@ -110,6 +110,8 @@ const BudgetCard = ({ budget }: any) => {
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
         <Button onClick={handleSaveChanges}>Save Changes</Button>
       </div>
+
+
     </div>
   );
 };
