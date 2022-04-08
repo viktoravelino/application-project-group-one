@@ -1,5 +1,4 @@
-import { onSnapshot, query, Timestamp, where } from 'firebase/firestore';
-import { useAuth } from '../../context/AuthContext';
+import { onSnapshot, query, Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { expensesCollection } from '../../config/firebase';
