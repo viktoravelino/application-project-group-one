@@ -18,6 +18,7 @@ import { Button } from "../../components/Button";
 import { useState, useEffect } from "react";
 import { formatDateFromFirebaseForInput } from "../../lib/helpers";
 
+
 export const ExpensePage = () => {
   const { expenseId } = useParams();
 

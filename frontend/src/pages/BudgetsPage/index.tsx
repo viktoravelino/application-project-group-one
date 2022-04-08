@@ -34,6 +34,7 @@ export const BudgetsPage = () => {
         test.push({ id: doc.id, ...doc.data() });
       });
       setBudgets(test);
+      console.log(budgets)
     });
   }, []);
 

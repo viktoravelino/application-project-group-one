@@ -1,4 +1,4 @@
-import { BiUserCircle } from "react-icons/bi";
+import { BiUserCircle, BiListUl } from "react-icons/bi";
 import { FaRegClipboard } from "react-icons/fa";
 import { MdOutlineDashboard } from "react-icons/md";
 import { GiPayMoney } from "react-icons/gi";
@@ -19,6 +19,7 @@ export const MainLayoutContainer = (): JSX.Element => {
           />
           <SideMenuItem text="Budgets" to="budgets" Icon={FaRegClipboard} />
           <SideMenuItem text="Expenses" to="allExpenses" Icon={GiPayMoney} />
+          <SideMenuItem text="Wishlist" to="wishlist" Icon={BiListUl} />
           <SideMenuItem
             className="md:hidden"
             text="Profile"
