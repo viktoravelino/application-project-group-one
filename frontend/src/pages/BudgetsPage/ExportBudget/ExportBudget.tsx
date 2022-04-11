@@ -1,5 +1,6 @@
 import { onSnapshot, query, where } from 'firebase/firestore';
 
+//@ts-ignore
 import { json2csvAsync } from 'json-2-csv';
 import { budgetsCollection } from '../../../config/firebase';
 import { Button } from '../../../components/Button/index';
@@ -40,13 +41,13 @@ export const ExportBudget = () => {
         array.push(obj);
       });
       json2csvAsync(array)
-        .then((csv) => {
+        .then((csv: any) => {
           const file = new Blob([csv], { type: 'text/csv' });
           const test = window.URL.createObjectURL(file);
           console.log(file);
           window.open(test);
         })
-        .catch((err) => {
+        .catch((err: any) => {
           err.message;
         });
     });
