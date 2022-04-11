@@ -7,6 +7,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { Modal } from '../../components/Modal';
 import { categoryCollection } from '../../config/firebase';
@@ -29,7 +30,7 @@ export const CategoriesPage = () => {
         array.push({ id: doc.id, ...doc.data() });
       });
       setCategories(array);
-      console.log(array);
+      // console.log(array);
     });
   }, []);
 
@@ -63,7 +64,7 @@ export const CategoriesPage = () => {
 
       {categories &&
         categories.map((category: any) => {
-          return <TestComp key={category.id} category={category} />;
+          return <CategoryCard key={category.id} category={category} />;
         })}
 
       {/* Modal */}
@@ -99,13 +100,14 @@ export const CategoriesPage = () => {
   );
 };
 
-const TestComp = ({
+const CategoryCard = ({
   category,
 }: //   editCategory,
 {
   category: any;
   //   editCategory: (category: any) => void;
 }) => {
+  const navigate = useNavigate();
   const deleteCategory = async () => {
     try {
       await deleteDoc(doc(categoryCollection, category.id));
@@ -129,7 +131,13 @@ const TestComp = ({
       <p className="font-bold">{category.title}</p>
 
       <div className="budget-card-footer flex flex-row gap-4 justify-end">
-        <Button>View</Button>
+        <Button
+          onClick={() => {
+            navigate(`/categories/${category.id}`);
+          }}
+        >
+          View
+        </Button>
         {/* <Button onClick={() => editCategory(category)}>Edit</Button> */}
         <Button onClick={deleteCategory}>Delete</Button>
       </div>

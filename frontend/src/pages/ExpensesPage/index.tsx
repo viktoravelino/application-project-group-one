@@ -251,11 +251,13 @@ export const ExpensesPage = () => {
 const ExpenseCard = ({ expense, categories }: any) => {
   const { budgetId } = useParams();
   const navigate = useNavigate();
-
-  const catName = categories.filter(
-    (cat: any) => cat.id === expense.category
-  )[0];
-  // const [isPaidState, setIsPaidState] = useState(expense.isPaid);
+  const [catName, setCatName] = useState('');
+  useEffect(() => {
+    const catName = categories.filter(
+      (cat: any) => cat.id === expense.category
+    );
+    setCatName(catName[0]?.title);
+  }, [categories]);
 
   const changePaidStatus = async () => {
     const docRef = doc(expensesCollection, expense.id);
@@ -299,13 +301,15 @@ const ExpenseCard = ({ expense, categories }: any) => {
       <div className="body">
         <p className="text-lg">Description: {expense.description}</p>
         {/* <p className="text-lg">Category: {expense.category}</p> */}
-        <p className="text-lg">Category: {catName.title || 'Uncategorized'}</p>
+        <p className="text-lg">
+          Category: {catName ? catName : 'Uncategorized'}
+        </p>
         <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
 
-        <img
+        {/* <img
           className="profile-picture border-2 w-40 h-40 mb-10"
           src={expense.fileUrl}
-        />
+        /> */}
 
         <p>Date: {formatDateFromFirebase(expense.date)}</p>
 

@@ -1,9 +1,10 @@
-import { onSnapshot, query, Timestamp } from 'firebase/firestore';
+import { onSnapshot, query, Timestamp, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { expensesCollection } from '../../config/firebase';
+import { categoryCollection, expensesCollection } from '../../config/firebase';
 import { formatDateFromFirebase } from '../../lib/helpers';
 import { Button } from '../../components/Button';
+import { useAuth } from '../../context/AuthContext';
 
 interface Expense {
   id: string;
@@ -16,18 +17,40 @@ interface Expense {
 }
 
 export const AllExpenses = () => {
+  const { currentUser } = useAuth();
   //will store all the expenses in an array
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [categories, setCategories] = useState<Map<string, string>>(new Map());
   //retrieve all expenses from that user account
   useEffect(() => {
-    console.log('mounting');
-    const q = query(expensesCollection);
+    const q = query(
+      expensesCollection,
+      where('userID', 'array-contains', currentUser!.uid)
+    );
     return onSnapshot(q, (querySnapshot) => {
       const array = [] as any;
-      querySnapshot.forEach((doc) => {
-        array.push({ id: doc.id, ...doc.data() });
+      querySnapshot.forEach(async (docData) => {
+        const obj: any = { id: docData.id, ...docData.data() };
+        array.push(obj);
       });
       setExpenses(array);
+    });
+  }, []);
+
+  useEffect(() => {
+    const q = query(
+      categoryCollection,
+      where('userId', '==', currentUser!.uid)
+    );
+    return onSnapshot(q, (querySnapshot) => {
+      const array = [] as any;
+      querySnapshot.forEach(async (docData) => {
+        const obj: any = { id: docData.id, ...docData.data() };
+        array.push(obj);
+      });
+      const map = new Map();
+      array.forEach((cat: any) => map.set(cat.id, cat.title));
+      setCategories(map);
     });
   }, []);
 
@@ -40,7 +63,6 @@ export const AllExpenses = () => {
   return (
     <div>
       {expenses.map((expense: Expense) => {
-        console.log(expense.date);
         return (
           <div
             key={expense.id}
@@ -55,7 +77,9 @@ export const AllExpenses = () => {
             </div>
             <div className="body">
               <p className="text-lg">Description: {expense.description}</p>
-              <p className="text-lg">Category: {expense.category}</p>
+              <p className="text-lg">
+                Category: {categories.get(expense.category)}
+              </p>
               <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
               <p>Date: {formatDateFromFirebase(expense.date)}</p>
 
