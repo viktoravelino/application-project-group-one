@@ -1,5 +1,6 @@
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { MainLayoutContainer } from "./components/MainLayoutContainer";
+//import { ToggleSwitch } from "./components/toggleSwitch";
 import { useAuth } from "./context/AuthContext";
 import { ForgotPassword } from "./pages/Auth/ForgotPassword";
 import { LoginPage } from "./pages/Auth/LoginPage";
@@ -14,7 +15,10 @@ import { AllExpenses } from "./pages/AllExpenses/index";
 import { WishList } from "./pages/WishList/index";
 function App() {
   return (
+    
     <div className="app">
+
+
       <Routes>
         {/* Landing Page */}
         <Route path="/" element={<LandingPage />} />

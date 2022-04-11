@@ -16,7 +16,7 @@ export const UserProfilePage = () => {
   const currentEmail = auth.currentUser?.email;
   const currentImage = auth.currentUser?.photoURL;
   const isSocialProvider =
-    auth.currentUser?.providerData[0].providerId !== "password";
+  auth.currentUser?.providerData[0].providerId !== "password";
 
   const [name, setName] = useState(currentName!);
   const [email, setEmail] = useState(currentEmail!);

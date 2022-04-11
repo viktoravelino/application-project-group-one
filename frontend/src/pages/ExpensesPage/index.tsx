@@ -8,29 +8,33 @@ import {
   Timestamp,
   updateDoc,
   increment,
-} from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "../../components/Button";
-import { Modal } from "../../components/Modal";
-import { budgetsCollection, expensesCollection } from "../../config/firebase";
-import { formatDateFromFirebase } from "../../lib/helpers";
-import { useAuth } from "../../context/AuthContext";
+} from 'firebase/firestore';
+import { useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button } from '../../components/Button';
+import { Modal } from '../../components/Modal';
+import { budgetsCollection, expensesCollection } from '../../config/firebase';
+import { formatDateFromFirebase } from '../../lib/helpers';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+
+import { useAuth } from '../../context/AuthContext';
 
 export const ExpensesPage = () => {
   const { budgetId } = useParams();
   const [showCreateExpenseModal, setShowCreateExpenseModal] = useState(false);
   const [expenses, setExpenses] = useState([]);
-  const [newExpenseTitle, setNewExpenseTitle] = useState("");
-  const [amount, setAmount] = useState<string>("");
+  const [newExpenseTitle, setNewExpenseTitle] = useState('');
+  const [amount, setAmount] = useState<string>('');
   const [isPaid, setIsPaid] = useState(false);
   const [expenseDate, setExpenseDate] = useState<Timestamp>();
-  const [expenseDescription, setExpenseDescription] = useState<string>("");
-  const [expenseCategory, setExpenseCategory] = useState<string>("");
+  const [expenseDescription, setExpenseDescription] = useState<string>('');
+  const [fileUrl, setFileUrl] = useState('');
+  const [picture, setPicture] = useState('');
+  const [expenseCategory, setExpenseCategory] = useState<string>('');
   const { currentUser } = useAuth();
 
   useEffect(() => {
-    const q = query(expensesCollection, where("budgetId", "==", budgetId));
+    const q = query(expensesCollection, where('budgetId', '==', budgetId));
     return onSnapshot(q, (querySnapshot) => {
       const array = [] as any;
       querySnapshot.forEach((doc) => {
@@ -39,9 +43,9 @@ export const ExpensesPage = () => {
       setExpenses(array);
     });
   }, []);
-
+  const inputFile = useRef<HTMLInputElement>(null);
   const clearModalInputs = () => {
-    setNewExpenseTitle("");
+    setNewExpenseTitle('');
   };
 
   const openModal = async () => {
@@ -60,22 +64,49 @@ export const ExpensesPage = () => {
         amount: parseFloat(amount),
         isPaid: isPaid,
         date: expenseDate,
-        userID : [currentUser?.uid],
+        fileUrl: fileUrl,
+
+        userID: [currentUser?.uid],
       });
       const budgetRef = doc(budgetsCollection, budgetId);
       await updateDoc(budgetRef, {
         totalSpent: increment(parseFloat(amount)),
       });
-      alert("Expense Created");
-      setNewExpenseTitle("");
-      setAmount("");
-      setExpenseCategory("");
+      alert('Expense Created');
+      setNewExpenseTitle('');
+      setAmount('');
+      setExpenseCategory('');
       setIsPaid(false);
       setShowCreateExpenseModal(false);
+      setFileUrl('');
     } catch (error: any) {
       alert(error.message);
       console.log(error);
     }
+  };
+
+  const handleFileUpload = async (e: any) => {
+    const { files } = e.target;
+    const filename = files[0].name;
+    const storage = getStorage();
+    const storageRef = ref(storage, `ExpensePicture/${filename}`);
+    try {
+      // 'file' comes from the Blob or File API
+      await uploadBytes(storageRef, files[0]);
+      //download file
+      const url = await getDownloadURL(
+        ref(storage, `ExpensePicture/${filename}`)
+      );
+      setFileUrl(url);
+      setPicture(url);
+    } catch (error: any) {
+      console.error(error.message);
+      alert('An error occurred');
+    }
+  };
+
+  const onButtonClick = () => {
+    inputFile?.current?.click();
   };
 
   return (
@@ -122,14 +153,13 @@ export const ExpensesPage = () => {
               onChange={(e) => setExpenseCategory(e.target.value)}
             />
 
-
             <input
               className="p-2 text-black rounded-md"
               type="number"
               placeholder="Expense Amount"
               step={0.01}
               value={amount}
-              onChange={(e) => setAmount(e.target.value || "")}
+              onChange={(e) => setAmount(e.target.value || '')}
             />
             <input
               className="p-2 text-black rounded-md"
@@ -142,6 +172,24 @@ export const ExpensesPage = () => {
                 );
               }}
             />
+            <img
+              className="profile-picture border-2 w-36 h-36 mb-10"
+              src={picture!}
+            />
+            <Button>
+              <input
+                style={{ display: 'none' }}
+                accept=".png,.jpg"
+                ref={inputFile}
+                onChange={handleFileUpload}
+                type="file"
+              />
+              <div className="button" onClick={onButtonClick}>
+                Upload
+              </div>
+            </Button>
+
+            {/*<input type="file" onChange={onFileChange} />*/}
 
             <label>Is Paid?</label>
             <input
@@ -180,7 +228,7 @@ const ExpenseCard = ({ expense }: any) => {
 
   async function deleteExpense() {
     try {
-      console.log(budgetId)
+      console.log(budgetId);
       const budgetRef = doc(budgetsCollection, budgetId);
       await updateDoc(budgetRef, {
         totalSpent: increment(-parseFloat(expense.amount)),
@@ -209,10 +257,16 @@ const ExpenseCard = ({ expense }: any) => {
         <p className="text-lg">Description: {expense.description}</p>
         <p className="text-lg">Category: {expense.category}</p>
         <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
+
+        <img
+          className="profile-picture border-2 w-40 h-40 mb-10"
+          src={expense.fileUrl}
+        />
+
         <p>Date: {formatDateFromFirebase(expense.date)}</p>
 
         <p className="text-lg">
-          Paid:{" "}
+          Paid:{' '}
           <input
             type="checkbox"
             onChange={changePaidStatus}

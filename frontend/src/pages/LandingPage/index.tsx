@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 export function LandingPage() {
   return (
+    
     <div className="text-center bg-white pt-10 min-h-screen">
       <h1 className="text-xl font-bold">LandingPage</h1>
       <div>
@@ -28,6 +29,7 @@ export function LandingPage() {
           <button className="underline">User Profile</button>
         </Link>
       </div>
+      
     </div>
   );
 }
