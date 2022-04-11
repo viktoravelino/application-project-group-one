@@ -1,10 +1,11 @@
-import { BiUserCircle, BiListUl } from "react-icons/bi";
-import { FaRegClipboard } from "react-icons/fa";
-import { MdOutlineDashboard } from "react-icons/md";
-import { GiPayMoney } from "react-icons/gi";
-import { Outlet } from "react-router-dom";
-import { Header } from "../Header";
-import { SideMenu, SideMenuItem } from "../SideMenu";
+import { BiUserCircle, BiListUl } from 'react-icons/bi';
+import { FaRegClipboard } from 'react-icons/fa';
+import { MdOutlineDashboard } from 'react-icons/md';
+import { GiPayMoney } from 'react-icons/gi';
+import { BsListNested } from 'react-icons/bs';
+import { Outlet } from 'react-router-dom';
+import { Header } from '../Header';
+import { SideMenu, SideMenuItem } from '../SideMenu';
 
 export const MainLayoutContainer = (): JSX.Element => {
   return (
@@ -18,6 +19,7 @@ export const MainLayoutContainer = (): JSX.Element => {
             Icon={MdOutlineDashboard}
           />
           <SideMenuItem text="Budgets" to="budgets" Icon={FaRegClipboard} />
+          <SideMenuItem text="Categories" to="categories" Icon={BsListNested} />
           <SideMenuItem text="Expenses" to="allExpenses" Icon={GiPayMoney} />
           <SideMenuItem text="Wishlist" to="wishlist" Icon={BiListUl} />
           <SideMenuItem
@@ -26,7 +28,6 @@ export const MainLayoutContainer = (): JSX.Element => {
             to="user-profile"
             Icon={BiUserCircle}
           />
-          {/* <SideMenuItem text="Categories" to="categories" Icon={BsListNested} /> */}
           {/* <SideMenuItem text="Transactions" to="transactions" Icon={GiReceiveMoney} /> */}
         </SideMenu>
         <section className="main-content-container w-full bg-gray-700 mt-12 md:mt-0 flex-1 p-4">

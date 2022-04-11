@@ -1,24 +1,23 @@
-import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
-import { MainLayoutContainer } from "./components/MainLayoutContainer";
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { MainLayoutContainer } from './components/MainLayoutContainer';
 //import { ToggleSwitch } from "./components/toggleSwitch";
-import { useAuth } from "./context/AuthContext";
-import { ForgotPassword } from "./pages/Auth/ForgotPassword";
-import { LoginPage } from "./pages/Auth/LoginPage";
-import { RegisterPage } from "./pages/Auth/RegisterPage";
-import { BudgetPage } from "./pages/BudgetPage";
-import { BudgetsPage } from "./pages/BudgetsPage";
-import { ExpensePage } from "./pages/ExpensePage";
-import { ExpensesPage } from "./pages/ExpensesPage";
-import { LandingPage } from "./pages/LandingPage";
-import { UserProfilePage } from "./pages/UserProfilePage";
-import { AllExpenses } from "./pages/AllExpenses/index";
-import { WishList } from "./pages/WishList/index";
+import { useAuth } from './context/AuthContext';
+import { ForgotPassword } from './pages/Auth/ForgotPassword';
+import { LoginPage } from './pages/Auth/LoginPage';
+import { RegisterPage } from './pages/Auth/RegisterPage';
+import { BudgetPage } from './pages/BudgetPage';
+import { BudgetsPage } from './pages/BudgetsPage';
+import { ExpensePage } from './pages/ExpensePage';
+import { ExpensesPage } from './pages/ExpensesPage';
+import { LandingPage } from './pages/LandingPage';
+import { UserProfilePage } from './pages/UserProfilePage';
+import { AllExpenses } from './pages/AllExpenses/index';
+import { WishList } from './pages/WishList/index';
+import { CategoriesPage } from './pages/CategoriesPage';
+import { CategoryPage } from './pages/CategoriesPage/CategoryPage';
 function App() {
   return (
-    
     <div className="app">
-
-
       <Routes>
         {/* Landing Page */}
         <Route path="/" element={<LandingPage />} />
@@ -41,9 +40,15 @@ function App() {
 
           <Route path="/dashboard" element={<h1>Dash</h1>} />
           {/*Expenses*/}
-          <Route path="/allExpenses" element={<AllExpenses/>} />
+          <Route path="/allExpenses" element={<AllExpenses />} />
+          {/*Categories*/}
+          {/* <Route path="/categories" element={<CategoriesPage />} /> */}
+          <Route path="categories">
+            <Route index element={<CategoriesPage />} />
+            <Route path=":categoryId" element={<CategoryPage />} />
+          </Route>
           {/*WishList*/}
-          <Route path="/wishlist" element={<WishList/>} />
+          <Route path="/wishlist" element={<WishList />} />
           {/* /budgets */}
           <Route path="/budgets">
             <Route index element={<BudgetsPage />} />

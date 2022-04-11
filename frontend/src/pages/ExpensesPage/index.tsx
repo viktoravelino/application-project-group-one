@@ -13,7 +13,11 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { Modal } from '../../components/Modal';
-import { budgetsCollection, expensesCollection } from '../../config/firebase';
+import {
+  budgetsCollection,
+  categoryCollection,
+  expensesCollection,
+} from '../../config/firebase';
 import { formatDateFromFirebase } from '../../lib/helpers';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
@@ -32,6 +36,7 @@ export const ExpensesPage = () => {
   const [picture, setPicture] = useState('');
   const [expenseCategory, setExpenseCategory] = useState<string>('');
   const { currentUser } = useAuth();
+  const [categoriesOptions, setCategoriesOptions] = useState([]);
 
   useEffect(() => {
     const q = query(expensesCollection, where('budgetId', '==', budgetId));
@@ -43,6 +48,21 @@ export const ExpensesPage = () => {
       setExpenses(array);
     });
   }, []);
+
+  useEffect(() => {
+    const q = query(
+      categoryCollection,
+      where('userId', '==', currentUser?.uid)
+    );
+    return onSnapshot(q, (querySnapshot) => {
+      const array = [] as any;
+      querySnapshot.forEach((doc) => {
+        array.push({ id: doc.id, ...doc.data() });
+      });
+      setCategoriesOptions(array);
+    });
+  }, []);
+
   const inputFile = useRef<HTMLInputElement>(null);
   const clearModalInputs = () => {
     setNewExpenseTitle('');
@@ -55,6 +75,7 @@ export const ExpensesPage = () => {
 
   const createNewExpense = async () => {
     if (!newExpenseTitle) return;
+    console.log(expenseCategory);
     try {
       await addDoc(expensesCollection, {
         budgetId: budgetId,
@@ -115,10 +136,17 @@ export const ExpensesPage = () => {
         New Expense
       </Button>
       {expenses.map((expense: any) => (
-        <ExpenseCard key={expense.id} expense={expense} />
+        <ExpenseCard
+          key={expense.id}
+          expense={expense}
+          categories={categoriesOptions}
+        />
       ))}
 
-      <Modal show={showCreateExpenseModal}>
+      <Modal
+        // show={true}
+        show={showCreateExpenseModal}
+      >
         <div className="text-right mb-2">
           <button
             className="mr-2 p-1"
@@ -145,13 +173,24 @@ export const ExpensesPage = () => {
               onChange={(e) => setExpenseDescription(e.target.value)}
             />
 
-            <input
+            {/* <input
               className="p-2 text-black rounded-md"
               type="text"
               placeholder="Expense Category"
               value={expenseCategory}
               onChange={(e) => setExpenseCategory(e.target.value)}
-            />
+            /> */}
+            <select
+              className="p-2 text-black rounded-md"
+              value={expenseCategory}
+              onChange={(e) => setExpenseCategory(e.target.value)}
+            >
+              {categoriesOptions.map((category: any) => (
+                <option key={category.id} value={category.id}>
+                  {category.title}
+                </option>
+              ))}
+            </select>
 
             <input
               className="p-2 text-black rounded-md"
@@ -209,10 +248,16 @@ export const ExpensesPage = () => {
   );
 };
 
-const ExpenseCard = ({ expense }: any) => {
+const ExpenseCard = ({ expense, categories }: any) => {
   const { budgetId } = useParams();
   const navigate = useNavigate();
-  // const [isPaidState, setIsPaidState] = useState(expense.isPaid);
+  const [catName, setCatName] = useState('');
+  useEffect(() => {
+    const catName = categories.filter(
+      (cat: any) => cat.id === expense.category
+    );
+    setCatName(catName[0]?.title);
+  }, [categories]);
 
   const changePaidStatus = async () => {
     const docRef = doc(expensesCollection, expense.id);
@@ -255,13 +300,16 @@ const ExpenseCard = ({ expense }: any) => {
       </div>
       <div className="body">
         <p className="text-lg">Description: {expense.description}</p>
-        <p className="text-lg">Category: {expense.category}</p>
+        {/* <p className="text-lg">Category: {expense.category}</p> */}
+        <p className="text-lg">
+          Category: {catName ? catName : 'Uncategorized'}
+        </p>
         <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
 
-        <img
+        {/* <img
           className="profile-picture border-2 w-40 h-40 mb-10"
           src={expense.fileUrl}
-        />
+        /> */}
 
         <p>Date: {formatDateFromFirebase(expense.date)}</p>
 
