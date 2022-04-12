@@ -11,12 +11,15 @@
     "@dicebear/avatars": "^4.10.2",
     "@dicebear/avatars-male-sprites": "^4.10.2",
     "firebase": "^9.6.6",
+    "firebase-functions": "^3.19.0",
+    "json-2-csv": "^3.17.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.1"
   },
   "devDependencies": {
+    "@types/json2csv": "^5.0.3",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@vitejs/plugin-react": "^1.0.7",

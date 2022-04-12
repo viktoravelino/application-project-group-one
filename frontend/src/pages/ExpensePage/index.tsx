@@ -5,18 +5,18 @@ import {
   increment,
   Timestamp,
   updateDoc,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 
 //collection of budgets
-import { budgetsCollection, expensesCollection } from "../../config/firebase";
+import { budgetsCollection, expensesCollection } from '../../config/firebase';
 //react router
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 //button component
-import { Button } from "../../components/Button";
+import { Button } from '../../components/Button';
 //authentication firebase
 //import react
-import { useState, useEffect } from "react";
-import { formatDateFromFirebaseForInput } from "../../lib/helpers";
+import { useState, useEffect } from 'react';
+import { formatDateFromFirebaseForInput } from '../../lib/helpers';
 
 export const ExpensePage = () => {
   const { expenseId } = useParams();
@@ -46,6 +46,7 @@ const ExpenseCard = ({ expense }: any) => {
   const [title, setTitle] = useState(expense.title);
   const [amount, setAmount] = useState(expense.amount || 0);
   const [description, setDescription] = useState(expense.description);
+  const [category, setCategory] = useState(expense.category);
   const [isPaid, setIsPaid] = useState(expense.isPaid);
   const [date, setDate] = useState(expense.date);
 
@@ -58,6 +59,7 @@ const ExpenseCard = ({ expense }: any) => {
         title,
         amount: parseFloat(amount),
         date,
+        category,
         description,
         isPaid,
       });
@@ -65,7 +67,7 @@ const ExpenseCard = ({ expense }: any) => {
       await updateDoc(budgetRef, {
         totalSpent: increment(parseFloat(amount) - parseFloat(expense.amount)),
       });
-      alert("Expense Updated");
+      alert('Expense Updated');
       navigate(-1);
     } catch (error: any) {
       console.error(error.message);
@@ -82,7 +84,10 @@ const ExpenseCard = ({ expense }: any) => {
       flex flex-col gap-5"
     >
       <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold dark:text-gray-700"> Edit {expense.title} </h3>
+        <h3 className="text-lg font-bold dark:text-gray-700">
+          {' '}
+          Edit {expense.title}{' '}
+        </h3>
       </div>
 
       <div className="flex justify-center">
@@ -131,6 +136,20 @@ const ExpenseCard = ({ expense }: any) => {
 
           <div className="py-3">
             <label className="form-label inline-block mb-2 text-lg font-bold dark:text-gray-700">
+              Expense Category
+            </label>
+            <input
+              type="text"
+              className=" text-black form-control block w-full px-3 py-1.5 text-base rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white
+              focus:border-green-500 focus:outline-none"
+              placeholder="Description"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            />
+          </div>
+
+          <div className="py-3">
+            <label className="form-label inline-block mb-2 text-lg font-bold">
               Paid:
             </label>
             <br />
