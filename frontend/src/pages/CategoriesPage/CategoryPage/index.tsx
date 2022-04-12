@@ -50,7 +50,7 @@ const ExpenseCard = ({ expense }: any) => {
       className="budget-card px-3 py-3 
         border-[1px] border-gray-600
       rounded-lg shadow-lg shadow-gray-800
-      text-white
+      text-white dark:text-gray-700 dark:bg-gray-300
       flex flex-col gap-5
       
       "

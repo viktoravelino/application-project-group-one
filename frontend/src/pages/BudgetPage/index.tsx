@@ -11,6 +11,8 @@ import { Button } from "../../components/Button";
 //import react
 import { useState, useEffect } from "react";
 
+
+
 export const BudgetPage = () => {
   const { budgetId } = useParams();
 
@@ -60,11 +62,16 @@ const BudgetCard = ({ budget }: any) => {
       className="budget-card px-3 py-3 
       border-[1px] border-gray-600
       rounded-lg shadow-lg shadow-gray-800
-    text-white
-      flex flex-col gap-5"
+    text-white bg-gray-700
+      flex flex-col gap-5
+      dark:text-gray-700 dark:bg-gray-300"
+      
     >
+     
       <div className="budget-card-header flex flex-row justify-between items-center">
         <h3 className="text-lg font-bold"> Edit {budget.title} </h3>
+
+        
       </div>
 
       <div className="flex justify-center">
@@ -78,8 +85,9 @@ const BudgetCard = ({ budget }: any) => {
             </label>
             <input
               type="text"
-              className="text-black form-control block w-full px-3 py-1.5 text-base rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white
-              focus:border-green-500 focus:outline-none"
+              className="text-black form-control block w-full px-3 py-1.5 text-base rounded transition ease-in-out m-0 
+              focus:text-gray-700 focus:bg-white 
+              focus:border-green-500 outline-gray"
               id="BudgetNameInput"
               placeholder="Budget Name"
               value={title}
@@ -97,7 +105,7 @@ const BudgetCard = ({ budget }: any) => {
             <input
               type="number"
               className=" text-black form-control block w-full px-3 py-1.5 text-base rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white
-              focus:border-green-500 focus:outline-none"
+              focus:border-green-500 outline-gray"
               id="BudgetGoalInput"
               placeholder="Budget Goal"
               value={goalAmount}

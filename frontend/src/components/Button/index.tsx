@@ -8,10 +8,10 @@ interface ButtonProps {
 export const Button = (
   props: React.ButtonHTMLAttributes<HTMLButtonElement> & ButtonProps
 ) => {
-  let colorClasses = "bg-green-500 hover:bg-green-600 text-white";
+  let colorClasses = "bg-green-500 hover:bg-green-600 text-white ";
 
   if (props.secondary) {
-    colorClasses = "bg-gray-500 hover:bg-gray-600 text-white";
+    colorClasses = "bg-gray-500 hover:bg-gray-600 text-white ";
   } else if (props.primary) {
     colorClasses = colorClasses;
   }

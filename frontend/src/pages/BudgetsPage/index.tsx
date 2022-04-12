@@ -168,13 +168,13 @@ const BudgetCard = ({ budget }: any) => {
       className="budget-card px-3 py-3 
       border-[1px] border-gray-600
     rounded-lg shadow-lg shadow-gray-800
-    text-white
+    text-white 
     flex flex-col gap-5
-    
+    dark:bg-gray-300
     "
     >
       <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">{budget.title}</h3>
+        <h3 className="text-lg font-bold dark:text-gray-700">{budget.title}</h3>
         <div className="people-shared flex flex-row gap-1">
           <div className="h-8 w-8 border-2 rounded-full"></div>
           <div className="h-8 w-8 border-2 rounded-full"></div>
@@ -182,21 +182,21 @@ const BudgetCard = ({ budget }: any) => {
           <button
             onClick={() => alert(`Share using this ID: ${budget.id}`)}
             className="h-8 w-8 border-0 rounded-full flex justify-center items-center 
-             hover:bg-white hover:bg-opacity-50"
+             hover:bg-white hover:bg-opacity-50 dark:text-gray-700"
           >
             +
           </button>
         </div>
       </div>
-      <div className="budget-card-progressive-bar flex flex-col items-center gap-2">
-        <div className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-800">
+      <div className="budget-card-progressive-bar flex flex-col items-center gap-2 dark:text-gray-700">
+        <div className="w-full bg-gray-200 rounded-full h-4 ">
           <div
             className="bg-green-500 h-4 rounded-full"
             style={{ width: `${PROGRESS}%` }}
           ></div>
         </div>
         <span>
-          $ {parseFloat(budget.totalSpent).toFixed(2)} / ${" "}
+          $ {parseFloat(budget.totalSpent).toFixed(2)} / $ {" "}
           {parseFloat(budget.goalAmount).toFixed(2)}
         </span>
       </div>

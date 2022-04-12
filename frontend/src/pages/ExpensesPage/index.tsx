@@ -13,13 +13,11 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { Modal } from '../../components/Modal';
-import {
-  budgetsCollection,
-  categoryCollection,
-  expensesCollection,
-} from '../../config/firebase';
+import { budgetsCollection, expensesCollection } from '../../config/firebase';
 import { formatDateFromFirebase } from '../../lib/helpers';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+
+import { categoryCollection } from '../../config/firebase';
 
 import { useAuth } from '../../context/AuthContext';
 
@@ -34,6 +32,7 @@ export const ExpensesPage = () => {
   const [expenseDescription, setExpenseDescription] = useState<string>('');
   const [fileUrl, setFileUrl] = useState('');
   const [picture, setPicture] = useState('');
+
   const [expenseCategory, setExpenseCategory] = useState<string>('');
   const { currentUser } = useAuth();
   const [categoriesOptions, setCategoriesOptions] = useState([]);
@@ -290,30 +289,38 @@ const ExpenseCard = ({ expense, categories }: any) => {
       className="budget-card px-3 py-3 
       border-[1px] border-gray-600
     rounded-lg shadow-lg shadow-gray-800
-    text-white
-    flex flex-col gap-5
+    text-white dark:bg-gray-300
+    flex flex-col gap-5 dark:text-gray-700
     
     "
     >
-      <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">{expense.title}</h3>
+      <div className="budget-card-header flex flex-row justify-between items-center ">
+        <h3 className="text-lg font-bold dark:text-gray-700">
+          {expense.title}
+        </h3>
       </div>
       <div className="body">
-        <p className="text-lg">Description: {expense.description}</p>
+        <p className="text-lg dark:text-gray-700">
+          Description: {expense.description}
+        </p>
         {/* <p className="text-lg">Category: {expense.category}</p> */}
         <p className="text-lg">
           Category: {catName ? catName : 'Uncategorized'}
         </p>
-        <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
+        <p className="text-lg dark:text-gray-700">
+          Amount: $ {expense.amount.toFixed(2)}
+        </p>
 
         {/* <img
           className="profile-picture border-2 w-40 h-40 mb-10"
           src={expense.fileUrl}
         /> */}
 
-        <p>Date: {formatDateFromFirebase(expense.date)}</p>
+        <p className="text-lg dark:text-gray-700">
+          Date: {formatDateFromFirebase(expense.date)}
+        </p>
 
-        <p className="text-lg">
+        <p className="text-lg dark:text-gray-700">
           Paid:{' '}
           <input
             type="checkbox"

@@ -16,8 +16,11 @@ import { WishList } from './pages/WishList/index';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { CategoryPage } from './pages/CategoriesPage/CategoryPage';
 function App() {
+
   return (
+
     <div className="app">
+      
       <Routes>
         {/* Landing Page */}
         <Route path="/" element={<LandingPage />} />
