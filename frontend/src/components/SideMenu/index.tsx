@@ -16,7 +16,7 @@ export const SideMenu = ({ children }: SideMenuProps) => {
       bg-gray-800 shadow-black shadow-lg
       h-20 fixed bottom-0 w-full
       md:relative md:h-full md:w-48
-      text-white
+      text-white  dark:text-gray-800
     "
     >
       <nav className="h-full md:fixed md:pt-0 md:w-48">
@@ -24,7 +24,7 @@ export const SideMenu = ({ children }: SideMenuProps) => {
           className="
           bg-gray-800
         flex flex-row justify-around h-full items-center
-        md:flex-col md:items-stretch md:justify-start md:p-1
+        md:flex-col md:items-stretch md:justify-start md:p-1 dark:bg-gray-500
         "
         >
           {children}

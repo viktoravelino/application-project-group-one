@@ -108,6 +108,7 @@ export const UserProfilePage = () => {
     inputFile?.current?.click();
   };
 
+
   return (
     <div
       className="
@@ -122,12 +123,13 @@ export const UserProfilePage = () => {
         className="main mt-12 md:mt-16 h-full
         pb-10
         flex flex-col items-center pt-8
-        bg-gray-700
+        bg-gray-700  dark:bg-white
         "
       >
+        
         <BlockContainer title="Profile Picture">
           <img
-            className="profile-picture border-2 w-36 h-36 rounded-full mb-10"
+            className="profile-picture border-2 w-36 h-36 rounded-full mb-10 dark:border-gray-500 "
             src={picture!}
           />
           <ButtonsContainer>
@@ -146,7 +148,7 @@ export const UserProfilePage = () => {
           </ButtonsContainer>
         </BlockContainer>
 
-        <hr className="w-4/6 my-10 border-gray-500" />
+        <hr className="w-4/6 my-10 border-gray-500 " />
         <BlockContainer title="Basic Info">
           <InputGroup
             onChange={setName}
@@ -234,10 +236,10 @@ const InputGroup = (props: any) => {
       w-11/12
       flex items-center mb-4
       md:text-right
-      md:w-10/12
+      md:w-10/12 dark:text-gray-700
       "
     >
-      <label className="pr-2 font-bold md:text-xl">{props.label}:</label>
+      <label className="pr-2 font-bold md:text-xl ">{props.label}:</label>
       <input
         disabled={props.disabled}
         className="bg-transparent outline-none border-0 border-b-2  md:flex-1 md:pl-10 rounded
@@ -259,6 +261,7 @@ const ButtonsContainer = (props: any) => {
   flex flex-row justify-end
   buttons w-10/12
   md:w-10/12
+  
   "
     >
       {props.children}
@@ -274,6 +277,7 @@ const BlockContainer = (props: any) => {
           items-center
           w-11/12
           md:w-6/12
+          dark:text-gray-700
           "
     >
       <span className="self-start mb-2">{props.title}</span>

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 export function LandingPage() {
   return (
-    
-    <div className="text-center bg-white pt-10 min-h-screen">
+    <><div className="dark"></div>
+    <div className="text-center bg-white pt-10 min-h-screen dark:bg-gray-800 ">
       <h1 className="text-xl font-bold">LandingPage</h1>
       <div>
         <Link to="/login">
@@ -29,7 +29,7 @@ export function LandingPage() {
           <button className="underline">User Profile</button>
         </Link>
       </div>
-      
-    </div>
+
+    </div></>
   );
 }

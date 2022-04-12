@@ -26,7 +26,8 @@ export const MainLayoutContainer = (): JSX.Element => {
           {/* <SideMenuItem text="Categories" to="categories" Icon={BsListNested} /> */}
           {/* <SideMenuItem text="Transactions" to="transactions" Icon={GiReceiveMoney} /> */}
         </SideMenu>
-        <section className="main-content-container w-full bg-gray-700 mt-12 md:mt-0 flex-1 p-4">
+        <section className="main-content-container w-full bg-gray-700 mt-12 md:mt-0 flex-1 p-4 
+        dark:bg-white">
           <Outlet />
         </section>
       </main>

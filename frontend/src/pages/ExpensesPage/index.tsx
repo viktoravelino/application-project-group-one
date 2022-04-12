@@ -235,24 +235,24 @@ const ExpenseCard = ({ expense }: any) => {
       className="budget-card px-3 py-3 
       border-[1px] border-gray-600
     rounded-lg shadow-lg shadow-gray-800
-    text-white
+    text-white dark:bg-gray-300
     flex flex-col gap-5
     
     "
     >
-      <div className="budget-card-header flex flex-row justify-between items-center">
-        <h3 className="text-lg font-bold">{expense.title}</h3>
+      <div className="budget-card-header flex flex-row justify-between items-center ">
+        <h3 className="text-lg font-bold dark:text-gray-700">{expense.title}</h3>
       </div>
       <div className="body">
-        <p className="text-lg">Description: {expense.description}</p>
-        <p className="text-lg">Amount: $ {expense.amount.toFixed(2)}</p>
+        <p className="text-lg dark:text-gray-700">Description: {expense.description}</p>
+        <p className="text-lg dark:text-gray-700">Amount: $ {expense.amount.toFixed(2)}</p>
         
         <img className="profile-picture border-2 w-40 h-40 mb-10"
           src= {expense.fileUrl}/>
           
-        <p>Date: {formatDateFromFirebase(expense.date)}</p>
+        <p className="text-lg dark:text-gray-700">Date: {formatDateFromFirebase(expense.date)}</p>
 
-        <p className="text-lg">
+        <p className="text-lg dark:text-gray-700">
           Paid:{" "}
           <input
             type="checkbox"

@@ -11,7 +11,7 @@ export const AuthForm = ({ children, onSubmit }: AuthFormProps) => {
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-white p-6 border-2 border-black flex flex-col  gap-4 items-center text-center w-full max-w-xs rounded-xl"
+      className="bg-white p-6 border-2 border-black flex flex-col  gap-4 items-center text-center w-full max-w-xs rounded-xl "
     >
       {children}
     </form>
