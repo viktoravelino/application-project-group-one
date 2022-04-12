@@ -311,10 +311,10 @@ const ExpenseCard = ({ expense, categories }: any) => {
           Amount: $ {expense.amount.toFixed(2)}
         </p>
 
-        {/* <img
+        <img
           className="profile-picture border-2 w-40 h-40 mb-10"
           src={expense.fileUrl}
-        /> */}
+        />
 
         <p className="text-lg dark:text-gray-700">
           Date: {formatDateFromFirebase(expense.date)}
